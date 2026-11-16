@@ -110,12 +110,12 @@ function makePdf(){
  function pdfText(t){return clean(t).replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)")}
  function text(t,x,top,size,bold,color){cmd.push((color||"0.17 0.22 0.55")+" rg BT /"+(bold?"F2":"F1")+" "+size+" Tf 1 0 0 1 "+x+" "+(H-top)+" Tm ("+pdfText(t)+") Tj ET")}
  function rect(x,top,w,h,color){cmd.push(color+" rg "+x+" "+(H-top-h)+" "+w+" "+h+" re f")}
- var cols=[{title:"Nom",x:42},{title:"Pes final (kg)",x:295},{title:"Pax",x:430},{title:"Preu carta (EUR)",x:525},{title:"Data compra",x:690}];
+ var cols=[{title:"Nom i preparació",x:42},{title:"Pes final (kg)",x:295},{title:"Pax",x:430},{title:"Preu carta (EUR)",x:525},{title:"Data compra",x:690}];
  function pax(w){if(!(w>0))return "1";var min=Math.max(1,Math.ceil((w-1e-9)/0.5)),max=Math.max(1,Math.floor((w+1e-9)/0.4));return min>max?String(Math.max(1,Math.round(w/0.45))):min===max?String(min):min+"-"+max}
  function start(){cmd=[];text("Inventari de peixos",42,45,21,true);text("Data: "+dt(today()),42,65,11,false);rect(36,83,770,30,"0.18 0.23 0.55");cols.forEach(function(c){text(c.title,c.x,103,11,true,"1 1 1")});y=113}
  function finish(){pages.push(cmd.join("\n"))}
  start();var tu=0,tw=0;
- state.fish.forEach(function(f,i){if(y>530){finish();start()}var u=f.unitats||1;tu+=u;tw+=fin(f)*u;if(i%2===0)rect(36,y,770,30,"0.93 0.94 0.98");var vals=[f.nom,n2(fin(f)),pax(fin(f)),n2(carta(f)),dt(f.dataCompra)];vals.forEach(function(v,j){text(String(v).slice(0,j===0?27:28),cols[j].x,y+20,11,false,"0.13 0.16 0.27")});y+=30});
+ state.fish.forEach(function(f,i){if(y>530){finish();start()}var u=f.unitats||1;tu+=u;tw+=fin(f)*u;if(i%2===0)rect(36,y,770,30,"0.93 0.94 0.98");var vals=[f.nom+" - "+tag(f),n2(fin(f)),pax(fin(f)),n2(carta(f)),dt(f.dataCompra)];vals.forEach(function(v,j){text(String(v).slice(0,j===0?27:28),cols[j].x,y+20,11,false,"0.13 0.16 0.27")});y+=30});
  if(y>520){finish();start()}text("Total unitats: "+tu+"     Pes final total: "+n2(tw)+" kg",42,y+25,12,true);finish();
  // PDF 1.4 amb fonts estàndard Helvetica, codificació WinAnsi.
  var objects=[null],add=function(o){objects.push(o);return objects.length-1};
