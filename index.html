@@ -86,10 +86,10 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 4.3</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 4.3 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 4.5</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 4.5 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg de peixos</button><button id="tl">Partides</button><button id="tc">Paràmetres</button></div>
-<div id="v1"><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Revisió assistida</h2><p class="mu">Selecciona una fotografia de l’albarà (JPG o PNG). El reconeixement es fa al navegador. Revisa les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,image/*" aria-label="Selecciona una fotografia de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Llegir fotografia</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="card"><form id="f">
+<div id="v1"><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Lectura amb IA</h2><p class="mu">Selecciona una fotografia de l’albarà (JPG, PNG o WebP). La imatge s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,image/*" aria-label="Selecciona una fotografia de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="card"><form id="f">
 <div class="full"><label>Espècie</label><select id="ns"></select><input id="nom" hidden></div>
 <div><label>Preparació</label><select id="tp"><option value="sencer">Sencer</option><option value="palometa">En palometa</option><option value="filets">A filets</option><option value="talls">A talls</option></select></div>
 <div><label>Data de compra</label><input id="dc" type="date" required></div>
@@ -174,16 +174,24 @@ function render(parsed){
 }
 $a('albaraRead').addEventListener('click',async function(){
  var file=$a('albaraFile').files[0];if(!file){status('Selecciona primer una fotografia.');return}
- if(file.size>15*1024*1024){status('La fotografia supera els 15 MB.');return}
+ if(file.size>8*1024*1024){status('La fotografia supera els 8 MB. Redueix-ne la mida.');return}
+ if(!/^image\/(jpeg|png|webp)$/.test(file.type)){status('Format no admès. Utilitza JPG, PNG o WebP.');return}
+ if(!window.peixosSync||!window.peixosSync.getToken){status('Cal iniciar sessió abans de llegir l’albarà.');return}
  this.disabled=true;
  try{
-  status('Carregant el reconeixement de text…');
-  if(!window.Tesseract){await new Promise(function(resolve,reject){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}
-  status('Llegint la fotografia… pot trigar uns segons.');
-  var worker=await Tesseract.createWorker('spa');
-  try{var result=await worker.recognize(file)}finally{await worker.terminate()}
-  render(detect(result.data.text));status('Lectura completada. Revisa tots els valors abans de continuar.');
- }catch(e){status('No s’ha pogut reconèixer la fotografia. Cal connexió a internet per carregar el motor OCR. '+e.message)}finally{this.disabled=false}
+  status('Enviant la fotografia per analitzar-la amb IA…');
+  var token=await window.peixosSync.getToken();
+  if(!token)throw Error('Cal iniciar sessió.');
+  var base64=await new Promise(function(resolve,reject){var r=new FileReader();r.onload=function(){resolve(String(r.result).split(',')[1])};r.onerror=function(){reject(Error('No es pot llegir la fotografia.'))};r.readAsDataURL(file)});
+  var response=await fetch('https://tracamar-ia.jninforner.workers.dev',{
+   method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({image:base64,mimeType:file.type})
+  });
+  var data=await response.json().catch(function(){return {error:'Resposta no vàlida del servidor'}});
+  if(!response.ok)throw Error(data.error||'Error '+response.status);
+  var parsed={rows:(data.rows||[]).filter(function(x){return x.category==='fish'}).map(function(x){return {name:x.name||'',kg:x.kg||'',price:x.price||'',elab:x.elab||0,uncertain:!!x.uncertain}}),other:(data.rows||[]).filter(function(x){return x.category!=='fish'}).map(function(x){return {name:x.name||'Producte no classificat'}}),elab:[],date:data.date||'',dates:[],notice:(data.warnings||[]).join(' · '),raw:data.notes||'Anàlisi visual amb IA (sense transcripció OCR)'};
+  render(parsed);status('Anàlisi completada. Revisa tots els imports i pesos abans de continuar.');
+ }catch(e){status('No s’ha pogut analitzar l’albarà: '+e.message+' Comprova que el Worker estigui desplegat i que tingui el secret OPENAI_API_KEY.')}
+ finally{this.disabled=false}
 });
 $a('albaraResult').addEventListener('click',function(e){var btn=e.target.closest('[data-apply]');if(!btn)return;var i=Number(btn.dataset.apply),root=$a('albaraResult'),fields={};root.querySelectorAll('[data-alb][data-i="'+i+'"]').forEach(function(x){fields[x.dataset.alb]=x.value});
  var kg=number(fields.kg),p=number(fields.price),extra=number(fields.elab),name=fields.name.trim();
@@ -390,7 +398,7 @@ catch(e){document.getElementById("syncStatus").textContent="Error de memòria lo
 const target=db?doc(db,"inventari","dades"):null;
 let unsubscribe=null,ready=false,writeChain=Promise.resolve(),pending=0,received=false;
 function status(t){window.setSyncStatus(t)}
-window.peixosSync={ready:false,login:(email,password)=>signInWithEmailAndPassword(auth,email,password),logout:()=>signOut(auth),save:(data)=>{
+window.peixosSync={ready:false,getToken:async()=>auth.currentUser?auth.currentUser.getIdToken():null,login:(email,password)=>signInWithEmailAndPassword(auth,email,password),logout:()=>signOut(auth),save:(data)=>{
  if(!ready||!target)return;
  pending++;
  status("Desant…");
