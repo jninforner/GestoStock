@@ -83,11 +83,21 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 #toast{border-radius:12px}.sum div{border:1px solid #d4daf1;border-radius:12px;background:var(--g1)}
 @media(max-width:430px){main{padding:14px 12px 28px}.card{padding:15px}.brand h1{font-size:22px}.topbtn{font-size:13px}}
 @media(prefers-reduced-motion:reduce){button{transition:none}}
+/* Importació d'albarans: jerarquia i espaiat coherents */
+#albaraResult .alb-line{margin:18px 0 0;padding:20px;border:1px solid #d4daf1;border-radius:14px;background:var(--g1);box-shadow:0 2px 9px rgba(40,55,126,.04)}
+#albaraResult .alb-line .alb-name{margin-bottom:20px}
+#albaraResult .alb-line label{display:block;min-height:auto;line-height:1.35;margin:0 0 8px;font-size:13px;font-weight:600}
+#albaraResult .alb-line .purchase-fields{margin-top:0;gap:12px;align-items:end}
+#albaraResult .alb-line .purchase-fields>div{display:flex;flex-direction:column;min-width:0}
+#albaraResult .alb-line .purchase-fields input{margin:0;width:100%}
+#albaraResult .alb-line .alb-apply{margin-top:22px}
+#albaraResult .alb-line .alb-warning{margin:10px 0 18px}
+@media(max-width:440px){#albaraResult .alb-line{padding:15px}#albaraResult .alb-line .purchase-fields{gap:8px}#albaraResult .alb-line .purchase-fields label{font-size:12px;min-height:34px}#albaraResult .alb-line .purchase-fields input{padding:9px 6px;font-size:15px}}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 4.5</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 4.5 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 4.6</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 4.6 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg de peixos</button><button id="tl">Partides</button><button id="tc">Paràmetres</button></div>
 <div id="v1"><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Lectura amb IA</h2><p class="mu">Selecciona una fotografia de l’albarà (JPG, PNG o WebP). La imatge s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,image/*" aria-label="Selecciona una fotografia de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="card"><form id="f">
 <div class="full"><label>Espècie</label><select id="ns"></select><input id="nom" hidden></div>
@@ -158,15 +168,26 @@ function detect(text){
  else if(extras.length)elabNotice='Hi ha elaboracions detectades: revisa a quin peix corresponen.';
  return {rows:result,elab:extras,other:other,date:date,raw:lines.join('\n'),notice:elabNotice,dates:dates};
 }
+function cleanFishName(raw){
+ var t=String(raw||'').normalize('NFC').trim().replace(/\s+/g,' ');
+ t=t.replace(/\s*\(?\d{2,5}\s*[-–—]\s*\d{2,5}\s*(?:g|gr|kg)\s*\/?\s*(?:pz|ud|peça|pieza|u)?\)?/gi,'');
+ t=t.replace(/\s+\d+(?:[.,]\d+)?\s*(?:g|gr|kg|pz|ud|u)\b.*$/i,'').trim();
+ t=t.replace(/\b(?:salvaje|salvatge|mediterraneo|mediterrani|fresco|fresca|fresc|fresca|de\s+pesca|calibre|talla)\b/gi,' ').replace(/\s+/g,' ').trim();
+ var key=t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ var map={'dorada':'Orada','orada':'Orada','lubina':'Llobarro','llobarro':'Llobarro','lluerna':'Lluerna','luerna':'Lluerna','merluza':'Lluç','lluc':'Lluç','rape':'Rap','rap':'Rap','rodaballo':'Rèmol','remol':'Rèmol','besugo':'Besuc','besuc':'Besuc','corvina':'Corball','corball':'Corball','lenguado':'Llenguado','lenguado comun':'Llenguado','lenguado común':'Llenguado','lenguado':'Llenguado','lenguado':'Llenguado','salmonete':'Moll','moll':'Moll','bacalao':'Bacallà','bacalla':'Bacallà','sargo':'Sarg','sarg':'Sarg','denton':'Déntol','dentol':'Déntol','caballa':'Verat','verat':'Verat','jurel':'Sorell','sorell':'Sorell'};
+ if(map[key])return map[key];
+ return t? t.charAt(0).toLocaleUpperCase('ca')+t.slice(1):'';
+}
+function keyFish(t){return String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('ca').replace(/[^a-z0-9]/g,'')}
 function render(parsed){
- rows=parsed.rows;
+ rows=parsed.rows.map(function(r){return {...r,name:cleanFishName(r.name)}});
  function esc(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
  var out='<p class="mu"><b>Lectura orientativa:</b> revisa cada xifra abans de crear una partida. Els productes repetits s’han agrupat per nom, però les compres diferents d’una mateixa espècie s’han de separar manualment.</p>';
  out+='<label>Data de l’albarà</label><input id="albDate" type="date" value="'+esc(parsed.date)+'">';
  if(parsed.dates.length>1)out+='<p class="mu">Dates llegides: '+esc([...new Set(parsed.dates)].join(', '))+'. Comprova que no sigui una data de lot.</p>';
  if(parsed.notice)out+='<p class="mu">'+esc(parsed.notice)+'</p>';
  if(!rows.length)out+='<p>No s’han identificat peixos automàticament. Consulta el text reconegut i crea la partida manualment.</p>';
- rows.forEach(function(r,i){out+='<div class="card" style="margin:12px 0"><label>Peix</label><input data-alb="name" data-i="'+i+'" value="'+esc(r.name)+'">'+(r.uncertain?'<p class="mu">⚠ Pes o preu no identificat amb seguretat.</p>':'')+'<div class="purchase-fields"><div><label>Kg bruts</label><input type="number" min="0" step="0.001" data-alb="kg" data-i="'+i+'" value="'+(r.kg||'')+'"></div><div><label>€/kg brut</label><input type="number" min="0" step="0.01" data-alb="price" data-i="'+i+'" value="'+(r.price||'')+'"></div><div><label>Elaboració total (€)</label><input type="number" min="0" step="0.01" data-alb="elab" data-i="'+i+'" value="'+(r.elab||0)+'"></div></div><button type="button" class="s f" data-apply="'+i+'">Passa al formulari</button></div>'});
+ rows.forEach(function(r,i){out+='<div class="alb-line"><div class="alb-name"><label>Peix</label><input data-alb="name" data-i="'+i+'" value="'+esc(r.name)+'"></div>'+(r.uncertain?'<p class="mu alb-warning">⚠ Pes o preu no identificat amb seguretat.</p>':'')+'<div class="purchase-fields"><div><label>Kg bruts</label><input type="number" min="0" step="0.001" data-alb="kg" data-i="'+i+'" value="'+(r.kg??'')+'"></div><div><label>€/kg brut</label><input type="number" min="0" step="0.01" data-alb="price" data-i="'+i+'" value="'+(r.price??'')+'"></div><div><label>Elaboració total (€)</label><input type="number" min="0" step="0.01" data-alb="elab" data-i="'+i+'" value="'+(r.elab??0)+'"></div></div><button type="button" class="s f alb-apply" data-apply="'+i+'">Passa al formulari</button></div>'});
  if(parsed.other.length)out+='<p class="mu"><b>Altres productes detectats (no s’importaran):</b> '+parsed.other.map(function(r){return esc(r.name)}).join(', ')+'</p>';
  if(parsed.elab.length)out+='<p class="mu"><b>Elaboracions detectades:</b> '+parsed.elab.map(function(r){return r.total?fmt(r.total)+' €':r.kg?fmt(r.kg)+' kg':'Import no llegit'}).join(', ')+'. Comprova l’import i l’assignació.</p>';
  out+='<details><summary>Text reconegut (per revisar)</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px">'+esc(parsed.raw)+'</pre></details>';
@@ -194,10 +215,16 @@ $a('albaraRead').addEventListener('click',async function(){
  finally{this.disabled=false}
 });
 $a('albaraResult').addEventListener('click',function(e){var btn=e.target.closest('[data-apply]');if(!btn)return;var i=Number(btn.dataset.apply),root=$a('albaraResult'),fields={};root.querySelectorAll('[data-alb][data-i="'+i+'"]').forEach(function(x){fields[x.dataset.alb]=x.value});
- var kg=number(fields.kg),p=number(fields.price),extra=number(fields.elab),name=fields.name.trim();
+ var kg=number(fields.kg),p=number(fields.price),extra=number(fields.elab),name=cleanFishName(fields.name);
  if(!name||!(kg>0)||!(p>=0)||!(extra>=0)){status('Revisa el nom, els quilos i els imports.');return}
- var sel=$a('ns'),opts=Array.from(sel.options),match=opts.find(function(o){return o.textContent.trim().toLocaleLowerCase('ca')===name.toLocaleLowerCase('ca')});
- if(!match){status('Afegeix «'+name+'» al Catàleg de peixos abans de passar aquesta línia al formulari.');return}
+ var sel=$a('ns'),opts=Array.from(sel.options),match=opts.find(function(o){return keyFish(o.textContent)===keyFish(name)});
+ if(!match){
+  if(!window.peixosSync||!window.peixosSync.ready){status('Cal tenir la sessió sincronitzada per crear una espècie.');return}
+  state.noms.push(name);norm();fillNames(name);save();renderNames();
+  match=Array.from(sel.options).find(function(o){return keyFish(o.textContent)===keyFish(name)});
+  status('Espècie «'+name+'» afegida al catàleg.');
+ }
+ if(!match){status('No s’ha pogut afegir l’espècie.');return}
  sel.value=match.value;$a('pes').value=kg;$a('pc').value=((kg*p+extra)/kg).toFixed(4);if($a('albDate').value)$a('dc').value=$a('albDate').value;
  $a('net').value='';$a('qty').value=1;$a('same').value='si';
  if(typeof prev==='function')prev();
