@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gestió de Peix Fresc</title>
+<title>TraçaMar</title>
 <link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#2e3a8c"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="apple-touch-icon" href="./icon.png">
 <style>
 :root{--bg:#fff;--tx:#2e3a8c;--mu:#6a73b0;--ln:#2e3a8c;--g1:#ffffff;--g2:#dfe2f3;--in:#fff;--on:#fff;--rd:#b42318;--gr:#1d7a3a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -56,11 +56,38 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-width
 .pos{color:var(--gr)}.neg{color:var(--rd)}
 .empty{text-align:center;color:var(--mu);padding:24px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}.brand{min-width:0;flex:1}.brand h1{margin:0;font-size:clamp(21px,4.5vw,30px);line-height:1.1}.version{font-size:13px;margin-top:5px}.topactions{display:flex;align-items:center;gap:8px;flex-shrink:0}.topbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 12px;min-height:42px;border-radius:12px;font-size:15px;white-space:nowrap;background:var(--g1)}.topbtn span:first-child{font-family:Arial,sans-serif;font-size:18px;line-height:1}@media(max-width:430px){.topbar{gap:8px}.topactions{gap:5px}.topbtn{padding:7px 9px;font-size:13px}.brand h1{font-size:22px}}
+
+/* TraçaMar 4.0 · refinament visual sense alterar la lògica */
+:root{--bg:#f6f8fb;--tx:#203a55;--mu:#63798d;--ln:#285b78;--g1:#fff;--g2:#f1f6f9;--in:#fff;--on:#fff;--rd:#b42318;--gr:#17734a}
+:root[data-theme="dark"]{--bg:#101c29;--tx:#e6f0f5;--mu:#a3b7c6;--ln:#79afc9;--g1:#192b3b;--g2:#21384b;--in:#162637;--on:#101c29;--rd:#ff9992;--gr:#84dbab}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101c29;--tx:#e6f0f5;--mu:#a3b7c6;--ln:#79afc9;--g1:#192b3b;--g2:#21384b;--in:#162637;--on:#101c29;--rd:#ff9992;--gr:#84dbab}}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.5}
+main{max-width:760px;padding:20px 16px 36px}
+h1,.brand h1{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-variant:normal;font-weight:700;letter-spacing:-.035em}
+h1{font-size:28px}
+.sc,label,button,.mu,.nm,select,.tag{font-variant:normal}
+.card{border:1px solid #cbd8e1;border-radius:18px;background:var(--g1);padding:20px;margin-bottom:16px;box-shadow:0 3px 14px rgba(17,47,70,.045)}
+button{border:1px solid var(--ln);border-radius:10px;font-family:inherit;font-size:15px;font-weight:600;padding:10px 15px;transition:background-color .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease;cursor:pointer}
+button:not(:disabled):hover{background:var(--ln);color:var(--on);box-shadow:0 3px 12px rgba(26,64,89,.15)}
+button.f:not(:disabled):hover,.tabs button.on:not(:disabled):hover,#menu button.on:not(:disabled):hover{filter:brightness(1.13)}
+button.d:not(:disabled):hover{background:var(--rd);border-color:var(--rd);color:#fff}
+button:disabled{cursor:not-allowed;opacity:.55}
+button:focus-visible,input:focus-visible,select:focus-visible,[role="button"]:focus-visible{outline:3px solid #5da6d0;outline-offset:2px}
+input,select{border:1px solid #aebfcc;border-radius:10px;font-family:inherit;font-size:16px}
+input:focus,select:focus{border-color:var(--ln)}
+select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
+.topbar{padding-bottom:14px;border-bottom:1px solid #dbe4ea;margin-bottom:18px}
+.topbtn{border-radius:10px;font-size:14px;background:var(--g1)}
+.nm{font-size:21px;font-weight:650}.mu{font-size:14px}.big{font-weight:700}
+#menu{border:1px solid #cbd8e1;border-radius:14px;box-shadow:0 12px 30px rgba(17,47,70,.15)}
+#toast{border-radius:12px}.sum div{border:1px solid #cbd8e1;border-radius:12px;background:var(--g1)}
+@media(max-width:430px){main{padding:14px 12px 28px}.card{padding:15px}.brand h1{font-size:22px}.topbtn{font-size:13px}}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>Gestió de Peix Fresc</h1><p class="mu">Versió 3.9</p><p>Accedeix amb el teu usuari de Firebase.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>Gestió de Peix Fresc</h1><div class="mu version">Versió 3.9 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 4.0</p><p>Accedeix amb el teu usuari de Firebase.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 4.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg de peixos</button><button id="tl">Partides</button><button id="tc">Paràmetres</button></div>
 <div id="v1"><div class="card"><form id="f">
 <div class="full"><label>Espècie</label><select id="ns"></select><input id="nom" hidden></div>
@@ -135,7 +162,7 @@ function makePdf(mode){
  function rect(x,top,w,h,color){cmd.push(color+" rg "+x+" "+(H-top-h)+" "+w+" "+h+" re f")}
  var cols=[{title:"Nom i preparació",x:42},{title:"Pes final (kg)",x:295},{title:"Pax",x:430},{title:"Preu carta (EUR)",x:525},{title:"Data compra",x:690}];
  function pax(w){if(!(w>0))return "1";var min=Math.max(1,Math.ceil((w-1e-9)/(conf().paxMax/1000))),max=Math.max(1,Math.floor((w+1e-9)/(conf().paxMin/1000)));return min>max?String(Math.max(1,Math.round(w/0.45))):min===max?String(min):min+"-"+max}
- function start(){cmd=[];text("Gestió de Peix Fresc",42,45,21,true);text("Data: "+dt(today()),42,65,11,false);rect(36,83,770,30,"0.18 0.23 0.55");cols.forEach(function(c){text(c.title,c.x,103,11,true,"1 1 1")});y=113}
+ function start(){cmd=[];text("TraçaMar",42,45,21,true);text("Data: "+dt(today()),42,65,11,false);rect(36,83,770,30,"0.18 0.23 0.55");cols.forEach(function(c){text(c.title,c.x,103,11,true,"1 1 1")});y=113}
  function finish(){pages.push(cmd.join("\n"))}
  start();var tu=0,tw=0;
  state.fish.filter(function(f){return !f.lotId||state.lots.some(function(l){return l.id===f.lotId&&l.validada})}).forEach(function(f,i){if(y>530){finish();start()}var u=f.unitats||1;tu+=u;tw+=fin(f)*u;if(i%2===0)rect(36,y,770,30,"0.93 0.94 0.98");var vals=[f.nom+" - "+tag(f)+(u>1?" ("+u+" u.)":""),n2(fin(f)),pax(fin(f)),n2(carta(f)),dt(f.dataCompra)];vals.forEach(function(v,j){text(String(v).slice(0,j===0?27:28),cols[j].x,y+20,11,false,"0.13 0.16 0.27")});y+=30});
@@ -149,7 +176,7 @@ function makePdf(mode){
  // Descarrega per defecte; compartir només si es prem el botó corresponent.
  if(mode==="share"&&navigator.share&&typeof File!=="undefined"){
   var file=new File([blob],name,{type:"application/pdf"});
-  if(!navigator.canShare||navigator.canShare({files:[file]})){navigator.share({files:[file],title:"Gestió de Peix Fresc"}).catch(function(e){if(e.name!=="AbortError")downloadPdf(blob,name)});return}
+  if(!navigator.canShare||navigator.canShare({files:[file]})){navigator.share({files:[file],title:"TraçaMar"}).catch(function(e){if(e.name!=="AbortError")downloadPdf(blob,name)});return}
  }
  downloadPdf(blob,name);
 }
