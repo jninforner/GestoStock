@@ -96,8 +96,8 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 4.6</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 4.6 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 4.7</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 4.7 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg de peixos</button><button id="tl">Partides</button><button id="tc">Paràmetres</button></div>
 <div id="v1"><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Lectura amb IA</h2><p class="mu">Selecciona una fotografia de l’albarà (JPG, PNG o WebP). La imatge s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,image/*" aria-label="Selecciona una fotografia de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="card"><form id="f">
 <div class="full"><label>Espècie</label><select id="ns"></select><input id="nom" hidden></div>
@@ -178,6 +178,10 @@ function cleanFishName(raw){
  if(map[key])return map[key];
  return t? t.charAt(0).toLocaleUpperCase('ca')+t.slice(1):'';
 }
+function isKnownFishName(raw){
+ var n=keyFish(cleanFishName(raw));
+ return ['lluerna','orada','llobarro','lluc','rap','remol','besuc','corball','llenguado','moll','bacalla','sarg','dentol','verat','sorell','escorpora','mero','tonyina','salmo','llampuga','pagell','pagre','llenguadina','bruixa','llucet'].includes(n);
+}
 function keyFish(t){return String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('ca').replace(/[^a-z0-9]/g,'')}
 function render(parsed){
  rows=parsed.rows.map(function(r){return {...r,name:cleanFishName(r.name)}});
@@ -209,7 +213,20 @@ $a('albaraRead').addEventListener('click',async function(){
   });
   var data=await response.json().catch(function(){return {error:'Resposta no vàlida del servidor'}});
   if(!response.ok)throw Error(data.error||'Error '+response.status);
-  var parsed={rows:(data.rows||[]).filter(function(x){return x.category==='fish'}).map(function(x){return {name:x.name||'',kg:x.kg||'',price:x.price||'',elab:x.elab||0,uncertain:!!x.uncertain}}),other:(data.rows||[]).filter(function(x){return x.category!=='fish'}).map(function(x){return {name:x.name||'Producte no classificat'}}),elab:[],date:data.date||'',dates:[],notice:(data.warnings||[]).join(' · '),raw:data.notes||'Anàlisi visual amb IA (sense transcripció OCR)'};
+  var sourceRows=data.rows||[];
+  // Recupera espècies conegudes encara que el model les hagi classificat com a 'other'.
+  var fishRows=sourceRows.filter(function(x){return x.category==='fish'||(x.category==='other'&&isKnownFishName(x.name))});
+  var services=sourceRows.filter(function(x){return x.category==='service'});
+  var notes=(data.warnings||[]).slice();
+  services.forEach(function(svc){
+   var amount=Number(svc.elab)||Number(svc.total)||0;
+   if(!(amount>0))return;
+   var candidates=fishRows.filter(function(f){return Number(f.kg)>0&&Number(svc.kg)>0&&Math.abs(Number(f.kg)-Number(svc.kg))<0.011});
+   if(candidates.length===1){candidates[0].elab=(Number(candidates[0].elab)||0)+amount;notes.push('Elaboració de '+amount.toFixed(2)+' € associada per coincidència de pes a '+cleanFishName(candidates[0].name)+'.');}
+   else notes.push('Elaboració de '+amount.toFixed(2)+' € pendent d’assignació: comprova el pes.');
+  });
+  // Si el model ja ha assignat el cost a una partida, no el tornem a sumar.
+  var parsed={rows:fishRows.map(function(x){return {name:cleanFishName(x.name||''),kg:x.kg??'',price:x.price??'',elab:x.elab??0,uncertain:!!x.uncertain}}),other:sourceRows.filter(function(x){return x.category==='other'&&!isKnownFishName(x.name)}).map(function(x){return {name:x.name||'Producte no classificat'}}),elab:[],date:data.date||'',dates:[],notice:notes.join(' · '),raw:data.notes||'Anàlisi visual amb IA (sense transcripció OCR)'};
   render(parsed);status('Anàlisi completada. Revisa tots els imports i pesos abans de continuar.');
  }catch(e){status('No s’ha pogut analitzar l’albarà: '+e.message+' Comprova que el Worker estigui desplegat i que tingui el secret OPENAI_API_KEY.')}
  finally{this.disabled=false}
