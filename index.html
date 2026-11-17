@@ -125,7 +125,7 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
  #albaraResult .alb-numbers label{min-height:35px;font-size:12px}
 }
 @media(max-width:400px){#f .purchase-fields{gap:9px}#f .purchase-fields label{font-size:12px}}
-/* TraçaMar 5.1: camps compactes i formulari només quan cal */
+/* TraçaMar 5.2: camps compactes i formulari només quan cal */
 #f .purchase-fields{gap:12px;align-items:start}
 #f .purchase-fields label{min-height:0;margin:0 0 5px;line-height:1.25;font-size:14px}
 #f .purchase-fields input{margin:0;height:46px}
@@ -141,8 +141,8 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 5.1</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 5.1 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 5.2</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 5.2 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg de peixos</button><button id="tl">Partides</button><button id="tc">Paràmetres</button></div>
 <div id="v1"><h2 class="purchase-title">Registrar compra</h2><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Lectura amb IA</h2><p class="mu">Selecciona una fotografia de l’albarà (JPG, PNG o WebP). La imatge s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,image/*" aria-label="Selecciona una fotografia de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="manual-head"><h3>Entrada manual de partida</h3><button type="button" class="s" id="toggleManual" aria-expanded="false">Nova partida manual</button></div><div class="card" id="purchaseCard" hidden><form id="f">
 <div class="full"><label>Espècie</label><select id="ns"></select><input id="nom" hidden></div>
@@ -248,7 +248,7 @@ function render(parsed){
  if(parsed.dates.length>1)out+='<p class="mu">Dates llegides: '+esc([...new Set(parsed.dates)].join(', '))+'. Comprova que no sigui una data de lot.</p>';
  if(parsed.notice)out+='<p class="mu">'+esc(parsed.notice)+'</p>';
  if(!rows.length)out+='<p>No s’han identificat peixos automàticament. Consulta el text reconegut i crea la partida manualment.</p>';
- rows.forEach(function(r,i){var done=lineEntry(i),stateLabel=done?(done.status==='imported'?'Importada':'Descartada'+(done.reason?' · '+done.reason:'')):'';out+='<div class="alb-line">'+(done?'<p class="mu"><b>'+esc(stateLabel)+'</b></p>':'')+'<div class="alb-name"><label>Peix</label><input data-alb="name" data-i="'+i+'" value="'+esc(r.name)+'"></div>'+(r.uncertain?'<p class="mu alb-warning">⚠ Pes o preu no identificat amb seguretat.</p>':'')+'<div class="alb-numbers"><div class="purchase-fields"><div><label>Kg bruts</label><input type="number" min="0" step="0.001" data-alb="kg" data-i="'+i+'" value="'+(r.kg??'')+'"></div><div><label>€/kg brut</label><input type="number" min="0" step="0.01" data-alb="price" data-i="'+i+'" value="'+(r.price??'')+'"></div><div><label>Elaboració total (€)</label><input type="number" min="0" step="0.01" data-alb="elab" data-i="'+i+'" value="'+(r.elab??0)+'"></div></div><div class="alb-units"><label>Unitats (si consten a l’albarà)</label><input type="number" min="1" max="500" step="1" data-alb="units" data-i="'+i+'" value="'+(r.units??'')+'" placeholder="No indicades"></div></div>'+(done?'<button type="button" class="s" disabled>Gestionada</button>': '<div class="act"><button type="button" class="s f alb-apply" data-apply="'+i+'">Passa al formulari</button><button type="button" class="s d" data-discard="'+i+'">Descarta</button></div>')+'</div>'});
+ rows.forEach(function(r,i){var done=lineEntry(i),stateLabel=done?(done.status==='imported'?'Importada':'Descartada'+(done.reason?' · '+done.reason:'')):'';out+='<div class="alb-line">'+(done?'<p class="mu"><b>'+esc(stateLabel)+'</b></p>':'')+'<div class="alb-name"><label>Peix</label><input data-alb="name" data-i="'+i+'" value="'+esc(r.name)+'"></div>'+(!(Number(r.kg)>0&&Number(r.price)>0)?'<p class="mu alb-warning">⚠ Falta comprovar el pes o el preu d’aquesta línia.</p>':'')+'<div class="alb-numbers"><div class="purchase-fields"><div><label>Kg bruts</label><input type="number" min="0" step="0.001" data-alb="kg" data-i="'+i+'" value="'+(r.kg??'')+'"></div><div><label>€/kg brut</label><input type="number" min="0" step="0.01" data-alb="price" data-i="'+i+'" value="'+(r.price??'')+'"></div><div><label>Elaboració total (€)</label><input type="number" min="0" step="0.01" data-alb="elab" data-i="'+i+'" value="'+(r.elab??0)+'"></div></div><div class="alb-units"><label>Unitats (si consten a l’albarà)</label><input type="number" min="1" max="500" step="1" data-alb="units" data-i="'+i+'" value="'+(r.units??'')+'" placeholder="No indicades"></div></div>'+(done?'<button type="button" class="s" disabled>Gestionada</button>': '<div class="act"><button type="button" class="s f alb-apply" data-apply="'+i+'">Passa al formulari</button><button type="button" class="s d" data-discard="'+i+'">Descarta</button></div>')+'</div>'});
  if(parsed.other.length)out+='<p class="mu"><b>Altres productes detectats (no s’importaran):</b> '+parsed.other.map(function(r){return esc(r.name)}).join(', ')+'</p>';
  if(parsed.elab.length)out+='<p class="mu"><b>Elaboracions detectades:</b> '+parsed.elab.map(function(r){return r.total?fmt(r.total)+' €':r.kg?fmt(r.kg)+' kg':'Import no llegit'}).join(', ')+'. Comprova l’import i l’assignació.</p>';
  out+='<details><summary>Text reconegut (per revisar)</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px">'+esc(parsed.raw)+'</pre></details>';
@@ -274,16 +274,30 @@ $a('albaraRead').addEventListener('click',async function(){
   // Recupera espècies conegudes encara que el model les hagi classificat com a 'other'.
   var fishRows=sourceRows.filter(function(x){return x.category==='fish'||(x.category==='other'&&isKnownFishName(x.name))});
   var services=sourceRows.filter(function(x){return x.category==='service'});
-  var notes=(data.warnings||[]).slice();
+  // Les explicacions de la IA poden contradir els imports finals. Generem
+  // avisos només a partir dels valors que realment mostrem al formulari.
+  var notices=[];
   services.forEach(function(svc){
    var amount=Number(svc.elab)||Number(svc.total)||0;
    if(!(amount>0))return;
    var candidates=fishRows.filter(function(f){return Number(f.kg)>0&&Number(svc.kg)>0&&Math.abs(Number(f.kg)-Number(svc.kg))<0.011});
-   if(candidates.length===1){candidates[0].elab=(Number(candidates[0].elab)||0)+amount;notes.push('Elaboració de '+amount.toFixed(2)+' € associada per coincidència de pes a '+cleanFishName(candidates[0].name)+'.');}
-   else notes.push('Elaboració de '+amount.toFixed(2)+' € pendent d’assignació: comprova el pes.');
+   if(candidates.length===1){
+    var fish=candidates[0],already=Number(fish.elab)||0;
+    // Si el Worker ja l'ha imputat, no duplicar l'import.
+    if(already<=0)fish.elab=amount;
+    else if(Math.abs(already-amount)>0.011)notices.push('Revisa l’elaboració de '+cleanFishName(fish.name)+': hi ha imports diferents.');
+   }else if(candidates.length===0){
+    notices.push('Hi ha un servei d’elaboració de '+amount.toFixed(2).replace('.',',')+' € sense una correspondència de pes clara. Revisa’l.');
+   }else{
+    notices.push('Hi ha un servei d’elaboració de '+amount.toFixed(2).replace('.',',')+' € que coincideix amb diversos peixos. Revisa’l.');
+   }
   });
-  // Si el model ja ha assignat el cost a una partida, no el tornem a sumar.
-  var parsed={rows:fishRows.map(function(x){return {name:cleanFishName(x.name||''),kg:x.kg??'',price:x.price??'',elab:x.elab??0,units:x.units??null,uncertain:!!x.uncertain}}),other:sourceRows.filter(function(x){return x.category==='other'&&!isKnownFishName(x.name)}).map(function(x){return {name:x.name||'Producte no classificat'}}),elab:[],date:data.date||'',dates:[],notice:notes.join(' · '),raw:data.notes||'Anàlisi visual amb IA (sense transcripció OCR)'};
+  var parsed={rows:fishRows.map(function(x){return {name:cleanFishName(x.name||''),kg:x.kg??'',price:x.price??'',elab:x.elab??0,units:x.units??null,uncertain:!(Number(x.kg)>0&&Number(x.price)>0)}}),other:sourceRows.filter(function(x){return x.category==='other'&&!isKnownFishName(x.name)}).map(function(x){return {name:x.name||'Producte no classificat'}}),elab:[],date:data.date||'',dates:[],notice:'',raw:data.notes||'Anàlisi visual amb IA (sense transcripció OCR)'};
+  fishRows.forEach(function(x){
+   var elab=Number(x.elab)||0;
+   if(elab>0)notices.push('Elaboració de '+elab.toFixed(2).replace('.',',')+' € assignada a '+cleanFishName(x.name)+'.');
+  });
+  parsed.notice=notices.join(' · ');
   var supplier=String(data.supplier||'').trim(),invoiceNumber=String(data.invoiceNumber||'').trim();
   var fallback='foto-'+await crypto.subtle.digest('SHA-256',new TextEncoder().encode(base64)).then(function(b){return Array.from(new Uint8Array(b)).map(function(v){return v.toString(16).padStart(2,'0')}).join('')});
   var identity=supplier&&invoiceNumber?'alb-'+invoiceKey(supplier)+'-'+invoiceKey(invoiceNumber):fallback;
