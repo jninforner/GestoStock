@@ -141,8 +141,8 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 5.7</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 5.7 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 5.9</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 5.9 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg de peixos</button><button id="tl">Partides</button><button id="tc">Paràmetres</button></div>
 <div id="v1"><h2 class="purchase-title">Registrar compra</h2><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Lectura amb IA</h2><p class="mu">Selecciona una fotografia de l’albarà (JPG, PNG o WebP). La imatge s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,image/*" aria-label="Selecciona una fotografia de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="manual-head"><h3>Entrada manual de partida</h3><button type="button" class="s" id="toggleManual" aria-expanded="false">Nova partida manual</button></div><div class="card" id="purchaseCard" hidden><form id="f">
 <div class="full"><label>Espècie</label><select id="ns"></select><input id="nom" hidden></div>
@@ -391,9 +391,9 @@ function renderStock(){
  var h='',groups=stockGroups();
  if(!groups.length)h='<div class="empty">No hi ha peixos a l’estoc.</div>';var invalid=state.fish.filter(function(f){return Number(f.unitats)>0&&!(fin(f)>0)});if(invalid.length)h+='<div class="card" style="border-color:#cc8b00">⚠ Hi ha '+invalid.length+' registre(s) amb pes individual invàlid. Revisa la partida abans de vendre’ls.</div>';
  groups.forEach(function(g){
-  var first=g.items[0],total=g.items.reduce(function(n,f){return n+Number(f.unitats),0}),op=openId===g.key;
-  var grossTotal=g.items.reduce(function(n,f){return n+stockGross(f).kg*Number(f.unitats),0});
-  var costTotal=g.items.reduce(function(n,f){return n+(f.costNetKg!=null?Number(f.costNetKg)*fin(f):Number(f.preuCompra||0)*stockGross(f).kg)*Number(f.unitats),0});
+  var first=g.items[0],total=g.items.reduce(function(n,f){return n+Number(f.unitats)},0),op=openId===g.key;
+  var grossTotal=g.items.reduce(function(n,f){return n+stockGross(f).kg*Number(f.unitats)},0);
+  var costTotal=g.items.reduce(function(n,f){return n+(f.costNetKg!=null?Number(f.costNetKg)*fin(f):Number(f.preuCompra||0)*stockGross(f).kg)*Number(f.unitats)},0);
   var prices=g.items.map(function(f){return carta(f)}),low=Math.min.apply(null,prices),high=Math.max.apply(null,prices);
   var priceLabel=eur(low)+(high-low>.009?' – '+eur(high):'');
   h+='<div class="card" style="padding:0;border-radius:14px"><div class="row" data-open="'+esc(g.key)+'" style="padding:14px 20px;align-items:center"><div><div class="nm">'+esc(first.nom)+'</div><div class="mu">'+tag(first)+' · '+total+' u. · '+kg(grossTotal)+' bruts'+(g.items.some(function(f){return stockGross(f).estimated})?' (estimats)':'')+'</div></div><div style="text-align:right"><div class="nm">'+priceLabel+'</div><div class="mu">'+(op?'▴':'▾')+'</div></div></div>';
@@ -436,10 +436,35 @@ function printStockLabels(){
  panel.querySelector('#labelsGo').onclick=function(){var chosen=selected(),labels=[];chosen.forEach(function(g){g.items.forEach(function(f){for(var k=0;k<Number(f.unitats||0);k++)labels.push({f:f,gross:stockGross(f).kg})})});if(!labels.length)return;dialog.remove();openLabelsPrint(labels)};update();
 }
 function openLabelsPrint(labels){
- var w=window.open('','_blank');if(!w){flash('Permet les finestres emergents per imprimir les etiquetes');return}
- var html='<!doctype html><html lang="ca"><head><meta charset="utf-8"><title>Etiquetes TraçaMar</title><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;color:#16233d}.sheet{width:210mm;height:297mm;display:grid;grid-template-columns:repeat(3,70mm);grid-template-rows:repeat(8,37.125mm);page-break-after:always;break-after:page}.sheet:last-child{page-break-after:auto;break-after:auto}.label{padding:3mm 3.2mm;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:1.2mm}.name{font-size:12pt;font-weight:700;line-height:1.1}.prep{font-size:8pt}.weight{font-size:13pt;font-weight:700}.meta{font-size:8pt}.price{font-size:11pt;font-weight:700}@media screen{body{background:#e7ecf4}.sheet{margin:12px auto;background:white;box-shadow:0 2px 12px #9aa7b9}.label{outline:1px dashed #e4e8ee}}@media print{.sheet{margin:0;box-shadow:none}.label{outline:none}}</style></head><body>';
- labels.forEach(function(item,i){if(i%24===0)html+='<div class="sheet">';var f=item.f;html+='<div class="label"><div class="name">'+esc(f.nom)+'</div><div class="prep">'+esc(tag(f))+'</div><div class="weight">'+kg(item.gross)+' brut</div><div class="meta">'+pax(item.gross)+' persones · Net '+kg(fin(f))+'</div><div class="price">Venda: '+eur(carta(f))+'</div><div class="meta">'+dt(f.dataCompra)+' · Lot '+esc(String(f.lotId||f.id).slice(-8))+'</div></div>';if(i%24===23||i===labels.length-1)html+='</div>'});
- html+='</body></html>';w.document.open();w.document.write(html);w.document.close();w.focus();setTimeout(function(){w.print()},450);
+ // Genera un PDF real, sense finestres emergents (compatibilitat Safari i PWA).
+ var W=595.276,H=841.89,cw=W/3,ch=H/8;
+ var pages=[],cmd=[];
+ function clean(t){return String(t==null?'':t).replace(/[\u2018\u2019]/g,"'").replace(/[\u2013\u2014]/g,'-').replace(/\u00a0/g,' ')}
+ function pdfText(t){return clean(t).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)')}
+ function txt(t,x,y,size,bold){cmd.push('0.10 0.16 0.31 rg BT /'+(bold?'F2':'F1')+' '+size+' Tf 1 0 0 1 '+x.toFixed(2)+' '+(H-y).toFixed(2)+' Tm ('+pdfText(t)+') Tj ET')}
+ function line(t,max){t=clean(t);return t.length>max?t.slice(0,max-1)+'…':t}
+ labels.forEach(function(item,i){
+  if(i%24===0)cmd=[];
+  var col=i%3,row=Math.floor((i%24)/3),x=col*cw+10,y=row*ch+12,f=item.f;
+  txt(line(f.nom,29),x,y+13,11,true);
+  txt(line(tag(f),34),x,y+28,8,false);
+  txt('Pes brut: '+kg(item.gross),x,y+47,12,true);
+  txt('Persones: '+pax(item.gross)+'  |  Net: '+kg(fin(f)),x,y+62,8,false);
+  txt('Preu venda: '+eur(carta(f)),x,y+79,10,true);
+  txt(dt(f.dataCompra)+'  |  Lot '+String(f.lotId||f.id||'').slice(-8),x,y+92,7,false);
+  if(i%24===23||i===labels.length-1)pages.push(cmd.join('\n'));
+ });
+ var objects=[null],add=function(o){objects.push(o);return objects.length-1};
+ var catalog=add(''),root=add(''),font1=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'),font2=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
+ var kids=[];
+ pages.forEach(function(content){var stream=add('<< /Length '+byteLen(content)+' >>\nstream\n'+content+'\nendstream');var page=add('<< /Type /Page /Parent '+root+' 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources << /Font << /F1 '+font1+' 0 R /F2 '+font2+' 0 R >> >> /Contents '+stream+' 0 R >>');kids.push(page+' 0 R')});
+ objects[catalog]='<< /Type /Catalog /Pages '+root+' 0 R >>';objects[root]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+kids.length+' >>';
+ var out='%PDF-1.4\n%âãÏÓ\n',offsets=[0];
+ for(var j=1;j<objects.length;j++){offsets.push(byteLen(out));out+=j+' 0 obj\n'+objects[j]+'\nendobj\n'}
+ var xref=byteLen(out);out+='xref\n0 '+objects.length+'\n0000000000 65535 f \n';
+ for(var j=1;j<objects.length;j++)out+=String(offsets[j]).padStart(10,'0')+' 00000 n \n';
+ out+='trailer\n<< /Size '+objects.length+' /Root '+catalog+' 0 R >>\nstartxref\n'+xref+'\n%%EOF';
+ downloadPdf(new Blob([toBytes(out)],{type:'application/pdf'}),'etiquetes-tracamar-'+today()+'.pdf');
 }
 function n2(v){return Number(v).toLocaleString("ca-ES",{minimumFractionDigits:2,maximumFractionDigits:2})}
 // Generador PDF integrat: no necessita internet ni serveis de Claude.
