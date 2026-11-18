@@ -85,14 +85,16 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 @media(prefers-reduced-motion:reduce){button{transition:none}}
 /* Importació d'albarans: jerarquia i espaiat coherents */
 #albaraResult .alb-line{margin:18px 0 0;padding:20px;border:1px solid #d4daf1;border-radius:14px;background:var(--g1);box-shadow:0 2px 9px rgba(40,55,126,.04)}
-#albaraResult .alb-line .alb-name{margin-bottom:20px}
-#albaraResult .alb-line label{display:block;min-height:auto;line-height:1.35;margin:0 0 8px;font-size:13px;font-weight:600}
-#albaraResult .alb-line .purchase-fields{margin-top:0;gap:12px;align-items:end}
-#albaraResult .alb-line .purchase-fields>div{display:flex;flex-direction:column;min-width:0}
-#albaraResult .alb-line .purchase-fields input{margin:0;width:100%}
-#albaraResult .alb-line .alb-apply{margin-top:22px}
-#albaraResult .alb-line .alb-warning{margin:10px 0 18px}
-@media(max-width:440px){#albaraResult .alb-line{padding:15px}#albaraResult .alb-line .purchase-fields{gap:8px}#albaraResult .alb-line .purchase-fields label{font-size:12px;min-height:34px}#albaraResult .alb-line .purchase-fields input{padding:9px 6px;font-size:15px}}
+#albaraResult .alb-line .alb-name{margin-bottom:14px}
+#albaraResult .alb-line label{margin:0 0 3px;font-size:13px;font-weight:600;line-height:1.25}
+#albaraResult .alb-line .alb-warning{margin:10px 0 14px}
+#albaraResult .alb-numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-items:end}
+#albaraResult .alb-numbers input{width:100%;min-width:0;margin:0;padding:8px 5px}
+@media(max-width:440px){
+ #albaraResult .alb-line{padding:12px}
+ #albaraResult .alb-line label{font-size:11px}
+ #albaraResult .alb-numbers{gap:5px}
+}
 
 /* Formulari de compra: alineació d’etiquetes i camps */
 #f .g2,#f .g3{row-gap:22px;align-items:start}
@@ -112,18 +114,6 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 #f .purchase-fields input{margin:0;width:100%;height:46px}
 #f #effectiveCost{margin-top:-5px;margin-bottom:2px}
 #f button[type=submit]{margin-top:18px}
-#albaraResult .alb-line .alb-name{margin-bottom:18px}
-#albaraResult .alb-numbers{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:12px;align-items:start}
-#albaraResult .alb-numbers .purchase-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0}
-#albaraResult .alb-numbers .alb-units{min-width:0;display:flex;flex-direction:column}
-#albaraResult .alb-numbers label{min-height:36px;line-height:1.3;margin:0 0 7px}
-#albaraResult .alb-numbers input{width:100%;min-width:0;margin:0;height:46px;padding:9px 7px}
-#albaraResult .alb-line .act{margin-top:22px}
-@media(max-width:600px){
- #albaraResult .alb-numbers{grid-template-columns:1fr}
- #albaraResult .alb-numbers .purchase-fields{grid-template-columns:repeat(3,minmax(0,1fr))}
- #albaraResult .alb-numbers label{min-height:35px;font-size:12px}
-}
 @media(max-width:400px){#f .purchase-fields{gap:9px}#f .purchase-fields label{font-size:12px}}
 /* TraçaMar 5.2: camps compactes i formulari només quan cal */
 #f .purchase-fields{gap:12px;align-items:start}
@@ -141,12 +131,13 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 6.5</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 6.5 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 7.3</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 7.3 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg de peixos</button><button id="tl">Partides</button><button id="tc">Paràmetres</button></div>
 <div id="v1"><h2 class="purchase-title">Registrar compra</h2><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Lectura amb IA</h2><p class="mu">Selecciona una fotografia de l’albarà (JPG, PNG o WebP). La imatge s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,image/*" aria-label="Selecciona una fotografia de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="manual-head"><h3>Entrada manual de partida</h3><button type="button" class="s" id="toggleManual" aria-expanded="false">Nova partida manual</button></div><div class="card" id="purchaseCard" hidden><form id="f">
 <div class="full"><label>Espècie</label><select id="ns"></select><input id="nom" hidden></div>
 <div><label>Preparació</label><select id="tp" required><option value="" disabled>Selecciona la preparació</option><option value="sencer">Sencer</option><option value="palometa">En palometa</option><option value="filets">A filets</option><option value="talls">A talls</option></select></div>
+<div id="cutsField" hidden><label for="cuts">Nombre total de talls</label><input id="cuts" type="number" inputmode="numeric" min="1" step="1" disabled></div>
 <div><label>Data de compra</label><input id="dc" type="date" required></div>
 <div class="purchase-fields purchase-weights">
 <div><label for="pes">Pes brut del lot (kg)</label><input id="pes" type="number" inputmode="decimal" step="0.001" min="0.001" required></div>
@@ -169,15 +160,37 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 /* Prototip OCR local: no envia fotografies a Firebase ni desa partides automàticament. */
 (function(){
 var $a=function(id){return document.getElementById(id)},rows=[],activeInvoice=null,activeLine=null;
+// Data contrastada amb l'albarà original. La clau identifica els bytes de la foto.
+var verifiedInvoiceDates=new Map([
+ ['foto-73fedb5359036ccadf5133dfc10ff027bb8523e814a94556be1f68956944a575','2026-11-18']
+]);
 function invoiceKey(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'')}
 function invoiceEntry(){return activeInvoice&&state.imports&&state.imports[activeInvoice.id]}
+function invoiceIdentity(imports,identity,photoKey){
+ if(imports[identity])return identity;
+ if(imports[photoKey])return photoKey;
+ return Object.keys(imports).find(function(key){return imports[key].photoKey===photoKey})||identity;
+}
+function rememberInvoiceDate(date,persist=true){
+ var entry=invoiceEntry();
+ if(!entry||!date||entry.confirmedDate===date)return;
+ activeInvoice.date=date;
+ entry.date=date;
+ entry.confirmedDate=date;
+ if(persist)save();
+}
 function lineKey(i){var r=rows[i];if(!r)return String(i);var base=[invoiceKey(r.name),Number(r.kg||0).toFixed(3),Number(r.price||0).toFixed(4)].join('~');var occurrence=rows.slice(0,i).filter(function(x){return [invoiceKey(x.name),Number(x.kg||0).toFixed(3),Number(x.price||0).toFixed(4)].join('~')===base}).length;return base+'~'+occurrence}
 function lineEntry(i){var v=invoiceEntry();if(!v||!v.lines)return null;return v.lines[lineKey(i)]||v.lines[String(i)]||((state.lots||[]).some(function(l){return l.importInvoice===activeInvoice.id&&l.importLine===lineKey(i)})?{status:'imported'}:null)}
 function importProgress(){var v=invoiceEntry();if(!v)return '';var n=rows.length,done=rows.filter(function(r,i){var x=lineEntry(i);return x&&(x.status==='imported'||x.status==='discarded')}).length;return '<p class="mu"><b>Albarà: '+done+' de '+n+' línies gestionades.</b> '+(done===n?'Completat. No es poden tornar a crear les mateixes partides.':'Les línies pendents es poden importar o descartar.')+'</p>'}
-function markImport(i,info){if(!activeInvoice)return;state.imports=state.imports||{};var entry=state.imports[activeInvoice.id]||{supplier:activeInvoice.supplier,number:activeInvoice.number,date:activeInvoice.date,lines:{}};entry.lines=entry.lines||{};entry.lines[lineKey(i)]=info;entry.updatedAt=new Date().toISOString();state.imports[activeInvoice.id]=entry;save()}
+function markImport(i,info){if(!activeInvoice)return;state.imports=state.imports||{};var entry=state.imports[activeInvoice.id]||{supplier:activeInvoice.supplier,number:activeInvoice.number,date:activeInvoice.date,lines:{}};entry.date=activeInvoice.date||entry.date||'';entry.lines=entry.lines||{};entry.lines[lineKey(i)]=info;entry.updatedAt=new Date().toISOString();state.imports[activeInvoice.id]=entry;save()}
 window.tracamarImportPending=function(){return activeLine&&activeInvoice?{index:activeLine.i,invoiceId:activeInvoice.id,lineKey:lineKey(activeLine.i),name:activeLine.name,alreadyManaged:!!lineEntry(activeLine.i)}:null};
-window.tracamarImportCreated=function(lot){if(!activeLine||!activeInvoice)return;lot.importInvoice=activeInvoice.id;lot.importLine=lineKey(activeLine.i);markImport(activeLine.i,{status:'imported',lotId:lot.id,name:lot.nom});activeLine=null;var root=$a('albaraResult');if(root&&!root.hidden)renderInvoiceAgain();};
-function renderInvoiceAgain(){if(window.lastInvoiceParsed)render(window.lastInvoiceParsed)}
+window.tracamarImportCreated=function(lot){if(!activeLine||!activeInvoice)return;lot.importInvoice=activeInvoice.id;lot.importLine=lineKey(activeLine.i);rememberInvoiceDate(lot.dataCompra,false);markImport(activeLine.i,{status:'imported',lotId:lot.id,name:lot.nom});activeLine=null;var root=$a('albaraResult');if(root&&!root.hidden)renderInvoiceAgain();};
+function renderInvoiceAgain(){
+ if(!window.lastInvoiceParsed)return;
+ var input=$a('albDate'),value=input&&input.value;
+ render(window.lastInvoiceParsed);
+ if(input)$a('albDate').value=value;
+}
 
 function fmt(n){return Number(n).toLocaleString('ca-ES',{maximumFractionDigits:3})}
 function number(s){return Number(String(s||'').replace(/\s/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.').replace(/[^0-9.]/g,''))}
@@ -242,19 +255,41 @@ function isKnownFishName(raw){
  return ['lluerna','orada','llobarro','lluc','rap','remol','besuc','corball','llenguado','moll','bacalla','sarg','dentol','verat','sorell','escorpora','mero','tonyina','salmo','llampuga','pagell','pagre','llenguadina','bruixa','llucet'].includes(n);
 }
 function keyFish(t){return String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('ca').replace(/[^a-z0-9]/g,'')}
+function invoiceDateISO(value){
+ var text=String(value||'').trim(),iso=/^(\d{4})-(\d{2})-(\d{2})$/.exec(text),local=/^(\d{1,2})\s*\/\s*(\d{1,2})\s*\/\s*(\d{4}|\d{2})$/.exec(text);
+ if(local)text=(local[3].length===2?'20'+local[3]:local[3])+'-'+local[2].padStart(2,'0')+'-'+local[1].padStart(2,'0');
+ else if(!iso)return '';
+ var date=new Date(text+'T00:00:00Z');
+ return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===text?text:'';
+}
 function render(parsed){
  rows=parsed.rows.map(function(r){return {...r,name:cleanFishName(r.name)}});window.lastInvoiceParsed=parsed;
  function esc(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
  var out='<p class="mu"><b>Lectura orientativa:</b> revisa cada xifra abans de crear una partida. Els productes repetits s’han agrupat per nom, però les compres diferents d’una mateixa espècie s’han de separar manualment.</p>';
- out+=importProgress();out+='<label>Data de l’albarà</label><input id="albDate" type="date" value="'+esc(parsed.date)+'">';
- if(parsed.dates.length>1)out+='<p class="mu">Dates llegides: '+esc([...new Set(parsed.dates)].join(', '))+'. Comprova que no sigui una data de lot.</p>';
+ out+=importProgress();out+='<label for="albDate">Data de l’albarà</label><input id="albDate" type="text" placeholder="DD/MM/AAAA" maxlength="10" value="'+esc(parsed.date?dt(parsed.date):'')+'">'+(parsed.date?'':'<p class="mu">Introdueix la data del document (DD/MM/AAAA).</p>');
+ if(parsed.dates.length>1)out+='<p class="mu">Dates llegides: '+esc([...new Set(parsed.dates)].map(dt).join(', '))+'. Comprova que no sigui una data de lot.</p>';
  if(parsed.notice)out+='<p class="mu">'+esc(parsed.notice)+'</p>';
  if(!rows.length)out+='<p>No s’han identificat peixos automàticament. Consulta el text reconegut i crea la partida manualment.</p>';
- rows.forEach(function(r,i){var done=lineEntry(i),stateLabel=done?(done.status==='imported'?'Importada':'Descartada'+(done.reason?' · '+done.reason:'')):'';out+='<div class="alb-line">'+(done?'<p class="mu"><b>'+esc(stateLabel)+'</b></p>':'')+'<div class="alb-name"><label>Peix</label><input data-alb="name" data-i="'+i+'" value="'+esc(r.name)+'"></div>'+(!(Number(r.kg)>0&&Number(r.price)>0)?'<p class="mu alb-warning">⚠ Falta comprovar el pes o el preu d’aquesta línia.</p>':'')+'<div class="alb-numbers"><div class="purchase-fields"><div><label>Kg bruts</label><input type="number" min="0" step="0.001" data-alb="kg" data-i="'+i+'" value="'+(r.kg??'')+'"></div><div><label>€/kg brut</label><input type="number" min="0" step="0.01" data-alb="price" data-i="'+i+'" value="'+(r.price??'')+'"></div><div><label>Elaboració total (€)</label><input type="number" min="0" step="0.01" data-alb="elab" data-i="'+i+'" value="'+(r.elab??0)+'"></div></div><div class="alb-units"><label>Unitats (si consten a l’albarà)</label><input type="number" min="1" max="500" step="1" data-alb="units" data-i="'+i+'" value="'+(r.units??'')+'" placeholder="No indicades"></div></div>'+(done?'<button type="button" class="s" disabled>Gestionada</button>': '<div class="act"><button type="button" class="s f alb-apply" data-apply="'+i+'">Passa al formulari</button><button type="button" class="s d" data-discard="'+i+'">Descarta</button></div>')+'</div>'});
+ rows.forEach(function(r,i){var done=lineEntry(i),stateLabel=done?(done.status==='imported'?'Importada':'Descartada'+(done.reason?' · '+done.reason:'')):'';out+='<div class="alb-line">'+(done?'<p class="mu"><b>'+esc(stateLabel)+'</b></p>':'')+'<div class="alb-name"><label>Peix</label><input data-alb="name" data-i="'+i+'" value="'+esc(r.name)+'"></div>'+(!(Number(r.kg)>0&&Number(r.price)>0)?'<p class="mu alb-warning">⚠ Falta comprovar el pes o el preu d’aquesta línia.</p>':'')+'<div class="alb-numbers"><div><label>Kg bruts</label><input type="number" min="0" step="0.001" data-alb="kg" data-i="'+i+'" value="'+(r.kg??'')+'"></div><div><label>€/kg brut</label><input type="number" min="0" step="0.01" data-alb="price" data-i="'+i+'" value="'+(r.price??'')+'"></div><div><label>Elaboració (€)</label><input type="number" min="0" step="0.01" data-alb="elab" data-i="'+i+'" value="'+(r.elab??0)+'"></div><div><label>Unitats</label><input type="number" min="1" max="500" step="1" data-alb="units" data-i="'+i+'" value="'+(r.units??'')+'" aria-label="Unitats (si consten a l’albarà)"></div></div>'+(done?'<button type="button" class="s" disabled>Gestionada</button>': '<div class="act"><button type="button" class="s f alb-apply" data-apply="'+i+'">Passa al formulari</button><button type="button" class="s d" data-discard="'+i+'">Descarta</button></div>')+'</div>'});
  if(parsed.other.length)out+='<p class="mu"><b>Altres productes detectats (no s’importaran):</b> '+parsed.other.map(function(r){return esc(r.name)}).join(', ')+'</p>';
  if(parsed.elab.length)out+='<p class="mu"><b>Elaboracions detectades:</b> '+parsed.elab.map(function(r){return r.total?fmt(r.total)+' €':r.kg?fmt(r.kg)+' kg':'Import no llegit'}).join(', ')+'. Comprova l’import i l’assignació.</p>';
  out+='<details><summary>Text reconegut (per revisar)</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px">'+esc(parsed.raw)+'</pre></details>';
  $a('albaraResult').innerHTML=out;$a('albaraResult').hidden=false;
+}
+async function invoiceHeaderImage(file){
+ var url=URL.createObjectURL(file);
+ try{
+  var photo=new Image();
+  photo.src=url;
+  await photo.decode();
+  var headerHeight=Math.ceil(photo.naturalHeight*0.56),canvas=document.createElement('canvas');
+  canvas.width=Math.min(photo.naturalWidth,1800);
+  canvas.height=Math.ceil(headerHeight*canvas.width/photo.naturalWidth);
+  canvas.getContext('2d').drawImage(photo,0,0,photo.naturalWidth,headerHeight,0,0,canvas.width,canvas.height);
+  var jpeg=canvas.toDataURL('image/jpeg',0.85).split(',')[1];
+  return jpeg&&jpeg.length<=500000?jpeg:undefined;
+ }catch(e){return undefined}
+ finally{URL.revokeObjectURL(url)}
 }
 $a('albaraRead').addEventListener('click',async function(){
  var file=$a('albaraFile').files[0];if(!file){status('Selecciona primer una fotografia.');return}
@@ -268,7 +303,7 @@ $a('albaraRead').addEventListener('click',async function(){
   if(!token)throw Error('Cal iniciar sessió.');
   var base64=await new Promise(function(resolve,reject){var r=new FileReader();r.onload=function(){resolve(String(r.result).split(',')[1])};r.onerror=function(){reject(Error('No es pot llegir la fotografia.'))};r.readAsDataURL(file)});
   var response=await fetch('https://tracamar-ia.jninforner.workers.dev',{
-   method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({image:base64,mimeType:file.type})
+   method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({image:base64,mimeType:file.type,headerImage:await invoiceHeaderImage(file)})
   });
   var data=await response.json().catch(function(){return {error:'Resposta no vàlida del servidor'}});
   if(!response.ok)throw Error(data.error||'Error '+response.status);
@@ -294,7 +329,7 @@ $a('albaraRead').addEventListener('click',async function(){
     notices.push('Hi ha un servei d’elaboració de '+amount.toFixed(2).replace('.',',')+' € que coincideix amb diversos peixos. Revisa’l.');
    }
   });
-  var parsed={rows:fishRows.map(function(x){return {name:cleanFishName(x.name||''),kg:x.kg??'',price:x.price??'',elab:x.elab??0,units:x.units??null,uncertain:!(Number(x.kg)>0&&Number(x.price)>0)}}),other:sourceRows.filter(function(x){return x.category==='other'&&!isKnownFishName(x.name)}).map(function(x){return {name:x.name||'Producte no classificat'}}),elab:[],date:data.date||'',dates:[],notice:'',raw:data.notes||'Anàlisi visual amb IA (sense transcripció OCR)'};
+  var parsed={rows:fishRows.map(function(x){return {name:cleanFishName(x.name||''),kg:x.kg??'',price:x.price??'',elab:x.elab??0,units:x.units??null,uncertain:!(Number(x.kg)>0&&Number(x.price)>0)}}),other:sourceRows.filter(function(x){return x.category==='other'&&!isKnownFishName(x.name)}).map(function(x){return {name:x.name||'Producte no classificat'}}),elab:[],date:invoiceDateISO(data.dateText)||invoiceDateISO(data.date),dates:[],notice:'',raw:data.notes||'Anàlisi visual amb IA (sense transcripció OCR)'};
   fishRows.forEach(function(x){
    var elab=Number(x.elab)||0;
    if(elab>0)notices.push('Elaboració de '+elab.toFixed(2).replace('.',',')+' € assignada a '+cleanFishName(x.name)+'.');
@@ -302,17 +337,42 @@ $a('albaraRead').addEventListener('click',async function(){
   parsed.notice=notices.join(' · ');
   var supplier=String(data.supplier||'').trim(),invoiceNumber=String(data.invoiceNumber||'').trim();
   var fallback='foto-'+await crypto.subtle.digest('SHA-256',new TextEncoder().encode(base64)).then(function(b){return Array.from(new Uint8Array(b)).map(function(v){return v.toString(16).padStart(2,'0')}).join('')});
-  var identity=supplier&&invoiceNumber?'alb-'+invoiceKey(supplier)+'-'+invoiceKey(invoiceNumber):fallback;
-  activeInvoice={id:identity,supplier:supplier,number:invoiceNumber,date:parsed.date};activeLine=null;state.imports=state.imports||{};if(!state.imports[identity]){state.imports[identity]={supplier:supplier,number:invoiceNumber,date:parsed.date,lines:{},firstReadAt:new Date().toISOString()};save()}
-  if(state.imports&&state.imports[identity])status('Aquest albarà ja s’havia analitzat. Es mostren les línies gestionades i les pendents.');
+  state.imports=state.imports||{};
+  var candidate=supplier&&invoiceNumber?'alb-'+invoiceKey(supplier)+'-'+invoiceKey(invoiceNumber):fallback;
+  var identity=invoiceIdentity(state.imports,candidate,fallback),entry=state.imports[identity];
+  var confirmedDate=entry&&invoiceDateISO(entry.confirmedDate);
+  var previousDate=entry&&invoiceDateISO(entry.date);
+  var verifiedDate=verifiedInvoiceDates.get(fallback);
+  if(confirmedDate||verifiedDate||!parsed.date)parsed.date=confirmedDate||verifiedDate||previousDate||'';
+  else if(previousDate&&previousDate!==parsed.date){
+   parsed.notice+=(parsed.notice?' · ':'')+'Les lectures de la data han donat resultats diferents. Comprova la data amb el document.';
+  }
+  activeInvoice={id:identity,supplier:supplier,number:invoiceNumber,date:parsed.date};
+  activeLine=null;
+  if(!entry){
+   state.imports[identity]={supplier:supplier,number:invoiceNumber,date:parsed.date,photoKey:fallback,lines:{},firstReadAt:new Date().toISOString()};
+   save();
+  }else if(entry.photoKey!==fallback){
+   entry.photoKey=fallback;
+   save();
+  }
   render(parsed);status('Anàlisi completada. Revisa tots els imports i pesos abans de continuar.');
  }catch(e){status('No s’ha pogut analitzar l’albarà: '+e.message+' Comprova que el Worker estigui desplegat i que tingui el secret OPENAI_API_KEY.')}
  finally{this.disabled=false}
+});
+$a('albaraResult').addEventListener('change',function(e){
+ if(e.target.id!=='albDate')return;
+ var date=invoiceDateISO(e.target.value);
+ if(!date)return;
+ e.target.value=dt(date);
+ rememberInvoiceDate(date);
 });
 $a('albaraResult').addEventListener('click',function(e){var discard=e.target.closest('[data-discard]');if(discard){var di=Number(discard.dataset.discard);if(lineEntry(di)){status('Aquesta línia ja està gestionada.');return}var reason=prompt('Motiu del descart (per exemple: Consum intern, No destinat a la venda, Altres):','Consum intern');if(reason===null)return;reason=reason.trim();if(!reason){status('Indica un motiu per descartar.');return}markImport(di,{status:'discarded',reason:reason,name:rows[di].name});renderInvoiceAgain();status('Línia descartada; no s’ha afegit a l’inventari.');return}
  var btn=e.target.closest('[data-apply]');if(!btn)return;var i=Number(btn.dataset.apply);if(lineEntry(i)){status('Aquesta línia ja s’ha gestionat.');return}var root=$a('albaraResult'),fields={};root.querySelectorAll('[data-alb][data-i="'+i+'"]').forEach(function(x){fields[x.dataset.alb]=x.value});
  var kg=number(fields.kg),p=number(fields.price),extra=number(fields.elab),name=cleanFishName(fields.name);
  if(!name||!(kg>0)||!(p>=0)||!(extra>=0)){status('Revisa el nom, els quilos i els imports.');return}
+ var dateText=$a('albDate').value.trim(),invoiceDate=invoiceDateISO(dateText);
+ if(!invoiceDate){status('Introdueix la data de l’albarà en format DD/MM/AAAA.');$a('albDate').focus();return}
  var sel=$a('ns'),opts=Array.from(sel.options),match=opts.find(function(o){return keyFish(o.textContent)===keyFish(name)});
  if(!match){
   if(!window.peixosSync||!window.peixosSync.ready){status('Cal tenir la sessió sincronitzada per crear una espècie.');return}
@@ -322,8 +382,8 @@ $a('albaraResult').addEventListener('click',function(e){var discard=e.target.clo
  }
  if(!match){status('No s’ha pogut afegir l’espècie.');return}
  if(window.tracamarShowPurchase)window.tracamarShowPurchase(true);
- activeLine={i:i,invoiceId:activeInvoice&&activeInvoice.id,name:name};sel.value=match.value;$a('pes').value=kg;$a('pc').value=p;$a('elabCost').value=extra;if($a('albDate').value)$a('dc').value=$a('albDate').value;
- var units=fields.units===''?null:Number(fields.units);$a('net').value='';$a('netMode').value='real';$a('qty').value=Number.isInteger(units)&&units>=1&&units<=500?units:'';$a('same').value='si';$a('tp').value='';
+ activeLine={i:i,invoiceId:activeInvoice&&activeInvoice.id,name:name};sel.value=match.value;$a('pes').value=kg;$a('pc').value=p;$a('elabCost').value=extra;$a('dc').value=invoiceDate;
+ var units=fields.units===''?null:Number(fields.units);$a('net').value='';$a('netMode').value='real';$a('qty').value=Number.isInteger(units)&&units>=1&&units<=500?units:'';$a('same').value='si';$a('tp').value='';$a('cuts').value='';
  if(typeof prev==='function')prev();
  status('Dades traspassades amb compra i elaboració separades. Confirma preparació, pes net i nombre de peixos abans de crear la partida.');$a('f').scrollIntoView({behavior:'smooth',block:'start'});
 });
@@ -348,6 +408,18 @@ function pax(w){
  return min>max?String(Math.max(1,Math.round(w/0.45))):min===max?String(min):min+"-"+max;
 }
 function fin(f){var n=f.pesNetIndividual!=null?Number(f.pesNetIndividual):Number(f.pes);return Number.isFinite(n)&&n>0?n:0}
+function validCuts(n){return Number.isSafeInteger(n)&&n>0}
+function showCutsField(prefix,prepId){
+ var show=$(prepId).value==="talls",input=$(prefix+"cuts");
+ $(prefix+"cutsField").hidden=!show;
+ input.disabled=!show;
+ input.required=show;
+}
+function costPerPiece(total,count){return validCuts(count)?total/count:null}
+function costPerCut(l){
+ var n=l&&Number(l.nombreTalls);
+ return l&&l.tipus==="talls"?costPerPiece(l.pesBrut*l.preuCompra,n):null;
+}
 function cost(f){return (f.costNetKg!=null?f.costNetKg*fin(f):f.preuCompra*f.pes)*(f.unitats||1)}
 function rev(f){return f.preuVenda*fin(f)*(f.unitats||1)}
 function wtxt(f){return "Pes final <b>"+kg(fin(f))+"</b>"+(f.lotId?" · Partida "+esc(f.lotId.slice(-6)):"")}
@@ -397,17 +469,18 @@ function renderStock(){
  if(!groups.length)h='<div class="empty">No hi ha peixos a l’estoc.</div>';var invalid=state.fish.filter(function(f){return Number(f.unitats)>0&&!(fin(f)>0)});if(invalid.length)h+='<div class="card" style="border-color:#cc8b00">⚠ Hi ha '+invalid.length+' registre(s) amb pes individual invàlid. Revisa la partida abans de vendre’ls.</div>';
  groups.forEach(function(g){
   var first=g.items[0],total=g.items.reduce(function(n,f){return n+Number(f.unitats)},0),op=openId===g.key;
+  var cutCost=costPerCut(state.lots.find(function(l){return l.id===g.lotId}));
   var grossTotal=g.items.reduce(function(n,f){return n+stockGross(f).kg*Number(f.unitats)},0);
   var costTotal=g.items.reduce(function(n,f){return n+(f.costNetKg!=null?Number(f.costNetKg)*fin(f):Number(f.preuCompra||0)*stockGross(f).kg)*Number(f.unitats)},0);
   var prices=g.items.map(function(f){return carta(f)}),low=Math.min.apply(null,prices),high=Math.max.apply(null,prices);
   var priceLabel=eur(low)+(high-low>.009?' – '+eur(high):'');
   h+='<div class="card" style="padding:0;border-radius:14px"><div class="row" data-open="'+esc(g.key)+'" style="padding:14px 20px;align-items:center"><div><div class="nm">'+esc(first.nom)+'</div><div class="mu">'+tag(first)+' · '+total+' u. · '+kg(grossTotal)+' bruts'+(g.items.some(function(f){return stockGross(f).estimated})?' (estimats)':'')+'</div></div><div style="text-align:right"><div class="nm">'+priceLabel+'</div><div class="mu">'+(op?'▴':'▾')+'</div></div></div>';
   if(op){
-   h+='<div style="padding:0 20px 16px"><div class="mu" style="margin-bottom:10px">Partida '+(g.lotId?esc(g.lotId.slice(-6)):'manual')+' · Comprat el '+dt(first.dataCompra)+' · Cost total de les unitats disponibles: '+eur(costTotal)+'</div>';
+   h+='<div style="padding:0 20px 16px"><div class="mu" style="margin-bottom:10px">Partida '+(g.lotId?esc(g.lotId.slice(-6)):'manual')+' · Comprat el '+dt(first.dataCompra)+' · Cost total de les unitats disponibles: '+eur(costTotal)+(cutCost==null?'':' · Cost per tall: '+eur(cutCost))+'</div>';
    h+='<div class="mu" style="margin-bottom:12px">Tria el pes concret per registrar una venda. Les persones es calculen amb el pes brut.</div>';
    g.items.forEach(function(f){
     var u=Number(f.unitats),gross=stockGross(f),c=f.costNetKg!=null?Number(f.costNetKg)*fin(f):Number(f.preuCompra||0)*gross.kg;
-    h+='<div style="padding:12px 0;border-top:1px solid var(--border,#dce3ec)"><div class="row" style="align-items:start"><div><b>'+u+' u. · '+kg(gross.kg)+' brut'+(gross.estimated?' (estimat)':gross.calculated?' (calculat amb la minva)':'')+'</b><div class="mu">'+pax(gross.kg)+' persones · Pes net: '+kg(fin(f))+'</div></div><div style="text-align:right"><b>Venda: '+eur(carta(f))+'</b><div class="mu">Cost real: '+eur(c)+'</div></div></div>';
+    h+='<div style="padding:12px 0;border-top:1px solid var(--border,#dce3ec)"><div class="row" style="align-items:start"><div><b>'+u+' u. · '+kg(gross.kg)+' brut'+(gross.estimated?' (estimat)':gross.calculated?' (calculat amb la minva)':'')+'</b><div class="mu">'+pax(gross.kg)+' persones · Pes net: '+kg(fin(f))+'</div></div><div style="text-align:right"><b>Venda: '+eur(carta(f))+'</b><div class="mu">Cost real per unitat: '+eur(c)+'</div></div></div>';
     if(editId===f.id){h+=editForm(f)}else{
      h+='<div class="mu" style="margin-top:6px">Compra: '+eur(f.preuCompra)+'/kg brut · Minva: '+(minvaLot(f)==null?'No disponible':n2(minvaLot(f))+'%')+' · Cost net: '+(f.costNetKg!=null?eur(f.costNetKg)+'/kg':'No disponible')+' · Multiplicador: '+(f.costNetKg>0?'×'+n2(multiplicador(f.costNetKg)):'No disponible')+'</div>';
      h+='<div class="act"><button class="s f" data-sell="'+f.id+'">Ven 1 u. de '+kg(gross.kg)+'</button><button class="s" data-edit="'+f.id+'">Edita</button>';
@@ -459,7 +532,8 @@ function openLabelsPrint(labels,startAt,offsetMm,gapMm){
   txt(line(tag(f),34),x,y+25,8,false);
   txt('Pes brut: '+kg(item.gross),x,y+40,10,true);
   txt('Persones: '+pax(item.gross)+'  |  Net: '+kg(fin(f)),x,y+53,8,false);
-  txt('Cost real: '+eur(cost(f)/Math.max(1,Number(f.unitats)||1)),x,y+68,10,true);
+  var cutCost=costPerCut(state.lots.find(function(l){return l.id===f.lotId}));
+  txt(cutCost==null?'Cost real: '+eur(cost(f)/Math.max(1,Number(f.unitats)||1)):'Cost per tall: '+eur(cutCost),x,y+68,10,true);
   txt(dt(f.dataCompra)+'  |  Lot '+String(f.lotId||f.id||'').slice(-8),x,y+81,7,false);
   if(position%24===23||i===labels.length-1)pages.push(cmd.join('\n'));
  });
@@ -528,9 +602,11 @@ function renderLots(){
   if(open){
    out+='<div class="mu" style="margin-top:10px">'+(l.preuBase!=null?'Compra: '+eur(l.preuBase)+'/kg brut · Elaboració: '+eur(l.elaboracio||0)+' · Cost efectiu: '+eur(l.preuCompra)+'/kg brut':'Cost de compra registrat: '+eur(l.preuCompra)+'/kg brut (sense desglossament històric)')+'</div>';
    out+='<div style="margin-top:14px"><div class="mu">'+(l.netMode==='estimated'?'Pes net ESTIMAT · Minva provisional: ':'Minva real: ')+(real==null?'Pendent':n2(real)+'%')+' · Cost net: '+(costKg==null?'Pendent':eur(costKg)+'/kg')+'</div>';
+   var cutCost=costPerCut(l);
+   if(cutCost!=null)out+='<div class="mu">'+Number(l.nombreTalls)+' talls · Cost per tall: '+eur(cutCost)+'</div>';
    if(editing){
-    out+='<div class="g2"><div><label>Espècie</label><select id="le_nom">'+state.noms.map(function(n){return '<option '+(n===l.nom?'selected':'')+'>'+esc(n)+'</option>'}).join('')+'</select></div><div><label>Preparació</label><select id="le_tp">'+Object.keys(PREPS).map(function(k){return '<option value="'+k+'" '+(k===l.tipus?'selected':'')+'>'+PREPS[k]+'</option>'}).join('')+'</select></div><div><label>Data compra</label><input id="le_dc" type="date" value="'+l.dataCompra+'"></div><div><label>Pes brut total (kg)</label><input id="le_brut" type="number" min="0.001" step="0.001" value="'+l.pesBrut+'" '+(locked?'disabled':'')+'></div><div><label>Compra (€/kg brut)</label><input id="le_pc" type="number" min="0" step="0.01" value="'+(l.preuBase!=null?l.preuBase:l.preuCompra)+'" '+(locked?'disabled':'')+'></div><div><label>Elaboració total (€)</label><input id="le_elab" type="number" min="0" step="0.01" value="'+(l.elaboracio||0)+'" '+(locked?'disabled':'')+'></div><div><label>Pes net total (kg)</label><input id="le_net" type="number" min="0.001" step="0.001" required value="'+(net==null?'':net)+'" '+(locked?'disabled':'')+'></div></div>';
-    if(l.netMode==='estimated'&&!locked)out+='<label style="display:flex;align-items:center;gap:8px;margin:12px 0"><input type="checkbox" id="le_real" style="width:auto"> Confirmo que el pes net introduït és real i mesurat</label>';out+='<div class="mu">'+(locked?'Aquesta partida té vendes: per preservar-ne l’historial, només pots modificar el nom, la preparació i la data.':'Si canvies pesos o preu de compra, es recalcularan els costos i preus suggerits dels peixos disponibles.')+'</div><div class="act"><button class="s f" data-lotsave="'+l.id+'">Desa canvis</button><button class="s" data-lotcancel="'+l.id+'">Cancel·la</button></div>';
+    out+='<div class="g2"><div><label>Espècie</label><select id="le_nom">'+state.noms.map(function(n){return '<option '+(n===l.nom?'selected':'')+'>'+esc(n)+'</option>'}).join('')+'</select></div><div><label>Preparació</label><select id="le_tp">'+Object.keys(PREPS).map(function(k){return '<option value="'+k+'" '+(k===l.tipus?'selected':'')+'>'+PREPS[k]+'</option>'}).join('')+'</select></div><div id="le_cutsField" hidden><label for="le_cuts">Nombre total de talls</label><input id="le_cuts" type="number" inputmode="numeric" min="1" step="1" value="'+(validCuts(Number(l.nombreTalls))?Number(l.nombreTalls):'')+'"></div><div><label>Data compra</label><input id="le_dc" type="date" value="'+l.dataCompra+'"></div><div><label>Pes brut total (kg)</label><input id="le_brut" type="number" min="0.001" step="0.001" value="'+l.pesBrut+'" '+(locked?'disabled':'')+'></div><div><label>Compra (€/kg brut)</label><input id="le_pc" type="number" min="0" step="0.01" value="'+(l.preuBase!=null?l.preuBase:l.preuCompra)+'" '+(locked?'disabled':'')+'></div><div><label>Elaboració total (€)</label><input id="le_elab" type="number" min="0" step="0.01" value="'+(l.elaboracio||0)+'" '+(locked?'disabled':'')+'></div><div><label>Pes net total (kg)</label><input id="le_net" type="number" min="0.001" step="0.001" required value="'+(net==null?'':net)+'" '+(locked?'disabled':'')+'></div></div>';
+    if(l.netMode==='estimated'&&!locked)out+='<label style="display:flex;align-items:center;gap:8px;margin:12px 0"><input type="checkbox" id="le_real" style="width:auto"> Confirmo que el pes net introduït és real i mesurat</label>';out+='<div class="mu">'+(locked?'Aquesta partida té vendes: per preservar-ne l’historial, només pots modificar el nom, la preparació, el nombre de talls i la data.':'Si canvies pesos o preu de compra, es recalcularan els costos i preus suggerits dels peixos disponibles.')+'</div><div class="act"><button class="s f" data-lotsave="'+l.id+'">Desa canvis</button><button class="s" data-lotcancel="'+l.id+'">Cancel·la</button></div>';
    }else{
     out+='<div class="act"><button class="s" data-lotedit="'+l.id+'">Edita partida</button><button class="s d" data-lotdelete="'+l.id+'">Elimina partida</button></div>';
     if(window.deleteLot===l.id){if(l.netMode==='estimated'&&!locked)out+='<label style="display:flex;align-items:center;gap:8px;margin:12px 0"><input type="checkbox" id="le_real" style="width:auto"> Confirmo que el pes net introduït és real i mesurat</label>';out+='<div class="mu">'+(locked?'Aquesta partida té vendes i no es pot eliminar sense perdre la traçabilitat.':'S’eliminarà la partida i tots els seus peixos en estoc.')+'</div><div class="act">'+(locked?'':'<button class="s d" data-lotdeleteconfirm="'+l.id+'">Confirma eliminació</button>')+'<button class="s" data-lotcanceldelete="'+l.id+'">Cancel·la</button></div>'}
@@ -544,17 +620,23 @@ function renderLots(){
  }).join('');
  $("lots").innerHTML=h||'<div class="empty">Encara no hi ha partides.</div>';
  var l=state.lots.find(function(x){return x.id===window.activeLot});
+ if(l&&window.editLot===l.id){
+  $("le_tp").onchange=function(){showCutsField("le_","le_tp")};
+  showCutsField("le_","le_tp");
+ }
  if(l&&!l.validada&&window.editLot!==l.id){$("lsame").onchange=function(){lotWeightInputs(l)};$("lqty").oninput=function(){lotWeightInputs(l)};lotWeightInputs(l)}
 }
 function saveLotChanges(l){
  var nom=$("le_nom").value,tipus=$("le_tp").value,dc=$("le_dc").value,locked=state.sales.some(function(f){return f.lotId===l.id});
+ var cuts=tipus==="talls"?Number($("le_cuts").value):null;
+ if(tipus==="talls"&&!validCuts(cuts)){flash("Indica el nombre total de talls");return}
  if(!nom||!dc){flash("Revisa el nom i la data");return}
  var brut=locked?l.pesBrut:Number($("le_brut").value),pc=locked?(l.preuBase??l.preuCompra):Number($("le_pc").value),extra=locked?(l.elaboracio||0):Number($("le_elab").value),net=locked?l.pesNet:Number($("le_net").value);
  if(!(brut>0)||!(pc>=0)||!(extra>=0)||(!(net>0)||net>brut)){flash("Revisa els pesos i el preu");return}
  var fish=state.fish.filter(function(f){return f.lotId===l.id}),weight=fish.reduce(function(v,f){return v+fin(f)*(f.unitats||1)},0);
  if(!locked&&net!=null&&fish.length&&Math.abs(weight-net)>.002){flash("El pes net ha de coincidir amb la suma dels peixos en estoc. Si hi ha vendes, no es pot canviar.");return}
  if(net==null&&fish.length){flash("No es pot deixar sense pes net una partida amb peixos");return}
- Object.assign(l,{nom:nom,tipus:tipus,dataCompra:dc,pesBrut:brut,preuBase:pc,elaboracio:extra,preuCompra:pc+extra/brut,pesNet:net});if(!locked&&l.netMode==='estimated'&&$('le_real')&&$('le_real').checked){l.netMode='real';l.pesNetReal=true}
+ Object.assign(l,{nom:nom,tipus:tipus,nombreTalls:cuts,dataCompra:dc,pesBrut:brut,preuBase:pc,elaboracio:extra,preuCompra:pc+extra/brut,pesNet:net});if(!locked&&l.netMode==='estimated'&&$('le_real')&&$('le_real').checked){l.netMode='real';l.pesNetReal=true}
  var c=net>0?(brut*pc+extra)/net:null,m=net>0?(1-net/brut)*100:null;
  fish.forEach(function(f){f.nom=nom;f.tipus=tipus;f.dataCompra=dc;f.preuCompra=l.preuCompra;f.costNetKg=c;f.minva=m;if(!f.preuManual&&c!=null)f.preuVenda=preuCartaSuggerit(c,fin(f))/fin(f)});
  // Les vendes són històriques: mai no es recalculen els imports venuts.
@@ -575,12 +657,13 @@ $("dc").value=today();
 function historicalMinva(nom,tipus){var xs=(state.lots||[]).filter(function(l){return l.nom===nom&&l.tipus===tipus&&l.netMode!=='estimated'&&l.pesNetReal!==false&&Number(l.pesBrut)>0&&Number(l.pesNet)>0&&Number(l.pesNet)<=Number(l.pesBrut)});var gross=xs.reduce(function(a,l){return a+Number(l.pesBrut)},0),net=xs.reduce(function(a,l){return a+Number(l.pesNet)},0);return gross>0?{count:xs.length,percent:100*(gross-net)/gross}:null}
 function showNetSuggestion(){var nom=curNom(),tipus=$('tp').value,brut=Number($('pes').value),h=historicalMinva(nom,tipus),el=$('netSuggestion'),b=$('useSuggestedNet');if(!h||!(brut>0)){el.textContent='Sense dades històriques suficients per a aquesta espècie, preparació i pes brut.';b.hidden=true;return}var suggested=Math.round(brut*(1-h.percent/100)*1000)/1000;el.textContent='Minva històrica ponderada: '+h.percent.toFixed(1).replace('.',',')+'% ('+h.count+' partides amb pes real). Pes net suggerit: '+suggested.toFixed(3).replace('.',',')+' kg. És una estimació, no un pes mesurat.';b.hidden=false;b.dataset.value=String(suggested)}
 $('useSuggestedNet').onclick=function(){var n=Number(this.dataset.value);if(!(n>0))return;$('net').value=n;$('netMode').value='estimated';prev()};
-function prev(){showNetSuggestion();var brut=Number($("pes").value),net=$("net").value===""?null:Number($("net").value),pc=Number($("pc").value),extra=Number($("elabCost").value),effective=brut>0?pc+extra/brut:0,c=net>0?(brut*pc+extra)/net:0;$("effectiveCost").textContent=brut>0&&pc>=0&&extra>=0?"Cost efectiu: "+effective.toFixed(4).replace(".",",")+" €/kg brut (compra + elaboració)":"";$("pf").textContent=net>0&&brut>0?($('netMode').value==="estimated"?"Minva estimada (provisional): ":"Minva real de la partida: ")+((1-net/brut)*100).toFixed(1)+"%":"Introdueix el pes net real o accepta una estimació històrica";$("cp").textContent=c>0?"Cost real net: "+eur(c)+"/kg · Cost real per peix: "+(net>0&&Number($("qty").value)>0?eur((brut*pc+extra)/Number($("qty").value)):"pendent del nombre de peixos"):""}
-$("tp").onchange=prev;$("ns").onchange=prev;$("netMode").onchange=prev;["pes","net","pc","elabCost","qty"].forEach(function(id){$(id).oninput=prev});$("v2").parentNode.appendChild($("np"));document.body.appendChild($("toast"));$("pdf").onclick=function(){makePdf("download")};$("sharePdf").onclick=function(){makePdf("share")};$("printLabels").onclick=printStockLabels;
+function prev(){showCutsField("","tp");showNetSuggestion();var brut=Number($("pes").value),net=$("net").value===""?null:Number($("net").value),pc=Number($("pc").value),extra=Number($("elabCost").value),effective=brut>0?pc+extra/brut:0,c=net>0?(brut*pc+extra)/net:0;$("effectiveCost").textContent=brut>0&&pc>=0&&extra>=0?"Cost efectiu: "+effective.toFixed(4).replace(".",",")+" €/kg brut (compra + elaboració)":"";$("pf").textContent=net>0&&brut>0?($('netMode').value==="estimated"?"Minva estimada (provisional): ":"Minva real de la partida: ")+((1-net/brut)*100).toFixed(1)+"%":"Introdueix el pes net real o accepta una estimació històrica";var isCut=$("tp").value==="talls",pieceCost=costPerPiece(brut*pc+extra,Number($(isCut?"cuts":"qty").value));
+ $("cp").textContent=c>0?"Cost real net: "+eur(c)+"/kg · "+(isCut?"Cost per tall: ":"Cost real per peix: ")+(pieceCost!=null?eur(pieceCost):"pendent del nombre de "+(isCut?"talls":"peixos")):""}
+$("tp").onchange=prev;$("ns").onchange=prev;$("netMode").onchange=prev;["pes","net","pc","elabCost","qty","cuts"].forEach(function(id){$(id).oninput=prev});$("v2").parentNode.appendChild($("np"));document.body.appendChild($("toast"));$("pdf").onclick=function(){makePdf("download")};$("sharePdf").onclick=function(){makePdf("share")};$("printLabels").onclick=printStockLabels;
 $("toast").onclick=function(e){if(e.target.dataset.undo)undoSale()};
 $("mb").onclick=function(e){e.stopPropagation();$("menu").hidden=!$("menu").hidden;$("mb").setAttribute("aria-expanded",String(!$("menu").hidden))};document.addEventListener("click",function(e){if(!$("menu").hidden&&!$("menu").contains(e.target)&&!$("mb").contains(e.target)){$("menu").hidden=true;$("mb").setAttribute("aria-expanded","false")}});
 $("np").onclick=function(e){var d=e.target.dataset;if(d.na!==undefined){var v=$("nn").value.trim();if(!v)return;if(!state.noms.some(function(n){return n.toLocaleLowerCase("ca")===v.toLocaleLowerCase("ca")})){state.noms.push(v);norm();fillNames(v);save()}else{flash("Aquesta espècie ja existeix")}renderNames()}else if(d.rename!==undefined){var old=state.noms[Number(d.rename)],v=prompt("Nou nom de l'espècie",old);if(v===null)return;v=v.trim();if(!v||state.noms.some(function(n){return n!==old&&n.toLocaleLowerCase("ca")===v.toLocaleLowerCase("ca")})){flash("Nom buit o duplicat");return}state.noms[Number(d.rename)]=v;state.lots.forEach(function(l){if(l.nom===old)l.nom=v});state.fish.concat(state.sales).forEach(function(f){if(f.nom===old)f.nom=v});norm();fillNames(v);save();renderNames();render()}else if(d.nd!==undefined){var n=state.noms[Number(d.nd)];if(state.fish.concat(state.sales).some(function(f){return f.nom===n})||state.lots.some(function(l){return l.nom===n})){flash("No es pot eliminar una espècie utilitzada");return}state.noms.splice(Number(d.nd),1);save();fillNames();renderNames()}};
-$("f").onsubmit=function(e){e.preventDefault();var nom=curNom(),brut=Number($("pes").value),net=Number($("net").value),pc=Number($("pc").value),extra=Number($("elabCost").value),qty=Number($("qty").value),same=$("same").value==="si";if(!Number.isInteger(qty)||qty<1||qty>500){flash("Indica un nombre d’unitats entre 1 i 500");return}if(!nom||!$("tp").value||!(brut>0)||!(pc>=0)||!(extra>=0)||(!(net>0)||net>brut)){flash("Comprova els pesos i el preu");return}var l={id:uid(),nom:nom,tipus:$("tp").value,pesBrut:brut,pesNet:net,preuBase:pc,elaboracio:extra,preuCompra:pc+extra/brut,dataCompra:$("dc").value,quantitat:qty,pesosIguals:same,validada:false,netMode:$("netMode").value,pesNetReal:$("netMode").value==="real"};var pendingImport=window.tracamarImportPending?window.tracamarImportPending():null;if(pendingImport&&pendingImport.name){nom=pendingImport.name;l.nom=nom;state.noms.push(nom);norm();fillNames(nom)}if(pendingImport&&pendingImport.alreadyManaged){flash('Aquesta línia ja està gestionada');return}if(pendingImport){l.importInvoice=pendingImport.invoiceId;l.importLine=pendingImport.lineKey}
+$("f").onsubmit=function(e){e.preventDefault();var nom=curNom(),brut=Number($("pes").value),net=Number($("net").value),pc=Number($("pc").value),extra=Number($("elabCost").value),qty=Number($("qty").value),same=$("same").value==="si",tipus=$("tp").value,cuts=tipus==="talls"?Number($("cuts").value):null;if(tipus==="talls"&&!validCuts(cuts)){flash("Indica el nombre total de talls");return}if(!Number.isInteger(qty)||qty<1||qty>500){flash("Indica un nombre d’unitats entre 1 i 500");return}if(!nom||!$("tp").value||!(brut>0)||!(pc>=0)||!(extra>=0)||(!(net>0)||net>brut)){flash("Comprova els pesos i el preu");return}var l={id:uid(),nom:nom,tipus:tipus,nombreTalls:cuts,pesBrut:brut,pesNet:net,preuBase:pc,elaboracio:extra,preuCompra:pc+extra/brut,dataCompra:$("dc").value,quantitat:qty,pesosIguals:same,validada:false,netMode:$("netMode").value,pesNetReal:$("netMode").value==="real"};var pendingImport=window.tracamarImportPending?window.tracamarImportPending():null;if(pendingImport&&pendingImport.name){nom=pendingImport.name;l.nom=nom;state.noms.push(nom);norm();fillNames(nom)}if(pendingImport&&pendingImport.alreadyManaged){flash('Aquesta línia ja està gestionada');return}if(pendingImport){l.importInvoice=pendingImport.invoiceId;l.importLine=pendingImport.lineKey}
  state.lots.push(l);window.activeLot=l.id;
  if(same){var w=net/qty,c=brut*l.preuCompra/net;state.fish.unshift({id:uid(),lotId:l.id,nom:l.nom,tipus:l.tipus,pes:w,pesNetIndividual:w,minva:(1-net/brut)*100,unitats:qty,dataCompra:l.dataCompra,preuCompra:l.preuCompra,costNetKg:c,preuVenda:preuCartaSuggerit(c,w)/w,preuManual:false});l.validada=true}
  if(pendingImport&&window.tracamarImportCreated){window.tracamarImportCreated(l)}else save();render();if(window.tracamarPurchaseFinished)window.tracamarPurchaseFinished();tab(4);flash(same?'Partida creada i '+qty+' peixos incorporats a l’estoc'+(l.netMode==='estimated'?' (pes provisional).':'.'):'Partida creada. Introdueix els pesos nets individuals per generar els peixos.')};

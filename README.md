@@ -2,7 +2,7 @@
 
 TraçaMar és l’aplicació que fa servir el restaurant La Barca de Ca l’Ardet per seguir el peix des de la compra fins a la venda. S’obre al navegador i es pot afegir a la pantalla d’inici de l’iPhone o de l’iPad com una aplicació web progressiva (PWA).
 
-La versió del codi en aquest repositori és la **6.5**. L’aplicació del restaurant és a [TraçaMar a GitHub Pages](https://jninforner.github.io/control-de-peixos/).
+La versió del codi en aquest repositori és la **7.3**. L’aplicació del restaurant és a [TraçaMar a GitHub Pages](https://jninforner.github.io/control-de-peixos/).
 
 ## Què pots fer amb TraçaMar
 
@@ -62,5 +62,7 @@ Python serveix els fitxers directament. El projecte no té cap pas de compilaci�
 Quan demanes que s’interpreti una foto d’un albarà, TraçaMar l’envia a un servei de Cloudflare anomenat `tracamar-ia`, que la processa amb OpenAI. Aquesta funció necessita connexió i una sessió iniciada. Les dades d’una còpia antiga a HTML Viewer no es migren automàticament. Si encara la tens, conserva-la i exporta’n les dades.
 
 ## Treballar amb el repositori
+
+Amb cada canvi de l’aplicació, incrementa la versió seguint aquesta seqüència: 6.6 → 6.7 → 6.8 → 6.9 → 7.1 → 7.2 → … → 7.9 → 8.1. Quan el segon número arriba a 9, suma 1 al primer i torna a començar per 1. Actualitza la versió visible sota el nom de TraçaMar a la capçalera i a la pantalla d’entrada, totes dues a `index.html`. Actualitza també la versió d’aquest document i la clau de la memòria cau de `sw.js`.
 
 La còpia del Mac permet preparar canvis abans de publicar-los. El flux acordat és treballar a `develop`, provar els canvis en local amb dades fictícies i esperar el vistiplau abans de fer un *commit* (desar els canvis a l’historial) o un *push* (pujar-los a GitHub). La branca `main` està reservada a producció. Incorporar-hi els canvis i publicar a GitHub Pages requereix autorització expressa.
