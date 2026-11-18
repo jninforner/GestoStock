@@ -141,8 +141,8 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 5.9</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 5.9 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>TraçaMar</h1><p class="mu">Versió 6.0</p><p>Introdueix les teves dades per accedir a TraçaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>TraçaMar</h1><div class="mu version">Versió 6.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg de peixos</button><button id="tl">Partides</button><button id="tc">Paràmetres</button></div>
 <div id="v1"><h2 class="purchase-title">Registrar compra</h2><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Lectura amb IA</h2><p class="mu">Selecciona una fotografia de l’albarà (JPG, PNG o WebP). La imatge s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,image/*" aria-label="Selecciona una fotografia de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="manual-head"><h3>Entrada manual de partida</h3><button type="button" class="s" id="toggleManual" aria-expanded="false">Nova partida manual</button></div><div class="card" id="purchaseCard" hidden><form id="f">
 <div class="full"><label>Espècie</label><select id="ns"></select><input id="nom" hidden></div>
@@ -342,6 +342,11 @@ var PREPS={sencer:"Sencer",palometa:"En palometa",filets:"A filets",talls:"A tal
 var DEFAULT_CONFIG={iva:10,paxMin:400,paxMax:500,arrodoniment:0.5,trams:[{cost:5,mult:5},{cost:10,mult:4},{cost:20,mult:3},{cost:30,mult:2.5},{cost:40,mult:2.2}]};
 function defaults(){return JSON.parse(JSON.stringify(DEFAULT_CONFIG))}
 function conf(){return Object.assign(defaults(),state.config||{})}
+function pax(w){
+ if(!(w>0))return "1";
+ var cfg=conf(),min=Math.max(1,Math.ceil((w-1e-9)/(cfg.paxMax/1000))),max=Math.max(1,Math.floor((w+1e-9)/(cfg.paxMin/1000)));
+ return min>max?String(Math.max(1,Math.round(w/0.45))):min===max?String(min):min+"-"+max;
+}
 function fin(f){var n=f.pesNetIndividual!=null?Number(f.pesNetIndividual):Number(f.pes);return Number.isFinite(n)&&n>0?n:0}
 function cost(f){return (f.costNetKg!=null?f.costNetKg*fin(f):f.preuCompra*f.pes)*(f.unitats||1)}
 function rev(f){return f.preuVenda*fin(f)*(f.unitats||1)}
@@ -476,7 +481,6 @@ function makePdf(mode){
  function text(t,x,top,size,bold,color){cmd.push((color||"0.17 0.22 0.55")+" rg BT /"+(bold?"F2":"F1")+" "+size+" Tf 1 0 0 1 "+x+" "+(H-top)+" Tm ("+pdfText(t)+") Tj ET")}
  function rect(x,top,w,h,color){cmd.push(color+" rg "+x+" "+(H-top-h)+" "+w+" "+h+" re f")}
  var cols=[{title:"Nom i preparació",x:42},{title:"Pes final (kg)",x:295},{title:"Pax",x:430},{title:"Preu carta (EUR)",x:525},{title:"Data compra",x:690}];
- function pax(w){if(!(w>0))return "1";var min=Math.max(1,Math.ceil((w-1e-9)/(conf().paxMax/1000))),max=Math.max(1,Math.floor((w+1e-9)/(conf().paxMin/1000)));return min>max?String(Math.max(1,Math.round(w/0.45))):min===max?String(min):min+"-"+max}
  function start(){cmd=[];text("TraçaMar",42,45,21,true);text("Data: "+dt(today()),42,65,11,false);rect(36,83,770,30,"0.18 0.23 0.55");cols.forEach(function(c){text(c.title,c.x,103,11,true,"1 1 1")});y=113}
  function finish(){pages.push(cmd.join("\n"))}
  start();var tu=0,tw=0;
