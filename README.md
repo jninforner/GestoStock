@@ -2,14 +2,14 @@
 
 TraçaMar és l’aplicació que fa servir el restaurant La Barca de Ca l’Ardet per seguir el peix des de la compra fins a la venda. S’obre al navegador i es pot afegir a la pantalla d’inici de l’iPhone o de l’iPad com una aplicació web progressiva (PWA).
 
-La versió del codi en aquest repositori és la **7.4**. L’aplicació del restaurant és a [TraçaMar a GitHub Pages](https://jninforner.github.io/control-de-peixos/).
+La versió del codi en aquest repositori és la **7.6**. L’aplicació del restaurant és a [TraçaMar a GitHub Pages](https://jninforner.github.io/control-de-peixos/).
 
 ## Què pots fer amb TraçaMar
 
 - **Registrar compres i partides.** Introdueix l’espècie, la preparació, els pesos, la quantitat i els costos. En una partida «A talls», el nombre de talls determina l’estoc, el cost per tall i les etiquetes. També pots començar a partir d’una foto d’un albarà.
 - **Calcular la minva i els preus.** L’aplicació calcula la diferència entre el pes brut i el net, el cost per exemplar i un preu de venda orientatiu. Quan falta el pes net, pot suggerir-ne un a partir de partides anteriors.
 - **Consultar l’estoc i registrar vendes.** Els exemplars s’agrupen per partida. Pots desplegar-la per veure els peixos disponibles i indicar quin has venut.
-- **Imprimir etiquetes.** L’aplicació genera un PDF amb una etiqueta per exemplar de les partides seleccionades. Està pensat per a fulls A4 APLI 01272 de 24 etiquetes, de 70 × 35 mm. Pots començar en qualsevol posició del full i ajustar el marge superior i la separació entre files. L’etiqueta mostra el cost real del peix.
+- **Imprimir etiquetes.** L’aplicació genera un PDF amb una etiqueta per exemplar de les partides seleccionades. Està pensat per a fulls A4 APLI 01272 de 24 etiquetes, de 70 × 35 mm. Pots començar en qualsevol posició del full i ajustar el marge superior i la separació entre files. L’etiqueta d’inventari mostra el cost real del peix. Des de Partides també pots imprimir el nombre d’etiquetes resum que necessitis, amb la data, el pes, la minva i els costos de la partida.
 
 ## Descarregar el projecte al Mac
 
