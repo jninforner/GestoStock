@@ -359,7 +359,11 @@ $a('albaraRead').addEventListener('click',async function(){
   var token=await window.peixosSync.getToken();
   if(!token)throw Error('Cal iniciar sessió.');
   var base64=await new Promise(function(resolve,reject){var r=new FileReader();r.onload=function(){resolve(String(r.result).split(',')[1])};r.onerror=function(){reject(Error('No es pot llegir el fitxer.'))};r.readAsDataURL(file)});
-  var response=await fetch('https://tracamar-ia.jninforner.workers.dev',{
+  var invoiceService='https://nexamar-ia.jninforner.workers.dev';
+  // Durant el canvi d'adreça, comprova el servei sense enviar l'albarà ni el token.
+  var serviceCheck=await fetch(invoiceService,{mode:'cors',cache:'no-store'}).catch(function(){return null});
+  if(!serviceCheck||serviceCheck.status!==405)invoiceService='https://tracamar-ia.jninforner.workers.dev';
+  var response=await fetch(invoiceService,{
    method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({image:base64,mimeType:mimeType,headerImage:isPdf?undefined:await invoiceHeaderImage(file)})
   });
   var data=await response.json().catch(function(){return {error:'Resposta no vàlida del servidor'}});
