@@ -1,6 +1,6 @@
 {
-  "name": "Control de peixos",
-  "short_name": "Peixos",
+  "name": "NexaMar",
+  "short_name": "NexaMar",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
