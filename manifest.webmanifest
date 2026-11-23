@@ -1,6 +1,6 @@
 {
-  "name": "NexaMar",
-  "short_name": "NexaMar",
+  "name": "GestoStock",
+  "short_name": "GestoStock",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

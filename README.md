@@ -1,10 +1,10 @@
-# NexaMar
+# GestoStock
 
-NexaMar és l’aplicació que fa servir el restaurant La Barca de Ca l’Ardet per seguir el peix des de la compra fins a la venda. S’obre al navegador i es pot afegir a la pantalla d’inici de l’iPhone o de l’iPad com una aplicació web progressiva (PWA).
+GestoStock és l’aplicació que fa servir el restaurant La Barca de Ca l’Ardet per seguir el peix des de la compra fins a la venda. S’obre al navegador i es pot afegir a la pantalla d’inici de l’iPhone o de l’iPad com una aplicació web progressiva (PWA).
 
-La versió del codi en aquest repositori és la **8.4**. L’aplicació del restaurant és a [NexaMar a GitHub Pages](https://jninforner.github.io/NexaMar/).
+La versió del codi en aquest repositori és la **8.4**. L’aplicació del restaurant és a [GestoStock a GitHub Pages](https://jninforner.github.io/GestoStock/).
 
-## Què pots fer amb NexaMar
+## Què pots fer amb GestoStock
 
 - **Registrar compres i partides.** Introdueix l’espècie, el proveïdor, la preparació, els pesos, la quantitat i els costos. En importar un albarà, el proveïdor detectat s’omple automàticament. En una partida «A talls», tria si comptes talls o racions. La quantitat determina l’estoc, el cost per tall o ració i les etiquetes. També pots importar un albarà en JPG, PNG, WebP o PDF. Revisa les línies detectades, inclosos els cefalòpodes, i fes servir «Dona d’alta al catàleg» per afegir-hi espècies o articles nous.
 - **Gestionar proveïdors.** Afegeix noms a Proveïdors o desa una partida amb un proveïdor nou. Pots editar un nom i actualitzar-lo a les partides associades. En revisar un albarà, pots seleccionar un nom del registre. Si la lectura és dubtosa, es mostren coincidències pel nom o per les compres anteriors dels mateixos articles.
@@ -27,18 +27,18 @@ La versió del codi en aquest repositori és la **8.4**. L’aplicació del rest
 
    ```bash
    cd ~/Documents
-   git clone --branch develop https://github.com/jninforner/NexaMar.git
-   cd NexaMar
+   git clone --branch develop https://github.com/jninforner/GestoStock.git
+   cd GestoStock
    ```
 
    Si ja tens una còpia al Mac, obre la carpeta que ja existeix amb `cd`. Amb `git fetch origin` i `git switch develop` pots baixar la informació de GitHub i passar a la branca de desenvolupament.
 
-## Engegar i aturar NexaMar
+## Engegar i aturar GestoStock
 
 Cada vegada que vulguis engegar-lo, executa aquestes comandes des de Terminal. Si vas desar el projecte en un altre lloc, adapta la primera línia.
 
 ```bash
-cd /ruta/al/NexaMar
+cd /ruta/al/GestoStock
 python3 run dev
 ```
 
@@ -54,16 +54,16 @@ Si el port 8000 està ocupat, executa `python3 run dev --port 8001` i obre [http
 | --- | --- |
 | `index.html` | La pantalla principal, els estils i el codi de compres, estoc, vendes i etiquetes. |
 | `manifest.webmanifest` | El nom i les icones que veu el dispositiu quan hi afegeixes l’aplicació. |
-| `run` | La comanda per engegar NexaMar en local amb Python. |
+| `run` | La comanda per engegar GestoStock en local amb Python. |
 | `sw.js` | El component que desa la pàgina i alguns fitxers al navegador perquè es puguin tornar a obrir sense connexió. |
-| `icon.png` i `icon-512.png` | Les icones de NexaMar. |
+| `icon.png` i `icon-512.png` | Les icones de GestoStock. |
 
 Python serveix els fitxers directament. El projecte no té cap pas de compilació ni paquets per instal·lar. Firebase gestiona l’inici de sessió amb correu i contrasenya i desa l’inventari a Firestore, al document `inventari/dades` del projecte `control-de-peixos`. El navegador necessita connexió per carregar el component de Firebase la primera vegada. Obrir la pàgina sense connexió i sincronitzar l’inventari són dues coses diferents.
 
-Quan demanes que s’interpreti un albarà, NexaMar envia la imatge o el PDF al servei d’anàlisi d’albarans de Cloudflare, que analitza el fitxer amb OpenAI. Aquesta funció necessita connexió i una sessió iniciada. Les dades d’una còpia antiga a HTML Viewer no es migren automàticament. Si encara la tens, conserva-la i exporta’n les dades.
+Quan demanes que s’interpreti un albarà, GestoStock envia la imatge o el PDF al servei d’anàlisi d’albarans de Cloudflare, que analitza el fitxer amb OpenAI. Aquesta funció necessita connexió i una sessió iniciada. Les dades d’una còpia antiga a HTML Viewer no es migren automàticament. Si encara la tens, conserva-la i exporta’n les dades.
 
 ## Treballar amb el repositori
 
-Amb cada canvi de l’aplicació, incrementa la versió seguint aquesta seqüència: 6.6 → 6.7 → 6.8 → 6.9 → 7.1 → 7.2 → … → 7.9 → 8.1. Quan el segon número arriba a 9, suma 1 al primer i torna a començar per 1. Actualitza la versió visible sota el nom de NexaMar a la capçalera i a la pantalla d’entrada, totes dues a `index.html`. Actualitza també la versió d’aquest document i la clau de la memòria cau de `sw.js`.
+Amb cada canvi de l’aplicació, incrementa la versió seguint aquesta seqüència: 6.6 → 6.7 → 6.8 → 6.9 → 7.1 → 7.2 → … → 7.9 → 8.1. Quan el segon número arriba a 9, suma 1 al primer i torna a començar per 1. Actualitza la versió visible sota el nom de GestoStock a la capçalera i a la pantalla d’entrada, totes dues a `index.html`. Actualitza també la versió d’aquest document i la clau de la memòria cau de `sw.js`.
 
 La còpia del Mac permet preparar canvis abans de publicar-los. El flux acordat és treballar a `develop`, provar els canvis en local amb dades fictícies i esperar el vistiplau abans de fer un *commit* (desar els canvis a l’historial) o un *push* (pujar-los a GitHub). La branca `main` està reservada a producció. Incorporar-hi els canvis i publicar a GitHub Pages requereix autorització expressa.

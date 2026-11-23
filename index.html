@@ -57,7 +57,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-width
 .empty{text-align:center;color:var(--mu);padding:24px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}.brand{min-width:0;flex:1}.brand h1{margin:0;font-size:clamp(21px,4.5vw,30px);line-height:1.1}.version{font-size:13px;margin-top:5px}.topactions{display:flex;align-items:center;gap:8px;flex-shrink:0}.topbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 12px;min-height:42px;border-radius:12px;font-size:15px;white-space:nowrap;background:var(--g1)}.topbtn span:first-child{font-family:Arial,sans-serif;font-size:18px;line-height:1}@media(max-width:430px){.topbar{gap:8px}.topactions{gap:5px}.topbtn{padding:7px 9px;font-size:13px}.brand h1{font-size:22px}}
 
-/* NexaMar 4.1 · refinament visual sense alterar la lògica */
+/* GestoStock 4.1 · refinament visual sense alterar la lògica */
 :root{--bg:#f7f8fd;--tx:#28377e;--mu:#6876ad;--ln:#303f91;--g1:#fff;--g2:#f0f2fc;--in:#fff;--on:#fff;--rd:#b42318;--gr:#17734a}
 :root[data-theme="dark"]{--bg:#10152c;--tx:#e5e9ff;--mu:#adb8e5;--ln:#a1afff;--g1:#1b2447;--g2:#232f59;--in:#141c39;--on:#10152c;--rd:#ff9992;--gr:#84dbab}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10152c;--tx:#e5e9ff;--mu:#adb8e5;--ln:#a1afff;--g1:#1b2447;--g2:#232f59;--in:#141c39;--on:#10152c;--rd:#ff9992;--gr:#84dbab}}
@@ -107,7 +107,7 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 #albaraResult .alb-line .act button{margin-top:0}
 @media(max-width:520px){#f .g3 label{min-height:0}}
 
-/* NexaMar 5.0: files independents per a pesos i imports */
+/* GestoStock 5.0: files independents per a pesos i imports */
 #f .purchase-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
 #f .purchase-fields>div{display:flex;flex-direction:column;min-width:0}
 #f .purchase-fields label{font-size:14px;line-height:1.35;min-height:38px;margin:0 0 7px}
@@ -115,7 +115,7 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 #f #effectiveCost{margin-top:-5px;margin-bottom:2px}
 #f button[type=submit]{margin-top:18px}
 @media(max-width:400px){#f .purchase-fields{gap:9px}#f .purchase-fields label{font-size:12px}}
-/* NexaMar 5.2: camps compactes i formulari només quan cal */
+/* GestoStock 5.2: camps compactes i formulari només quan cal */
 #f .purchase-fields{gap:12px;align-items:start}
 #f .purchase-fields label{min-height:0;margin:0 0 5px;line-height:1.25;font-size:14px}
 #f .purchase-fields input{margin:0;height:46px}
@@ -141,8 +141,8 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>NexaMar</h1><p class="mu">Versió 8.4</p><p>Introdueix les teves dades per accedir a NexaMar.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>NexaMar</h1><div class="mu version">Versió 8.4 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 8.4</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 8.4 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button></div>
 <div id="v1"><h2 class="purchase-title">Registrar compra</h2><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Lectura amb IA</h2><p class="mu">Selecciona una imatge o un PDF de l’albarà (JPG, PNG, WebP o PDF, fins a 8 MB). El fitxer s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf,.pdf" aria-label="Selecciona un fitxer de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="manual-head"><h3>Entrada manual de partida</h3><button type="button" class="s" id="toggleManual" aria-expanded="false">Nova partida manual</button></div><div class="card" id="purchaseCard" hidden><form id="f">
 <div class="full"><label for="ns">Espècie o article</label><select id="ns"></select><input id="nom" hidden></div>
@@ -814,7 +814,7 @@ function openLabelsPrint(labels,startAt,offsetMm,gapMm){
  var xref=byteLen(out);out+='xref\n0 '+objects.length+'\n0000000000 65535 f \n';
  for(var j=1;j<objects.length;j++)out+=String(offsets[j]).padStart(10,'0')+' 00000 n \n';
  out+='trailer\n<< /Size '+objects.length+' /Root '+catalog+' 0 R >>\nstartxref\n'+xref+'\n%%EOF';
- downloadPdf(new Blob([toBytes(out)],{type:'application/pdf'}),'etiquetes-nexamar-'+today()+'.pdf');
+ downloadPdf(new Blob([toBytes(out)],{type:'application/pdf'}),'etiquetes-gestostock-'+today()+'.pdf');
 }
 function n2(v){return Number(v).toLocaleString("ca-ES",{minimumFractionDigits:2,maximumFractionDigits:2})}
 // Generador PDF integrat: no necessita internet ni serveis de Claude.
@@ -827,7 +827,7 @@ function makePdf(mode){
  function text(t,x,top,size,bold,color){cmd.push((color||"0.17 0.22 0.55")+" rg BT /"+(bold?"F2":"F1")+" "+size+" Tf 1 0 0 1 "+x+" "+(H-top)+" Tm ("+pdfText(t)+") Tj ET")}
  function rect(x,top,w,h,color){cmd.push(color+" rg "+x+" "+(H-top-h)+" "+w+" "+h+" re f")}
  var cols=[{title:"Nom i preparació",x:42},{title:"Pes final (kg)",x:295},{title:"Pax",x:430},{title:"Preu carta (EUR)",x:525},{title:"Data compra",x:690}];
- function start(){cmd=[];text("NexaMar",42,45,21,true);text("Data: "+dt(today()),42,65,11,false);rect(36,83,770,30,"0.18 0.23 0.55");cols.forEach(function(c){text(c.title,c.x,103,11,true,"1 1 1")});y=113}
+ function start(){cmd=[];text("GestoStock",42,45,21,true);text("Data: "+dt(today()),42,65,11,false);rect(36,83,770,30,"0.18 0.23 0.55");cols.forEach(function(c){text(c.title,c.x,103,11,true,"1 1 1")});y=113}
  function finish(){pages.push(cmd.join("\n"))}
  start();var tu=0,tw=0;
  stock.forEach(function(f,i){if(y>530){finish();start()}var u=f.unitats||1;tu+=u;tw+=fin(f)*u;if(i%2===0)rect(36,y,770,30,"0.93 0.94 0.98");var vals=[f.nom+" - "+tag(f)+(u>1?" ("+u+" "+unitLabel(f,u)+")":""),n2(fin(f)),f.tipus==="talls"?"":pax(stockGross(f).kg),n2(carta(f)),dt(f.dataCompra)];vals.forEach(function(v,j){text(String(v).slice(0,j===0?27:28),cols[j].x,y+20,11,false,"0.13 0.16 0.27")});y+=30});
@@ -841,7 +841,7 @@ function makePdf(mode){
  // Descarrega per defecte; compartir només si es prem el botó corresponent.
  if(mode==="share"&&navigator.share&&typeof File!=="undefined"){
   var file=new File([blob],name,{type:"application/pdf"});
-  if(!navigator.canShare||navigator.canShare({files:[file]})){navigator.share({files:[file],title:"NexaMar"}).catch(function(e){if(e.name!=="AbortError")downloadPdf(blob,name)});return}
+  if(!navigator.canShare||navigator.canShare({files:[file]})){navigator.share({files:[file],title:"GestoStock"}).catch(function(e){if(e.name!=="AbortError")downloadPdf(blob,name)});return}
  }
  downloadPdf(blob,name);
 }
