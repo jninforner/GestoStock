@@ -2,7 +2,7 @@
 
 GestoStock és l’aplicació que fa servir el restaurant La Barca de Ca l’Ardet per seguir el peix des de la compra fins a la venda. S’obre al navegador i es pot afegir a la pantalla d’inici de l’iPhone o de l’iPad com una aplicació web progressiva (PWA).
 
-La versió del codi en aquest repositori és la **8.6**. L’aplicació del restaurant és a [GestoStock a GitHub Pages](https://jninforner.github.io/GestoStock/).
+La versió del codi en aquest repositori és la **1.8.6**. L’aplicació del restaurant és a [GestoStock a GitHub Pages](https://jninforner.github.io/GestoStock/).
 
 ## Què pots fer amb GestoStock
 
@@ -64,6 +64,6 @@ Quan demanes que s’interpreti un albarà, GestoStock envia la imatge o el PDF 
 
 ## Treballar amb el repositori
 
-Amb cada canvi de l’aplicació, incrementa la versió seguint aquesta seqüència: 6.6 → 6.7 → 6.8 → 6.9 → 7.1 → 7.2 → … → 7.9 → 8.1. Quan el segon número arriba a 9, suma 1 al primer i torna a començar per 1. Actualitza la versió visible sota el nom de GestoStock a la capçalera i a la pantalla d’entrada, totes dues a `index.html`. Actualitza també la versió d’aquest document i la clau de la memòria cau de `sw.js`.
+La versió té tres números, com la resta d’apps Gesto (per exemple 1.8.6). Amb cada canvi de l’aplicació, puja-la així: si és una correcció o un retoc petit, suma 1 a l’últim número (1.8.6 → 1.8.7); si afegeix una funció nova, suma 1 al número del mig i posa l’últim a 0 (1.8.6 → 1.9.0); el primer número només canvia amb un canvi molt gran de l’app. Fins a la 8.6 es feia servir una numeració de dos números; la 8.6 es va publicar com a 1.8.6. Actualitza la versió visible sota el nom de GestoStock a la capçalera i a la pantalla d’entrada, totes dues a `index.html`. Actualitza també la versió d’aquest document i la clau de la memòria cau de `sw.js` (`gestostock-shell-` + versió).
 
 La còpia del Mac permet preparar canvis abans de publicar-los. El flux acordat és treballar a `develop`, provar els canvis en local amb dades fictícies i esperar el vistiplau abans de fer un *commit* (desar els canvis a l’historial) o un *push* (pujar-los a GitHub). La branca `main` està reservada a producció. Incorporar-hi els canvis i publicar a GitHub Pages requereix autorització expressa.
