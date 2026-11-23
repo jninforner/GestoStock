@@ -138,11 +138,14 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 .supplier-row span{font-weight:600;overflow-wrap:anywhere}
 #noSuppliers{margin:0}
 @media(max-width:460px){#supplierForm{grid-template-columns:1fr}.supplier-actions{justify-content:flex-end}}
+body.no-buy [data-edit],body.no-buy [data-del],body.no-buy [data-del2],body.no-buy [data-lotedit],body.no-buy [data-lotdelete]{display:none!important}
+body.no-sell [data-sell]{display:none!important}
+body.no-labels #printLabels,body.no-labels [data-lotlabels]{display:none!important}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 8.5</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 8.5 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 8.6</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 8.6 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button></div>
 <div id="v1"><h2 class="purchase-title">Registrar compra</h2><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Lectura amb IA</h2><p class="mu">Selecciona una imatge o un PDF de l’albarà (JPG, PNG, WebP o PDF, fins a 8 MB). El fitxer s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf,.pdf" aria-label="Selecciona un fitxer de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="manual-head"><h3>Entrada manual de partida</h3><button type="button" class="s" id="toggleManual" aria-expanded="false">Nova partida manual</button></div><div class="card" id="purchaseCard" hidden><form id="f">
 <div class="full"><label for="ns">Espècie o article</label><select id="ns"></select><input id="nom" hidden></div>
@@ -1074,43 +1077,95 @@ $("stock").onclick=function(e){var o=e.target.closest("[data-open]");if(o&&!e.ta
 norm();compactarLotsIguals();fillNames();render();
 window.applyCloudState=function(d){if(!d.proveidors&&!d.lots)setSupplierEditor("");state={fish:d.fish||[],sales:d.sales||[],noms:d.noms||[],lots:d.lots||[],config:d.config||defaults(),imports:d.imports||{},ultimNumeroPartida:d.ultimNumeroPartida,proveidors:d.proveidors};norm();compactarLotsIguals();fillNames($("ns").value);render()};
 window.setSyncStatus=function(t){$("syncStatus").textContent=t};
+// Permisos de GestoAdmin: amaga les seccions i els botons que l'usuari no pot fer servir.
+window.applyPermissions=function(p){
+ p=p||{};var on={t0:p.buy,t1:p.view||p.sell,t2:p.history,en:p.config,tl:p.view||p.buy,tc:p.config,ts:p.config||p.buy};
+ ["buy","sell","labels"].forEach(function(k){document.body.classList.toggle("no-"+k,!p[k])});
+ var ids=["t0","t1","t2","en","tl","tc","ts"],first=-1;
+ ids.forEach(function(id,i){$(id).style.display=on[id]?"":"none";if(on[id]&&first<0)first=i});
+ var cur=ids.findIndex(function(id){return $(id).className==="on"});
+ if(first>=0&&(cur<0||!on[ids[cur]]))tab(first);
+};
+
 window.showLogin=function(show){$("login").style.display=show?"flex":"none"};
 $("loginForm").onsubmit=function(e){e.preventDefault();$("loginError").textContent="Connectant…";window.peixosSync.login($("email").value,$("password").value).catch(function(err){$("loginError").textContent="No s'ha pogut iniciar sessió: "+err.message})};
 $("logout").onclick=function(){window.peixosSync.logout()};
 if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(console.error);
 </script>
 <script type="module">
+// Comptes de les apps Gesto (Firebase) i inventari al servidor gesto-apps (D1).
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
 import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
-import {initializeFirestore,persistentLocalCache,persistentMultipleTabManager,doc,onSnapshot,setDoc} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
-const config = {"apiKey": "AIzaSyC1cjraq-OtSvd9w2O6vA4zvQjC2UC8H5k", "authDomain": "control-de-peixos.firebaseapp.com", "projectId": "control-de-peixos", "storageBucket": "control-de-peixos.firebasestorage.app", "messagingSenderId": "194527539713", "appId": "1:194527539713:web:445d5d2405449af4bac600"};
-const app=initializeApp(config),auth=getAuth(app);
-let db;
-try {db=initializeFirestore(app,{localCache:persistentLocalCache({tabManager:persistentMultipleTabManager()})})}
-catch(e){document.getElementById("syncStatus").textContent="Error de memòria local: "+e.message;}
-const target=db?doc(db,"inventari","dades"):null;
-let unsubscribe=null,ready=false,writeChain=Promise.resolve(),pending=0,received=false;
+const API="https://gesto-apps.jninforner.workers.dev";
+let auth=null,revision=null,ready=false,writeChain=Promise.resolve(),pending=0,epoch=0,loading=false;
 function status(t){window.setSyncStatus(t)}
-window.peixosSync={ready:false,getToken:async()=>auth.currentUser?auth.currentUser.getIdToken():null,login:(email,password)=>signInWithEmailAndPassword(auth,email,password),logout:()=>signOut(auth),save:(data)=>{
- if(!ready||!target)return;
- pending++;
- status("Desant…");
- // Serialitza les escriptures per conservar l'ordre de les accions.
- writeChain=writeChain.then(()=>setDoc(target,data)).then(()=>{pending--;status(pending?"Desant…":"Sincronitzat")}).catch(e=>{pending--;status("Error en desar: "+e.message);alert("No s'ha pogut desar el canvi: "+e.message)});
-}};
-onAuthStateChanged(auth,user=>{
- if(unsubscribe){unsubscribe();unsubscribe=null}
- ready=false;received=false;window.peixosSync.ready=false;
+function loginMessage(t){document.getElementById("loginError").textContent=t}
+function setReady(v){ready=v;window.peixosSync.ready=v}
+async function call(body){
+ const token=await auth.currentUser.getIdToken();
+ const headers={Authorization:"Bearer "+token};
+ if(body)headers["Content-Type"]="application/json";
+ const r=await fetch(API+"/GestoStock/api",{method:body?"POST":"GET",cache:"no-store",credentials:"omit",headers,body:body?JSON.stringify(body):undefined});
+ let data={};try{data=await r.json()}catch{}
+ return {ok:r.ok,status:r.status,data};
+}
+function apply(d){revision=d.revision;window.applyPermissions(d.permissions);window.applyCloudState(d.data||{})}
+// Carrega l'inventari del servidor. first=true: acabem d'entrar (si no hi ha accés, es tanca la sessió).
+async function load(first){
+ if(!auth||!auth.currentUser||(!first&&(loading||pending)))return;
+ loading=true;
+ try{
+  const r=await call();
+  if(!r.ok){
+   const msg=r.data.error||("Error "+r.status);
+   if(first&&[401,403].includes(r.status)){setReady(false);await signOut(auth);window.showLogin(true);loginMessage(msg);return}
+   status("Error: "+msg);return;
+  }
+  if(pending)return;
+  if(first||!ready||r.data.revision!==revision)apply(r.data);
+  setReady(true);status("Sincronitzat");
+ }catch(e){status("Sense connexió amb el servidor · es tornarà a provar")}
+ finally{loading=false}
+}
+window.peixosSync={ready:false,
+ getToken:async()=>auth&&auth.currentUser?auth.currentUser.getIdToken():null,
+ login:(email,password)=>auth?signInWithEmailAndPassword(auth,email.trim(),password):Promise.reject(new Error("encara no hi ha connexió amb el servidor de les apps Gesto")),
+ logout:()=>auth?signOut(auth):null,
+ save:(data)=>{
+  if(!ready)return;
+  const mine=epoch;pending++;status("Desant…");
+  // Serialitza les escriptures per conservar l'ordre de les accions.
+  writeChain=writeChain.then(async()=>{
+   if(mine!==epoch)return;// canvi fet abans d'un error: ja s'ha tornat a carregar l'inventari del servidor
+   const r=await call({action:"save",revision,data});
+   if(r.ok){revision=r.data.revision;return}
+   epoch++;
+   if(r.status===409&&r.data.conflict){apply(r.data)}
+   throw new Error(r.data.error||("Error "+r.status));
+  }).then(()=>{pending--;status(pending?"Desant…":"Sincronitzat")}).catch(e=>{
+   pending--;epoch++;status("Error en desar");
+   alert("No s'ha pogut desar el canvi: "+e.message);
+   if(!pending){setReady(false);load(false)}
+  });
+ }};
+// Comprova si hi ha canvis d'altres dispositius cada 30 segons i en tornar a l'app.
+setInterval(()=>{if(document.visibilityState==="visible")load(false)},30000);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")load(false)});
+try{
+ const r=await fetch(API+"/auth-config",{cache:"no-store",credentials:"omit"});
+ if(!r.ok)throw new Error("configuració no disponible");
+ auth=getAuth(initializeApp(await r.json(),"gestostock"));
+ auth.languageCode="ca";
+}catch(e){
+ window.showLogin(true);status("Sense connexió");
+ loginMessage("No s'ha pogut connectar amb el servidor de les apps Gesto ("+e.message+"). Torna-ho a provar més tard.");
+}
+if(auth)onAuthStateChanged(auth,user=>{
+ setReady(false);revision=null;epoch++;
  window.showLogin(!user);
  if(!user){status("Sessió tancada");window.applyCloudState({fish:[],sales:[],noms:[]});return}
- status("Carregant inventari…");
- unsubscribe=onSnapshot(target,{includeMetadataChanges:true},snap=>{
-  if(pending && received)return;
-  if(snap.exists())window.applyCloudState(snap.data());
-  else window.applyCloudState({fish:[],sales:[],noms:[]});
-  received=true;ready=true;window.peixosSync.ready=true;
-  status(snap.metadata.fromCache?"Dades locals · pendent de connexió":"Sincronitzat");
- },e=>{status("Error de permisos o connexió: "+e.message);window.showLogin(true);document.getElementById("loginError").textContent=e.message});
+ loginMessage("");status("Carregant inventari…");
+ load(true);
 });
 </script>
 </body>

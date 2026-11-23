@@ -2,7 +2,7 @@
 
 GestoStock és l’aplicació que fa servir el restaurant La Barca de Ca l’Ardet per seguir el peix des de la compra fins a la venda. S’obre al navegador i es pot afegir a la pantalla d’inici de l’iPhone o de l’iPad com una aplicació web progressiva (PWA).
 
-La versió del codi en aquest repositori és la **8.5**. L’aplicació del restaurant és a [GestoStock a GitHub Pages](https://jninforner.github.io/GestoStock/).
+La versió del codi en aquest repositori és la **8.6**. L’aplicació del restaurant és a [GestoStock a GitHub Pages](https://jninforner.github.io/GestoStock/).
 
 ## Què pots fer amb GestoStock
 
@@ -44,7 +44,7 @@ python3 run dev
 
 Obre [http://localhost:8000/](http://localhost:8000/) a Safari. Deixa la finestra de Terminal oberta mentre facis servir la còpia local. Per aturar el servidor, torna a Terminal i prem **Control + C**.
 
-**De moment, fes servir la còpia local només per comprovar que apareix la pantalla d’entrada.** El codi actual apunta a la mateixa base de dades que fa servir el restaurant. Si hi entres amb un compte del restaurant, els canvis que facis des del Mac poden afectar l’inventari real. Les proves amb dades fictícies es podran fer quan la còpia local tingui una base de dades pròpia.
+**De moment, fes servir la còpia local només per comprovar que apareix la pantalla d’entrada.** El servidor de les apps Gesto només accepta l’adreça publicada de GestoStock, així que des de la còpia local no es pot entrar. Això evita que una prova canviï l’inventari real.
 
 Si el port 8000 està ocupat, executa `python3 run dev --port 8001` i obre [http://localhost:8001/](http://localhost:8001/). Obre sempre l’adreça del servidor des del navegador. Els components que necessita l’aplicació es carreguen correctament quan la pàgina se serveix per HTTP.
 
@@ -58,7 +58,7 @@ Si el port 8000 està ocupat, executa `python3 run dev --port 8001` i obre [http
 | `sw.js` | El component que desa la pàgina i alguns fitxers al navegador perquè es puguin tornar a obrir sense connexió. |
 | `icon.png` i `icon-512.png` | Les icones de GestoStock. |
 
-Python serveix els fitxers directament. El projecte no té cap pas de compilació ni paquets per instal·lar. Firebase gestiona l’inici de sessió amb correu i contrasenya i desa l’inventari a Firestore, al document `inventari/dades` del projecte `control-de-peixos`. El navegador necessita connexió per carregar el component de Firebase la primera vegada. Obrir la pàgina sense connexió i sincronitzar l’inventari són dues coses diferents.
+Python serveix els fitxers directament. El projecte no té cap pas de compilació ni paquets per instal·lar. Per entrar es fan servir els mateixos comptes que a GestoComandes i GestoTips (correu i contrasenya). Què pot fer cada persona es decideix a GestoAdmin, a la secció GestoStock de cada usuari. L’inventari es desa al servidor de les apps Gesto, i per desar cal tenir connexió. Si dos dispositius canvien l’inventari alhora, el segon rep un avís i veu l’inventari actualitzat per repetir el canvi.
 
 Quan demanes que s’interpreti un albarà, GestoStock envia la imatge o el PDF al servei d’anàlisi d’albarans de Cloudflare, que analitza el fitxer amb OpenAI. Aquesta funció necessita connexió i una sessió iniciada. Les dades d’una còpia antiga a HTML Viewer no es migren automàticament. Si encara la tens, conserva-la i exporta’n les dades.
 
