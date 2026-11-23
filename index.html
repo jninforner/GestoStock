@@ -159,14 +159,17 @@ input[type=file]::file-selector-button:hover{background:var(--g2)}
 .main-card .sum{margin:12px 0 0}
 .view-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .view-head h2{margin:0}.view-head .act{margin:0}
+.pending-row,.cat-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--border)}
+.cat-row .mu{font-size:13px}
+.pending-row .act{flex:1 1 320px;justify-content:flex-end}.pending-row .act input{flex:1}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.9.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.9.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.10.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.10.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button><button id="theme" type="button" aria-pressed="false">Mode fosc</button></div>
 <div id="v1"><div class="card main-card"><h2>Registrar compra</h2><p class="mu intro">Importa un albarà amb IA o entra una partida a mà.</p><section class="panel"><h3>Importar albarà · Lectura amb IA</h3><p class="mu">Selecciona una imatge o un PDF de l’albarà (JPG, PNG, WebP o PDF, fins a 8 MB). El fitxer s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf,.pdf" aria-label="Selecciona un fitxer de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></section><section class="panel"><div class="manual-head"><h3>Entrada manual de partida</h3><button type="button" class="s" id="toggleManual" aria-expanded="false">Nova partida manual</button></div><div id="purchaseCard" hidden><form id="f">
-<div class="full"><label for="ns">Espècie o article</label><select id="ns"></select><input id="nom" hidden></div>
+<div class="full"><label for="ns">Espècie o article</label><input id="nsSearch" type="search" placeholder="Cerca l’article" autocomplete="off" style="margin-bottom:6px"><select id="ns"></select><input id="nom" hidden></div>
 <div><label>Preparació</label><select id="tp" required><option value="" disabled>Selecciona la preparació</option><option value="sencer">Sencer</option><option value="palometa">En palometa</option><option value="filets">A filets</option><option value="talls">A talls</option></select></div>
 <div id="countUnitField" hidden><label for="countUnit">Què comptem?</label><select id="countUnit" disabled><option value="talls">Talls</option><option value="racions">Racions</option></select></div>
 <div id="cutsField" hidden><label id="cutsLabel" for="cuts">Nombre total de talls</label><input id="cuts" type="number" inputmode="numeric" min="1" step="1" disabled></div>
@@ -196,10 +199,16 @@ input[type=file]::file-selector-button:hover{background:var(--g2)}
 <div class="supplier-actions"><button id="supplierCancel" class="s" type="button" hidden>Cancel·la</button><button id="supplierSubmit" class="s f" type="submit">Afegeix</button></div>
 </form>
 </div>
+<div class="card supplier-card" id="supplierPending" hidden>
+<h3>Pendents de vincular</h3>
+<p class="mu">Proveïdors de partides antigues que no són a la llista de GestoComandes. Tria a quin correspon o crea’l.</p>
+<div id="supplierPendingList"></div>
+</div>
 <div class="card supplier-card">
 <h3>Proveïdors registrats</h3>
 <ul id="supplierRegistry"></ul>
 <p id="noSuppliers" class="mu">Encara no hi ha proveïdors registrats.</p>
+<p class="mu">És la mateixa llista que GestoComandes. Per canviar-ne el nom o el telèfon, fes-ho a GestoComandes.</p>
 </div>
 </div></div><div id="lots" hidden><div class="card main-card"><h2>Partides</h2><div id="lotsList"></div></div></div><div id="config" hidden><div class="card main-card"><h2>Paràmetres</h2><div id="configBody"></div></div></div><div id="v2" hidden><div class="card main-card"><h2>Historial de vendes</h2><div id="sum" class="sum"></div><div id="sales"></div></div></div>
 </main>
@@ -457,8 +466,8 @@ $a('albaraResult').addEventListener('click',function(e){
   var article=articleName($a('alb-name-'+add.dataset.addArticle).value,other);
   if(!keyFish(article)||catalogName(article,other)){updateCatalogActions();return}
   if(!window.peixosSync||!window.peixosSync.ready){status('Cal tenir la sessió sincronitzada per donar d’alta un article.');return}
-  state.noms.push(article);norm();fillNames();save();renderNames();updateCatalogActions();
-  status('«'+article+'» incorporat al catàleg.');
+  status('Donant d’alta «'+article+'»…');
+  createShared('createArticle',article).then(function(r){updateCatalogActions();status('«'+r.name+'» '+(r.existed?'ja era':'incorporat')+' al catàleg d’articles de GestoComandes.')}).catch(function(e){status('No s’ha pogut donar d’alta l’article: '+e.message)});
   return;
  }
  var discard=e.target.closest('[data-discard]');if(discard){var di=Number(discard.dataset.discard);if(lineEntry(di)){status('Aquesta línia ja està gestionada.');return}var reason=prompt('Motiu del descart (per exemple: Consum intern, No destinat a la venda, Altres):','Consum intern');if(reason===null)return;reason=reason.trim();if(!reason){status('Indica un motiu per descartar.');return}markImport(di,{status:'discarded',reason:reason,name:rows[di].name});renderInvoiceAgain();status('Línia descartada; no s’ha afegit a l’inventari.');return}
@@ -568,7 +577,7 @@ function registerSupplier(name){
  name=cleanSupplierName(name);
  var existing=registeredSupplier(name);
  if(existing)return existing;
- if(supplierKey(name))state.proveidors.push(name);
+ if(supplierKey(name)){state.proveidors.push(name);createShared("createSupplier",name).catch(function(e){flash("No s’ha pogut donar d’alta el proveïdor: "+e.message)})}
  return name;
 }
 function supplierDistance(a,b){
@@ -605,8 +614,11 @@ function renderSuppliers(){
  var names=state.proveidors.slice().sort(function(a,b){return a.localeCompare(b,"ca")});
  $("supplierNames").innerHTML=names.map(function(name){return "<option>"+esc(name)+"</option>"}).join("");
  $("supplierRegistry").innerHTML=names.map(function(name){
-  return '<li class="supplier-row"><span>'+esc(name)+'</span><button class="s" type="button" data-edit-supplier="'+supplierKey(name)+'" aria-label="Edita '+esc(name).replace(/"/g,"&quot;")+'">Edita</button></li>';
+  return '<li class="supplier-row"><span>'+esc(name)+'</span></li>';
  }).join("");
+ var pend=pendingSuppliers();
+ $("supplierPending").hidden=!pend.length;
+ $("supplierPendingList").innerHTML=pend.map(function(n,i){return '<div class="pending-row"><b>'+esc(n)+'</b><div class="act" style="margin:0"><input list="supplierNames" id="sp'+i+'" placeholder="Proveïdor de GestoComandes" style="flex:1;min-width:160px"><button class="s f" type="button" data-slink="'+i+'">Vincula</button><button class="s" type="button" data-screate="'+i+'">Crea’l</button></div></div>'}).join("");
  $("noSuppliers").hidden=names.length>0;
 }
 function renameSupplier(oldName,newName){
@@ -649,8 +661,52 @@ function preuCartaSuggerit(costNetKg,pesNet){
 }
 function minvaLot(f){var l=(state.lots||[]).find(function(x){return x.id===f.lotId});return l&&l.pesBrut>0&&l.pesNet!=null?(1-l.pesNet/l.pesBrut)*100:null}
 function preuSuggerit(c){var cfg=conf(),n=c*multiplicador(c)*(1+cfg.iva/100),r=Number(cfg.arrodoniment)||0;return r>0?Math.ceil((n-1e-8)/r)*r:n}
-function norm(){state.fish=state.fish||[];state.sales=state.sales||[];state.noms=state.noms||[];state.lots=state.lots||[];state.imports=state.imports||{};state.config=state.config||defaults();var suppliers=Array.isArray(state.proveidors)?state.proveidors:[];state.proveidors=[];
- suppliers.forEach(registerSupplier);state.lots.forEach(function(l){registerSupplier(lotSupplier(l))});numberLots();migrateCutStock();state.fish.concat(state.sales).forEach(function(x){if(x.nom&&state.noms.indexOf(x.nom)<0)state.noms.push(x.nom)});state.noms=state.noms.filter(function(n,i,a){return a.indexOf(n)===i}).sort(function(a,b){return a.localeCompare(b,"ca")})}
+function norm(){state.fish=state.fish||[];state.sales=state.sales||[];state.noms=state.noms||[];state.lots=state.lots||[];state.imports=state.imports||{};state.config=state.config||defaults();
+ // Articles i proveïdors: la llista comuna de GestoComandes (no es desen a l'inventari).
+ state.noms=catalog.articles.filter(function(a){return !a.archived}).map(function(a){return a.name});
+ state.proveidors=catalog.suppliers.map(function(s){return s.name});
+ numberLots();migrateCutStock()}
+// ---- Articles i proveïdors comuns amb GestoComandes ----
+var catalog={articles:[],suppliers:[]},linkChanged=false;
+function catKey(n){return String(n||"").trim().toLocaleLowerCase("ca")}
+window.applyCatalog=function(d){if(d&&Array.isArray(d.articles))catalog.articles=d.articles;if(d&&Array.isArray(d.suppliers))catalog.suppliers=d.suppliers;catalogKey=JSON.stringify([catalog.articles,catalog.suppliers])};
+var catalogKey="";
+// Canvis fets a GestoComandes (noms nous, articles nous…) sense canvis a l'inventari.
+window.refreshCatalog=function(d,p){
+ if(JSON.stringify([d.articles,d.suppliers])===catalogKey)return;
+ window.applyCatalog(d);var changed=linkCatalog();norm();fillNames($("ns").value);render();renderNames();
+ if(changed&&p&&(p.admin||p.buy||p.sell))save();
+};
+function articleById(id){return id?catalog.articles.find(function(a){return a.id===id}):null}
+function articleByName(n){var k=catKey(n);if(!k)return null;return catalog.articles.find(function(a){return !a.archived&&catKey(a.name)===k})||catalog.articles.find(function(a){return catKey(a.name)===k})||null}
+function supplierById(id){return id?catalog.suppliers.find(function(s){return s.id===id}):null}
+function supplierByName(n){var k=supplierKey(n);return k?catalog.suppliers.find(function(s){return supplierKey(s.name)===k})||null:null}
+// Lliga partides, peces i vendes amb l'article i el proveïdor comuns (per id), i n'actualitza el nom.
+function linkCatalog(){
+ if(!catalog.articles.length&&!catalog.suppliers.length)return false;
+ var changed=false;
+ state.lots.concat(state.fish,state.sales).forEach(function(x){
+  var a=articleById(x.articleId)||(x.articleId?null:articleByName(x.nom));
+  if(a){if(x.articleId!==a.id){x.articleId=a.id;changed=true}if(x.nom!==a.name){x.nom=a.name;changed=true}}
+ });
+ state.lots.forEach(function(l){
+  var name=lotSupplier(l),sp=supplierById(l.supplierId)||(l.supplierId||!name?null:supplierByName(name));
+  if(sp){if(l.supplierId!==sp.id){l.supplierId=sp.id;changed=true}if(l.proveidor!==sp.name){l.proveidor=sp.name;changed=true}}
+ });
+ return changed;
+}
+// Noms de partides antigues que encara no estan lligats a cap article de GestoComandes.
+function pendingSuppliers(){var m=new Set();state.lots.forEach(function(l){var n=lotSupplier(l);if(n&&!l.supplierId)m.add(n)});return Array.from(m).sort(function(a,b){return a.localeCompare(b,"ca")})}
+function pendingNames(){var m=new Map();state.lots.concat(state.fish,state.sales).forEach(function(x){if(x.nom&&!x.articleId)m.set(x.nom,(m.get(x.nom)||0)+1)});return Array.from(m.keys()).sort(function(a,b){return a.localeCompare(b,"ca")})}
+// Dona d'alta un article o un proveïdor a la llista comuna i torna a pintar.
+function createShared(action,name){
+ if(!window.peixosSync||!window.peixosSync.create)return Promise.reject(new Error("cal iniciar sessió"));
+ return window.peixosSync.create(action,name).then(function(r){
+  window.applyCatalog(r);var changed=linkCatalog();norm();fillNames($("ns").value);render();renderNames();
+  if(changed)save();
+  return r;
+ });
+}
 function compactarLotsIguals(){
  var lotsNous=state.lots||[], grups=new Map(),resultat=[];
  state.fish.forEach(function(f){
@@ -662,7 +718,7 @@ function compactarLotsIguals(){
  });
  state.fish=resultat;
 }
-function fillNames(sel){var s=$("ns"),h="";if(sel==null)sel=s.value;state.noms.forEach(function(n){h+='<option value="'+esc(n).replace(/"/g,"&quot;")+'">'+esc(n)+'</option>'});s.innerHTML=h;var keep=sel==="__new",tv=$("nom").value;s.value=(sel&&state.noms.indexOf(sel)>=0?sel:(state.noms.length?state.noms[0]:""));$("nom").hidden=true;$("nom").value=""}
+function fillNames(sel){var s=$("ns"),h="",q=catKey($("nsSearch")&&$("nsSearch").value);if(sel==null)sel=s.value;state.noms.filter(function(n){return !q||catKey(n).indexOf(q)>=0||n===sel}).forEach(function(n){h+='<option value="'+esc(n).replace(/"/g,"&quot;")+'">'+esc(n)+'</option>'});s.innerHTML=h;var keep=sel==="__new",tv=$("nom").value;s.value=(sel&&state.noms.indexOf(sel)>=0?sel:(state.noms.length?state.noms[0]:""));$("nom").hidden=true;$("nom").value=""}
 function curNom(){var v=$("ns").value;return (v||"").trim()}
 var lastUndo=null,tt=null;
 function sellOne(id){var ix=-1;state.fish.forEach(function(x,i){if(x.id===id)ix=i});if(ix<0)return;var f=state.fish[ix],have=Number(f.unitats)||0,sid=uid();if(have<=0)return;state.sales.push({id:sid,nom:f.nom,tipus:f.tipus,unitatRecompte:f.unitatRecompte||null,minva:f.minva,pes:f.pes,unitats:1,dataCompra:f.dataCompra,preuCompra:f.preuCompra,preuVenda:carta(f)/fin(f),costNetKg:f.costNetKg,costTall:f.costTall??null,pesNetIndividual:f.pesNetIndividual,lotId:f.lotId,dataVenda:today()});var copy=JSON.parse(JSON.stringify(f));if(have<=1){state.fish.splice(ix,1)}else{f.unitats=have-1}lastUndo={sid:sid,fish:copy,ix:ix,removed:have<=1};sellId=null;confirmId=null;save();render();showToast((f.unitatRecompte==="racions"||f.tipus!=="talls"?"Venuda 1 "+unitLabel(f,1):"Venut 1 tall")+" · "+f.nom+(have<=1?" (s’ha acabat)":" · en queden "+(have-1)))}
@@ -883,10 +939,26 @@ function editForm(f){return '<div class="card"><div class="g2"><div class="full"
 function saveEdit(id){var f=state.fish.find(function(x){return x.id===id});if(!f)return;var nm=$("e_nom").value.trim(),w=Number($("e_pes").value),p=Number($("e_pv").value);if(!nm||!(w>0)||!(p>=0))return;if(f.lotId&&Math.abs(w-fin(f))>.0001){flash("El pes d’un peix de partida no es pot canviar aquí");return}var tipus=$("e_tp").value;
  if(f.lotId&&(f.tipus==="talls")!==(tipus==="talls")){flash("Canvia la preparació a Partides");return}
  f.nom=nm;f.tipus=tipus;f.pesNetIndividual=w;f.pes=w;f.preuVenda=p/w;f.preuManual=true;f.dataCompra=$("e_dc").value;editId=null;norm();save();render()}
-function renderNames(){var h='<div class="card"><label for="nn">Espècie o article nou</label><div class="act"><input id="nn" placeholder="Ex. Orada" style="flex:1;min-width:130px"><button class="s f" data-na="1">Afegeix</button></div></div>';state.noms.forEach(function(n,i){h+='<div class="card"><div class="row" style="align-items:center"><b>'+esc(n)+'</b><div class="act" style="margin:0"><button class="s" data-rename="'+i+'">Canvia nom</button><button class="s d" data-nd="'+i+'">Elimina</button></div></div></div>'});$("npList").innerHTML=h}
+var catalogSearch="";
+function renderNames(){
+ var pend=pendingNames(),h='';
+ if(pend.length){
+  h+='<div class="card"><h3>Pendents de vincular</h3><p class="mu">Aquests noms de partides antigues encara no estan lligats a cap article de GestoComandes. Tria l’article que els correspon o crea’l.</p>';
+  pend.forEach(function(n,i){h+='<div class="pending-row"><b>'+esc(n)+'</b><div class="act" style="margin:0"><input list="articleNames" id="pl'+i+'" placeholder="Article de GestoComandes" style="flex:1;min-width:160px"><button class="s f" data-link="'+i+'">Vincula</button><button class="s" data-create="'+i+'">Crea’l</button></div></div>'});
+  h+='</div>';
+ }
+ h+='<div class="card"><label for="nn">Article nou</label><div class="act"><input id="nn" placeholder="Ex. Orada" style="flex:1;min-width:130px"><button class="s f" data-na="1">Afegeix</button></div><p class="mu">S’afegeix a la llista d’articles de GestoComandes. Per canviar-ne el nom, arxivar-lo o eliminar-lo, fes-ho a GestoComandes.</p></div>';
+ var k=catKey(catalogSearch),list=catalog.articles.filter(function(a){return !a.archived&&(!k||catKey(a.name).indexOf(k)>=0)});
+ h+='<div class="card"><label for="catSearch">Cerca un article</label><input id="catSearch" type="search" value="'+esc(catalogSearch).replace(/"/g,"&quot;")+'" placeholder="Nom de l’article"><p class="mu">'+list.length+' de '+state.noms.length+' articles</p>';
+ list.slice(0,200).forEach(function(a){h+='<div class="cat-row"><b>'+esc(a.name)+'</b>'+(a.category?'<span class="mu">'+esc(a.category)+'</span>':'')+'</div>'});
+ if(list.length>200)h+='<p class="mu">Es mostren els 200 primers. Escriu més lletres per trobar-ne d’altres.</p>';
+ h+='</div><datalist id="articleNames">'+state.noms.map(function(n){return '<option value="'+esc(n).replace(/"/g,"&quot;")+'">'}).join('')+'</datalist>';
+ $("npList").innerHTML=h;
+}
 function save(){
  if(!window.peixosSync || !window.peixosSync.ready){flash("Sense sessió: no s'ha desat el canvi");return}
- window.peixosSync.save({fish:state.fish,sales:state.sales,noms:state.noms,lots:state.lots,config:state.config,imports:state.imports,ultimNumeroPartida:state.ultimNumeroPartida,proveidors:state.proveidors});
+ linkCatalog();
+ window.peixosSync.save({fish:state.fish,sales:state.sales,lots:state.lots,config:state.config,imports:state.imports,ultimNumeroPartida:state.ultimNumeroPartida});
 }
 function render(){renderSuppliers();renderStock();renderLots();renderConfig();var inv=0,tot=0;state.sales.forEach(function(s){inv+=cost(s);tot+=rev(s)});$("sum").innerHTML='<div><span class="mu">Vendes</span><b>'+state.sales.length+'</b></div><div><span class="mu">Ingressos</span><b>'+eur(tot)+'</b></div><div><span class="mu">Marge brut</span><b>'+eur(tot-inv)+'</b></div>';$("sales").innerHTML=state.sales.map(function(s){return '<div class="card"><b>'+esc(s.nom)+' · '+tag(s)+'</b><div class="mu">'+dt(s.dataVenda)+' · '+(s.tipus==='talls'?(s.unitats||1)+' '+unitLabel(s,s.unitats||1)+' · ':'')+kg(fin(s))+' · '+eur(rev(s))+'</div></div>'}).join('')||'<div class="empty">Encara no hi ha vendes.</div>'}
 function needsCutRecount(l,fish,locked){
@@ -1031,11 +1103,8 @@ $("supplierForm").onsubmit=function(e){
  e.preventDefault();
  var name=cleanSupplierName($("supplierName").value),key=supplierKey(name);
  if(!key){flash("Introdueix el nom del proveïdor");return}
- if(key!==editingSupplier&&registeredSupplier(name)){flash("Aquest proveïdor ja és al registre");return}
- var oldName=registeredSupplier(editingSupplier);
- if(editingSupplier&&!oldName){setSupplierEditor("");flash("El registre de proveïdors s’ha actualitzat");return}
- if(oldName)renameSupplier(oldName,name);else registerSupplier(name);
- setSupplierEditor("");save();render();flash(oldName?"Proveïdor actualitzat":"Proveïdor afegit");
+ if(registeredSupplier(name)){flash("Aquest proveïdor ja és a la llista");return}
+ createShared("createSupplier",name).then(function(){setSupplierEditor("");flash("Proveïdor afegit a la llista de GestoComandes")}).catch(function(err){flash("No s’ha pogut afegir: "+err.message)});
 };
 function setPurchaseVisible(visible){var card=$("purchaseCard"),btn=$("toggleManual");card.hidden=!visible;btn.setAttribute("aria-expanded",String(visible));btn.textContent=visible?"Amaga el formulari":"Nova partida manual"}
 window.nexamarShowPurchase=function(fromImport){setPurchaseVisible(true);if(!fromImport){window.nexamarClearPendingImport();$("f").reset();$("dc").value=today();$("tp").value="";$("net").value="";$("netMode").value="real";prev()} };
@@ -1056,7 +1125,21 @@ function prev(){
 $("countUnit").onchange=$("tp").onchange=prev;$("ns").onchange=prev;$("netMode").onchange=prev;["pes","net","pc","elabCost","qty","cuts"].forEach(function(id){$(id).oninput=prev});$("v2").parentNode.appendChild($("np"));document.body.appendChild($("toast"));$("pdf").onclick=function(){makePdf("download")};$("sharePdf").onclick=function(){makePdf("share")};$("printLabels").onclick=function(){printStockLabels()};
 $("toast").onclick=function(e){if(e.target.dataset.undo)undoSale()};
 $("mb").onclick=function(e){e.stopPropagation();$("menu").hidden=!$("menu").hidden;$("mb").setAttribute("aria-expanded",String(!$("menu").hidden))};document.addEventListener("click",function(e){if(!$("menu").hidden&&!$("menu").contains(e.target)&&!$("mb").contains(e.target)){$("menu").hidden=true;$("mb").setAttribute("aria-expanded","false")}});
-$("np").onclick=function(e){var d=e.target.dataset;if(d.na!==undefined){var v=$("nn").value.trim();if(!v)return;if(!state.noms.some(function(n){return n.toLocaleLowerCase("ca")===v.toLocaleLowerCase("ca")})){state.noms.push(v);norm();fillNames(v);save()}else{flash("Aquesta espècie ja existeix")}renderNames()}else if(d.rename!==undefined){var old=state.noms[Number(d.rename)],v=prompt("Nou nom de l'espècie",old);if(v===null)return;v=v.trim();if(!v||state.noms.some(function(n){return n!==old&&n.toLocaleLowerCase("ca")===v.toLocaleLowerCase("ca")})){flash("Nom buit o duplicat");return}state.noms[Number(d.rename)]=v;state.lots.forEach(function(l){if(l.nom===old)l.nom=v});state.fish.concat(state.sales).forEach(function(f){if(f.nom===old)f.nom=v});norm();fillNames(v);save();renderNames();render()}else if(d.nd!==undefined){var n=state.noms[Number(d.nd)];if(state.fish.concat(state.sales).some(function(f){return f.nom===n})||state.lots.some(function(l){return l.nom===n})){flash("No es pot eliminar una espècie utilitzada");return}state.noms.splice(Number(d.nd),1);save();fillNames();renderNames()}};
+$("suppliers").addEventListener("click",function(e){var d=e.target.dataset;if(d.slink===undefined&&d.screate===undefined)return;
+ var i=Number(d.slink!==undefined?d.slink:d.screate),old=pendingSuppliers()[i];if(!old)return;
+ if(d.screate!==undefined){e.target.disabled=true;createShared("createSupplier",old).then(function(){flash("«"+old+"» creat i vinculat")}).catch(function(err){flash("No s’ha pogut crear: "+err.message);e.target.disabled=false});return}
+ var sp=supplierByName($("sp"+i).value);if(!sp){flash("Tria un proveïdor de la llista");return}
+ state.lots.forEach(function(l){if(lotSupplier(l)===old&&!l.supplierId){l.supplierId=sp.id;l.proveidor=sp.name}});
+ save();render();flash("«"+old+"» vinculat a «"+sp.name+"»")});
+$("np").oninput=function(e){if(e.target.id==="catSearch"){catalogSearch=e.target.value;renderNames();var c=$("catSearch");c.focus();c.setSelectionRange(c.value.length,c.value.length)}};
+$("np").onclick=function(e){var d=e.target.dataset;
+ if(d.na!==undefined){var v=$("nn").value.trim();if(!v)return;e.target.disabled=true;createShared("createArticle",v).then(function(r){flash(r.existed?"Aquest article ja existia":"Article afegit")}).catch(function(err){flash("No s’ha pogut afegir: "+err.message);e.target.disabled=false});return}
+ if(d.link!==undefined||d.create!==undefined){var i=Number(d.link!==undefined?d.link:d.create),old=pendingNames()[i];if(!old)return;
+  if(d.create!==undefined){e.target.disabled=true;createShared("createArticle",old).then(function(){flash("«"+old+"» creat i vinculat")}).catch(function(err){flash("No s’ha pogut crear: "+err.message);e.target.disabled=false});return}
+  var a=articleByName($("pl"+i).value);if(!a){flash("Tria un article de la llista");return}
+  state.lots.concat(state.fish,state.sales).forEach(function(x){if(x.nom===old&&!x.articleId){x.articleId=a.id;x.nom=a.name}});
+  save();render();renderNames();flash("«"+old+"» vinculat a «"+a.name+"»")}
+};
 $("f").onsubmit=function(e){e.preventDefault();var nom=curNom(),brut=Number($("pes").value),net=Number($("net").value),pc=Number($("pc").value),extra=Number($("elabCost").value),qty=Number($("qty").value),same=$("same").value==="si",tipus=$("tp").value,cuts=tipus==="talls"?Number($("cuts").value):null,unit=tipus==="talls"?$("countUnit").value:null;if(tipus==="talls"&&!validCuts(cuts)){flash("Indica el nombre total de "+cutUnit(unit));return}if(tipus==="talls")qty=cuts;
  if(!validCuts(qty)||((tipus!=="talls"||!same)&&qty>500)){flash(tipus==="talls"?"Pots indicar fins a 500 pesos individuals.":"Indica un nombre de peixos entre 1 i 500.");return}if(!nom||!$("tp").value||!(brut>0)||!(pc>=0)||!(extra>=0)||(!(net>0)||net>brut)){flash("Comprova els pesos i el preu");return}var l={id:uid(),nom:nom,proveidor:$("supplier").value.trim(),tipus:tipus,unitatRecompte:unit,nombreTalls:cuts,pesBrut:brut,pesNet:net,preuBase:pc,elaboracio:extra,preuCompra:pc+extra/brut,dataCompra:$("dc").value,quantitat:qty,pesosIguals:same,validada:false,netMode:$("netMode").value,pesNetReal:$("netMode").value==="real"};var pendingImport=window.nexamarImportPending?window.nexamarImportPending():null;if(pendingImport&&pendingImport.alreadyManaged){flash('Aquesta línia ja està gestionada');return}if(pendingImport){l.importInvoice=pendingImport.invoiceId;l.importLine=pendingImport.lineKey}
  l.proveidor=registerSupplier(l.proveidor);l.numero=++state.ultimNumeroPartida;state.lots.push(l);window.activeLot=l.id;
@@ -1093,8 +1176,11 @@ $("stock").onclick=function(e){var o=e.target.closest("[data-open]");if(o&&!e.ta
   }
 };
 norm();compactarLotsIguals();fillNames();render();
-window.applyCloudState=function(d){if(!d.proveidors&&!d.lots)setSupplierEditor("");state={fish:d.fish||[],sales:d.sales||[],noms:d.noms||[],lots:d.lots||[],config:d.config||defaults(),imports:d.imports||{},ultimNumeroPartida:d.ultimNumeroPartida,proveidors:d.proveidors};norm();compactarLotsIguals();fillNames($("ns").value);render()};
+window.applyCloudState=function(d){if(!d.proveidors&&!d.lots)setSupplierEditor("");state={fish:d.fish||[],sales:d.sales||[],noms:[],lots:d.lots||[],config:d.config||defaults(),imports:d.imports||{},ultimNumeroPartida:d.ultimNumeroPartida,proveidors:[]};norm();compactarLotsIguals();linkChanged=linkCatalog()||linkChanged;fillNames($("ns").value);render()};
 window.setSyncStatus=function(t){$("syncStatus").textContent=t};
+$("nsSearch").oninput=function(){var s=$("ns"),q=catKey(this.value),first=state.noms.find(function(n){return catKey(n).indexOf(q)>=0});fillNames(q&&first?first:s.value);if(typeof prev==="function")prev()};
+// Després de carregar: si s’han lligat partides antigues amb articles comuns, es desa (si es té permís).
+window.stockLoaded=function(p){if(linkChanged&&p&&(p.admin||p.buy||p.sell)){linkChanged=false;save()}};
 // Mode fosc: mateixa preferència que GestoComandes i GestoTips (clau "theme").
 function setTheme(dark){document.documentElement.dataset.theme=dark?"dark":"light";$("theme").textContent=dark?"Mode clar":"Mode fosc";$("theme").setAttribute("aria-pressed",String(dark))}
 (function(){var saved=null;try{saved=localStorage.getItem("theme")}catch(e){}setTheme(saved?saved==="dark":matchMedia("(prefers-color-scheme: dark)").matches)})();
@@ -1132,7 +1218,8 @@ async function call(body){
  let data={};try{data=await r.json()}catch{}
  return {ok:r.ok,status:r.status,data};
 }
-function apply(d){revision=d.revision;window.applyPermissions(d.permissions);window.applyCloudState(d.data||{})}
+let perms=null;
+function apply(d){revision=d.revision;perms=d.permissions;window.applyPermissions(d.permissions);window.applyCatalog(d);window.applyCloudState(d.data||{})}
 // Carrega l'inventari del servidor. first=true: acabem d'entrar (si no hi ha accés, es tanca la sessió).
 async function load(first){
  if(!auth||!auth.currentUser||(!first&&(loading||pending)))return;
@@ -1146,7 +1233,9 @@ async function load(first){
   }
   if(pending)return;
   if(first||!ready||r.data.revision!==revision)apply(r.data);
+  else if(window.refreshCatalog)window.refreshCatalog(r.data,perms);
   setReady(true);status("Sincronitzat");
+  if(window.stockLoaded)window.stockLoaded(perms);
  }catch(e){status("Sense connexió amb el servidor · es tornarà a provar")}
  finally{loading=false}
 }
@@ -1154,6 +1243,8 @@ window.peixosSync={ready:false,
  getToken:async()=>auth&&auth.currentUser?auth.currentUser.getIdToken():null,
  login:(email,password)=>auth?signInWithEmailAndPassword(auth,email.trim(),password):Promise.reject(new Error("encara no hi ha connexió amb el servidor de les apps Gesto")),
  logout:()=>auth?signOut(auth):null,
+ // Dona d'alta un article o proveïdor a la llista comuna de GestoComandes.
+ create:async(action,name)=>{const r=await call({action,name});if(!r.ok)throw new Error(r.data.error||("Error "+r.status));return r.data},
  save:(data)=>{
   if(!ready)return;
   const mine=epoch;pending++;status("Desant…");
