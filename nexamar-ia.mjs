@@ -3,7 +3,9 @@ const ALLOWED_ORIGINS = new Set([
  'http://localhost:8000',
  'http://localhost:8001',
 ]);
-const PROJECT = 'control-de-peixos';
+// Projectes de Firebase acceptats: el de les apps Gesto (GestoStock 8.6 i posteriors)
+// i l'antic de GestoStock (fins a la 8.5), mentre es fa el canvi.
+const PROJECTS = new Set(['tracacomandes-jninforner', 'control-de-peixos']);
 
 function decodeBase64Url(str) { const b64=str.replace(/-/g,'+').replace(/_/g,'/'); const bin=atob(b64.padEnd(Math.ceil(b64.length/4)*4,'=')); return Uint8Array.from(bin,c=>c.charCodeAt(0)); }
 async function verifyFirebaseToken(token) {
@@ -11,7 +13,7 @@ async function verifyFirebaseToken(token) {
  const header=JSON.parse(new TextDecoder().decode(decodeBase64Url(parts[0])));
  const payload=JSON.parse(new TextDecoder().decode(decodeBase64Url(parts[1])));
  const now=Math.floor(Date.now()/1000);
- if(header.alg!=='RS256'||!header.kid||payload.aud!==PROJECT||payload.iss!==`https://securetoken.google.com/${PROJECT}`||!payload.sub||payload.exp<=now||payload.iat>now||payload.auth_time>now) throw Error('Sessió no vàlida');
+ if(header.alg!=='RS256'||!header.kid||!PROJECTS.has(payload.aud)||payload.iss!==`https://securetoken.google.com/${payload.aud}`||!payload.sub||payload.exp<=now||payload.iat>now||payload.auth_time>now) throw Error('Sessió no vàlida');
  const r=await fetch('https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com');
  if(!r.ok) throw Error('No es poden verificar credencials');
  const jwks=await r.json(); const jwk=jwks.keys.find(k=>k.kid===header.kid); if(!jwk) throw Error('Clau de verificació desconeguda');
