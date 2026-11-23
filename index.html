@@ -58,33 +58,33 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-width
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}.brand{min-width:0;flex:1}.brand h1{margin:0;font-size:clamp(21px,4.5vw,30px);line-height:1.1}.version{font-size:13px;margin-top:5px}.topactions{display:flex;align-items:center;gap:8px;flex-shrink:0}.topbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 12px;min-height:42px;border-radius:12px;font-size:15px;white-space:nowrap;background:var(--g1)}.topbtn span:first-child{font-family:Arial,sans-serif;font-size:18px;line-height:1}@media(max-width:430px){.topbar{gap:8px}.topactions{gap:5px}.topbtn{padding:7px 9px;font-size:13px}.brand h1{font-size:22px}}
 
 /* GestoStock 4.1 · refinament visual sense alterar la lògica */
-:root{--bg:#f7f8fd;--tx:#28377e;--mu:#6876ad;--ln:#303f91;--g1:#fff;--g2:#f0f2fc;--in:#fff;--on:#fff;--rd:#b42318;--gr:#17734a}
-:root[data-theme="dark"]{--bg:#10152c;--tx:#e5e9ff;--mu:#adb8e5;--ln:#a1afff;--g1:#1b2447;--g2:#232f59;--in:#141c39;--on:#10152c;--rd:#ff9992;--gr:#84dbab}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10152c;--tx:#e5e9ff;--mu:#adb8e5;--ln:#a1afff;--g1:#1b2447;--g2:#232f59;--in:#141c39;--on:#10152c;--rd:#ff9992;--gr:#84dbab}}
+:root{--bg:#f7f8fd;--tx:#28377e;--mu:#6876ad;--ln:#303f91;--g1:#fff;--g2:#f0f2fc;--in:#fff;--on:#fff;--rd:#b42318;--gr:#17734a;--border:#d4daf1;--field:#b6bfdf}
+:root[data-theme="dark"]{--bg:#10152c;--tx:#e5e9ff;--mu:#adb8e5;--ln:#a1afff;--g1:#1b2447;--g2:#232f59;--in:#141c39;--on:#10152c;--rd:#ff9992;--gr:#84dbab;--border:#425080;--field:#6371a0}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10152c;--tx:#e5e9ff;--mu:#adb8e5;--ln:#a1afff;--g1:#1b2447;--g2:#232f59;--in:#141c39;--on:#10152c;--rd:#ff9992;--gr:#84dbab;--border:#425080;--field:#6371a0}}
 body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.5}
 main{max-width:760px;padding:20px 16px 36px}
 h1,.brand h1{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-variant:normal;font-weight:700;letter-spacing:-.035em}
 h1{font-size:28px}
 .sc,label,button,.mu,.nm,select,.tag{font-variant:normal}
-.card{border:1px solid #d4daf1;border-radius:18px;background:var(--g1);padding:20px;margin-bottom:16px;box-shadow:0 3px 14px rgba(40,55,126,.055)}
+.card{border:1px solid var(--border);border-radius:18px;background:var(--g1);padding:20px;margin-bottom:16px;box-shadow:0 3px 14px rgba(40,55,126,.055)}
 button{border:1px solid var(--ln);border-radius:10px;font-family:inherit;font-size:15px;font-weight:600;padding:10px 15px;transition:background-color .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease;cursor:pointer}
 button:not(:disabled):hover{background:var(--ln);color:var(--on);box-shadow:0 3px 12px rgba(48,63,145,.15)}
 button.f:not(:disabled):hover,.tabs button.on:not(:disabled):hover,#menu button.on:not(:disabled):hover{filter:brightness(1.13)}
 button.d:not(:disabled):hover{background:var(--rd);border-color:var(--rd);color:#fff}
 button:disabled{cursor:not-allowed;opacity:.55}
 button:focus-visible,input:focus-visible,select:focus-visible,[role="button"]:focus-visible{outline:3px solid #788cf0;outline-offset:2px}
-input,select{border:1px solid #b6bfdf;border-radius:10px;font-family:inherit;font-size:16px}
+input,select{border:1px solid var(--field);border-radius:10px;font-family:inherit;font-size:16px}
 input:focus,select:focus{border-color:var(--ln)}
 select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
-.topbar{padding-bottom:14px;border-bottom:1px solid #dfe4f4;margin-bottom:18px}
+.topbar{padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:18px}
 .topbtn{border-radius:10px;font-size:14px;background:var(--g1)}
 .nm{font-size:21px;font-weight:650}.mu{font-size:14px}.big{font-weight:700}
-#menu{border:1px solid #d4daf1;border-radius:14px;box-shadow:0 12px 30px rgba(40,55,126,.15)}
-#toast{border-radius:12px}.sum div{border:1px solid #d4daf1;border-radius:12px;background:var(--g1)}
+#menu{border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 30px rgba(40,55,126,.15)}
+#toast{border-radius:12px}.sum div{border:1px solid var(--border);border-radius:12px;background:var(--g1)}
 @media(max-width:430px){main{padding:14px 12px 28px}.card{padding:15px}.brand h1{font-size:22px}.topbtn{font-size:13px}}
 @media(prefers-reduced-motion:reduce){button{transition:none}}
 /* Importació d'albarans: jerarquia i espaiat coherents */
-#albaraResult .alb-line{margin:18px 0 0;padding:20px;border:1px solid #d4daf1;border-radius:14px;background:var(--g1);box-shadow:0 2px 9px rgba(40,55,126,.04)}
+#albaraResult .alb-line{margin:18px 0 0;padding:20px;border:1px solid var(--border);border-radius:14px;background:var(--g1);box-shadow:0 2px 9px rgba(40,55,126,.04)}
 #albaraResult .alb-line .alb-name{margin-bottom:14px}
 #albaraResult .alb-line label{margin:0 0 3px;font-size:13px;font-weight:600;line-height:1.25}
 #albaraResult .alb-line .alb-warning{margin:10px 0 14px}
@@ -134,7 +134,7 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 #supplierForm label{display:block;margin-bottom:6px}
 .supplier-actions{display:flex;gap:8px;flex-wrap:wrap}
 #supplierRegistry{list-style:none;padding:0;margin:0}
-.supplier-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid #d4daf1}
+.supplier-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--border)}
 .supplier-row span{font-weight:600;overflow-wrap:anywhere}
 #noSuppliers{margin:0}
 @media(max-width:460px){#supplierForm{grid-template-columns:1fr}.supplier-actions{justify-content:flex-end}}
@@ -144,9 +144,9 @@ body.no-labels #printLabels,body.no-labels [data-lotlabels]{display:none!importa
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.8.7</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.8.7 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
-<div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.8.8</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.8.8 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button><button id="theme" type="button" aria-pressed="false">Mode fosc</button></div>
 <div id="v1"><h2 class="purchase-title">Registrar compra</h2><div class="card" style="margin-bottom:14px"><h2>Importar albarà · Lectura amb IA</h2><p class="mu">Selecciona una imatge o un PDF de l’albarà (JPG, PNG, WebP o PDF, fins a 8 MB). El fitxer s’enviarà al servei d’IA per interpretar el document. Revisa totes les dades abans de crear cada partida.</p><input id="albaraFile" type="file" accept="image/jpeg,image/png,image/webp,application/pdf,.pdf" aria-label="Selecciona un fitxer de l'albarà"><div class="act"><button type="button" class="s f" id="albaraRead">Analitzar amb IA</button></div><p class="mu" id="albaraStatus" aria-live="polite"></p><div id="albaraResult" hidden></div></div><div class="manual-head"><h3>Entrada manual de partida</h3><button type="button" class="s" id="toggleManual" aria-expanded="false">Nova partida manual</button></div><div class="card" id="purchaseCard" hidden><form id="f">
 <div class="full"><label for="ns">Espècie o article</label><select id="ns"></select><input id="nom" hidden></div>
 <div><label>Preparació</label><select id="tp" required><option value="" disabled>Selecciona la preparació</option><option value="sencer">Sencer</option><option value="palometa">En palometa</option><option value="filets">A filets</option><option value="talls">A talls</option></select></div>
@@ -718,7 +718,7 @@ function printStockLabels(lot){
  dialog.style.cssText='position:fixed;inset:0;z-index:200;background:rgba(12,24,46,.65);display:flex;align-items:center;justify-content:center;padding:16px';
  var panel=document.createElement('div');panel.className='card';panel.style.cssText='width:min(560px,100%);max-height:90vh;overflow:auto';
  var h=lot?'<h2>Etiquetes de la partida</h2><p><b>'+esc(lot.nom)+' · '+esc(tag(lot))+'</b> · '+dt(lot.dataCompra)+' · '+esc(lotReference(lot))+'</p><label for="labelsQuantity"><b>Quantes etiquetes vols imprimir?</b></label><input id="labelsQuantity" type="number" inputmode="numeric" min="1" max="2400" step="1" value="1" required>':'<h2>Etiquetes d’inventari</h2><p class="mu">Selecciona partides senceres. S’imprimirà una etiqueta per cada peix o tall disponible, en fulls A4 APLI 01272 de 24 etiquetes (3 × 8, 70 × 35 mm).</p><div class="act"><button type="button" class="s" id="labelsAll">Selecciona totes</button><button type="button" class="s" id="labelsNone">Cap</button></div>';
- groups.forEach(function(g,i){var f=g.items[0],units=g.items.reduce(function(n,x){return n+Number(x.unitats||0)},0);h+='<label style="display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #dde4ed"><input type="checkbox" data-label-group="'+i+'" style="width:20px;height:20px;flex:none" checked><span><b>'+esc(f.nom)+' · '+esc(tag(f))+'</b><span class="mu" style="display:block">'+dt(f.dataCompra)+' · '+units+' etiquetes · '+esc(lotReference(state.lots.find(function(l){return l.id===g.lotId})))+'</span></span></label>'});
+ groups.forEach(function(g,i){var f=g.items[0],units=g.items.reduce(function(n,x){return n+Number(x.unitats||0)},0);h+='<label style="display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)"><input type="checkbox" data-label-group="'+i+'" style="width:20px;height:20px;flex:none" checked><span><b>'+esc(f.nom)+' · '+esc(tag(f))+'</b><span class="mu" style="display:block">'+dt(f.dataCompra)+' · '+units+' etiquetes · '+esc(lotReference(state.lots.find(function(l){return l.id===g.lotId})))+'</span></span></label>'});
  if(lot)h+='<details style="margin-top:16px"><summary>Ajustos del full (opcional)</summary>';
  h+='<div style="margin:16px 0"><label for="labelsStart" style="display:block;margin-bottom:8px;font-weight:600">Posició inicial al full</label><select id="labelsStart" aria-label="Primera etiqueta disponible del full" style="width:100%">'+Array.from({length:24},function(_,i){return '<option value="'+(i+1)+'">'+(i+1)+(i===0?' (full nou)':'')+'</option>'}).join('')+'</select><p class="mu" style="margin-top:8px">Si el full és nou, deixa la posició 1. En un full començat, tria la primera casella lliure d’esquerra a dreta i de dalt a baix.</p></div>';
  h+='<div style="margin:12px 0"><label for="labelsGap" style="display:block;margin-bottom:8px;font-weight:600">Separació vertical entre etiquetes (mm)</label><input id="labelsGap" type="number" min="0" max="2.4" step="0.1" value="2.1" style="width:100%"><p class="mu" style="margin-top:6px">Distància lliure entre files, a més dels 35 mm d’alçada de cada etiqueta. Valor inicial: 2,1 mm; ajustable segons el full real.</p></div>';
@@ -1077,6 +1077,11 @@ $("stock").onclick=function(e){var o=e.target.closest("[data-open]");if(o&&!e.ta
 norm();compactarLotsIguals();fillNames();render();
 window.applyCloudState=function(d){if(!d.proveidors&&!d.lots)setSupplierEditor("");state={fish:d.fish||[],sales:d.sales||[],noms:d.noms||[],lots:d.lots||[],config:d.config||defaults(),imports:d.imports||{},ultimNumeroPartida:d.ultimNumeroPartida,proveidors:d.proveidors};norm();compactarLotsIguals();fillNames($("ns").value);render()};
 window.setSyncStatus=function(t){$("syncStatus").textContent=t};
+// Mode fosc: mateixa preferència que GestoComandes i GestoTips (clau "theme").
+function setTheme(dark){document.documentElement.dataset.theme=dark?"dark":"light";$("theme").textContent=dark?"Mode clar":"Mode fosc";$("theme").setAttribute("aria-pressed",String(dark))}
+(function(){var saved=null;try{saved=localStorage.getItem("theme")}catch(e){}setTheme(saved?saved==="dark":matchMedia("(prefers-color-scheme: dark)").matches)})();
+$("theme").onclick=function(){var dark=document.documentElement.dataset.theme!=="dark";try{localStorage.setItem("theme",dark?"dark":"light")}catch(e){}setTheme(dark)};
+
 // Permisos de GestoAdmin: amaga les seccions i els botons que l'usuari no pot fer servir.
 window.applyPermissions=function(p){
  p=p||{};var on={t0:p.buy,t1:p.view||p.sell,t2:p.history,en:p.config,tl:p.view||p.buy,tc:p.config,ts:p.config||p.buy};
