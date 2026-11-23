@@ -155,6 +155,10 @@ body.no-labels #printLabels,body.no-labels [data-lotlabels]{display:none!importa
 input[type=file]{padding:6px;height:auto}
 input[type=file]::file-selector-button{margin-right:10px;padding:8px 14px;border:1px solid var(--ln);border-radius:10px;background:var(--g1);color:var(--tx);font:600 15px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer}
 input[type=file]::file-selector-button:hover{background:var(--g2)}
+.main-card .card{background:var(--g1);box-shadow:none;border:1px solid var(--border);border-radius:14px;padding:16px;margin:12px 0 0}
+.main-card .sum{margin:12px 0 0}
+.view-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.view-head h2{margin:0}.view-head .act{margin:0}
 </style>
 </head>
 <body>
@@ -180,11 +184,11 @@ input[type=file]::file-selector-button:hover{background:var(--g2)}
 <div id="fishQuantity"><label for="qty">Nombre d’unitats del lot</label><input id="qty" type="number" min="1" max="500" step="1" value="1" required></div><div><label id="sameWeightLabel" for="same">Totes les unitats tenen el mateix pes net?</label><select id="same"><option value="si">Sí</option><option value="no">No</option></select></div>
 <div class="full mu" id="pf"></div><div class="full mu" id="cp"></div>
 <button class="f full" type="submit">Crear partida</button>
-</form></div></section></div><div id="np" hidden></div><div id="toast" hidden></div></div>
-<div id="v3" hidden><div class="act" style="margin:0 0 12px"><button id="pdf" class="s f">Descarrega PDF</button><button id="sharePdf" class="s" type="button">Comparteix PDF</button><button id="printLabels" class="s" type="button">Imprimeix etiquetes</button></div><div id="stock"></div>
+</form></div></section></div><div id="np" hidden><div class="card main-card"><h2>Catàleg d’articles</h2><div id="npList"></div></div></div><div id="toast" hidden></div></div>
+<div id="v3" hidden><div class="card main-card"><div class="view-head"><h2>Inventari</h2><div class="act"><button id="pdf" class="s f">Descarrega PDF</button><button id="sharePdf" class="s" type="button">Comparteix PDF</button><button id="printLabels" class="s" type="button">Imprimeix etiquetes</button></div></div><div id="stock"></div></div>
 </div>
-<div id="suppliers" hidden>
-<h2 class="supplier-title">Proveïdors</h2>
+<div id="suppliers" hidden><div class="card main-card">
+<h2>Proveïdors</h2>
 <div class="card supplier-card">
 <h3 id="supplierFormTitle">Nou proveïdor</h3>
 <form id="supplierForm" aria-labelledby="supplierFormTitle">
@@ -197,7 +201,7 @@ input[type=file]::file-selector-button:hover{background:var(--g2)}
 <ul id="supplierRegistry"></ul>
 <p id="noSuppliers" class="mu">Encara no hi ha proveïdors registrats.</p>
 </div>
-</div><div id="lots" hidden></div><div id="config" hidden></div><div id="v2" hidden><div id="sum" class="sum"></div><div id="sales"></div></div>
+</div></div><div id="lots" hidden><div class="card main-card"><h2>Partides</h2><div id="lotsList"></div></div></div><div id="config" hidden><div class="card main-card"><h2>Paràmetres</h2><div id="configBody"></div></div></div><div id="v2" hidden><div class="card main-card"><h2>Historial de vendes</h2><div id="sum" class="sum"></div><div id="sales"></div></div></div>
 </main>
 <script>
 /* Importació d’albarans amb revisió abans de crear partides. */
@@ -879,7 +883,7 @@ function editForm(f){return '<div class="card"><div class="g2"><div class="full"
 function saveEdit(id){var f=state.fish.find(function(x){return x.id===id});if(!f)return;var nm=$("e_nom").value.trim(),w=Number($("e_pes").value),p=Number($("e_pv").value);if(!nm||!(w>0)||!(p>=0))return;if(f.lotId&&Math.abs(w-fin(f))>.0001){flash("El pes d’un peix de partida no es pot canviar aquí");return}var tipus=$("e_tp").value;
  if(f.lotId&&(f.tipus==="talls")!==(tipus==="talls")){flash("Canvia la preparació a Partides");return}
  f.nom=nm;f.tipus=tipus;f.pesNetIndividual=w;f.pes=w;f.preuVenda=p/w;f.preuManual=true;f.dataCompra=$("e_dc").value;editId=null;norm();save();render()}
-function renderNames(){var h='<div class="card"><label for="nn">Espècie o article nou</label><div class="act"><input id="nn" placeholder="Ex. Orada" style="flex:1;min-width:130px"><button class="s f" data-na="1">Afegeix</button></div></div>';state.noms.forEach(function(n,i){h+='<div class="card"><div class="row" style="align-items:center"><b>'+esc(n)+'</b><div class="act" style="margin:0"><button class="s" data-rename="'+i+'">Canvia nom</button><button class="s d" data-nd="'+i+'">Elimina</button></div></div></div>'});$("np").innerHTML=h}
+function renderNames(){var h='<div class="card"><label for="nn">Espècie o article nou</label><div class="act"><input id="nn" placeholder="Ex. Orada" style="flex:1;min-width:130px"><button class="s f" data-na="1">Afegeix</button></div></div>';state.noms.forEach(function(n,i){h+='<div class="card"><div class="row" style="align-items:center"><b>'+esc(n)+'</b><div class="act" style="margin:0"><button class="s" data-rename="'+i+'">Canvia nom</button><button class="s d" data-nd="'+i+'">Elimina</button></div></div></div>'});$("npList").innerHTML=h}
 function save(){
  if(!window.peixosSync || !window.peixosSync.ready){flash("Sense sessió: no s'ha desat el canvi");return}
  window.peixosSync.save({fish:state.fish,sales:state.sales,noms:state.noms,lots:state.lots,config:state.config,imports:state.imports,ultimNumeroPartida:state.ultimNumeroPartida,proveidors:state.proveidors});
@@ -915,7 +919,7 @@ function renderLots(){
   }
   return out+'</div>';
  }).join('');
- $("lots").innerHTML=h||'<div class="empty">Encara no hi ha partides.</div>';
+ $("lotsList").innerHTML=h||'<div class="empty">Encara no hi ha partides.</div>';
  var l=state.lots.find(function(x){return x.id===window.activeLot});
  if(l&&window.editLot===l.id){
   $("le_countUnit").onchange=$("le_tp").onchange=function(){showCutsField("le_","le_tp")};
@@ -1002,7 +1006,7 @@ function generateLotFish(l){
  save();render();flash("Estoc generat. Ja pots validar la partida.");
 }
 
-function renderConfig(){var c=conf();$("config").innerHTML='<div class="card"><h2>Paràmetres</h2><div class="g2"><div><label>IVA (%)</label><input id="civa" type="number" step="0.1" min="0" value="'+c.iva+'"></div><div><label>Arrodoniment (€)</label><input id="cr" type="number" step="0.1" min="0" value="'+c.arrodoniment+'"></div><div><label>Grams mínims / pax</label><input id="cmin" type="number" min="1" value="'+c.paxMin+'"></div><div><label>Grams màxims / pax</label><input id="cmax" type="number" min="1" value="'+c.paxMax+'"></div></div><h3>Multiplicador segons cost net</h3>'+c.trams.map(function(t,i){return '<div class="g2"><div><label>Cost €/kg</label><input id="ct'+i+'" type="number" min="0" step="0.01" value="'+t.cost+'"></div><div><label>Multiplicador</label><input id="cm'+i+'" type="number" min="1" step="0.1" value="'+t.mult+'"></div></div>'}).join('')+'<div class="act"><button class="s f" id="saveConfig">Desa paràmetres</button></div><p class="mu">El preu suggerit inclou IVA. Pots corregir-lo per a cada peix.</p></div>'}
+function renderConfig(){var c=conf();$("configBody").innerHTML='<div class="card"><div class="g2"><div><label>IVA (%)</label><input id="civa" type="number" step="0.1" min="0" value="'+c.iva+'"></div><div><label>Arrodoniment (€)</label><input id="cr" type="number" step="0.1" min="0" value="'+c.arrodoniment+'"></div><div><label>Grams mínims / pax</label><input id="cmin" type="number" min="1" value="'+c.paxMin+'"></div><div><label>Grams màxims / pax</label><input id="cmax" type="number" min="1" value="'+c.paxMax+'"></div></div><h3>Multiplicador segons cost net</h3>'+c.trams.map(function(t,i){return '<div class="g2"><div><label>Cost €/kg</label><input id="ct'+i+'" type="number" min="0" step="0.01" value="'+t.cost+'"></div><div><label>Multiplicador</label><input id="cm'+i+'" type="number" min="1" step="0.1" value="'+t.mult+'"></div></div>'}).join('')+'<div class="act"><button class="s f" id="saveConfig">Desa paràmetres</button></div><p class="mu">El preu suggerit inclou IVA. Pots corregir-lo per a cada peix.</p></div>'}
 function tab(n){$("menu").hidden=true;$("mb").setAttribute("aria-expanded","false");["v1","v3","v2","np","lots","config","suppliers"].forEach(function(id,i){$(id).hidden=i!==n});["t0","t1","t2","en","tl","tc","ts"].forEach(function(id,i){$(id).className=i===n?"on":""});if(n===3)renderNames();if(n===4)renderLots();if(n===5)renderConfig();window.scrollTo(0,0)}
 ["t0","t1","t2","en","tl","tc","ts"].forEach(function(id,i){$(id).onclick=function(){tab(i)}});
 var editingSupplier="";
