@@ -141,7 +141,7 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 body.no-buy [data-edit],body.no-buy [data-del],body.no-buy [data-del2],body.no-buy [data-lotedit],body.no-buy [data-lotdelete]{display:none!important}
 body.no-sell [data-sell]{display:none!important}
 body.no-labels #printLabels,body.no-labels [data-lotlabels]{display:none!important}
-/* Aspecte comú de les apps Gesto (model: GestoComandes) */
+/* Aspecte comú de les apps Gesto (model: GestoCatalog) */
 :root{--main-bg:#eaf0ff;--main-border:#afbfeb}
 :root[data-theme="dark"]{--main-bg:#202e55;--main-border:#516798}
 .card h2{font-size:21px;margin:0 0 6px}
@@ -165,10 +165,10 @@ input[type=file]::file-selector-button:hover{background:var(--g2)}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.11.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
-<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.11.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.11.1</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form><p class="mu" id="loginError"></p></div></div>
+<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.11.1 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button><button id="theme" type="button" aria-pressed="false">Mode fosc</button></div>
-<div id="v1"><div class="card main-card"><h2>Registrar compra</h2><p class="mu intro">Crea partides a partir de les compres de GestoComandes o entra-les a mà.</p><section class="panel" id="pendingPanel"><h3>Compres de GestoComandes</h3><p class="mu">Línies d’albarà que has enviat a GestoStock des de GestoComandes. Crea’n la partida o descarta-les.</p><div id="pendingLines"></div></section><section class="panel"><div class="manual-head"><h3>Entrada manual de partida</h3><button type="button" class="s" id="toggleManual" aria-expanded="false">Nova partida manual</button></div><div id="purchaseCard" hidden><form id="f">
+<div id="v1"><div class="card main-card"><h2>Registrar compra</h2><p class="mu intro">Crea partides a partir de les compres de GestoCatalog o entra-les a mà.</p><section class="panel" id="pendingPanel"><h3>Compres de GestoCatalog</h3><p class="mu">Línies d’albarà que has enviat a GestoStock des de GestoCatalog. Crea’n la partida o descarta-les.</p><div id="pendingLines"></div></section><section class="panel"><div class="manual-head"><h3>Entrada manual de partida</h3><button type="button" class="s" id="toggleManual" aria-expanded="false">Nova partida manual</button></div><div id="purchaseCard" hidden><form id="f">
 <div class="full"><label for="ns">Espècie o article</label><input id="nsSearch" type="search" placeholder="Cerca l’article" autocomplete="off" style="margin-bottom:6px"><select id="ns"></select><input id="nom" hidden></div>
 <div><label>Preparació</label><select id="tp" required><option value="" disabled>Selecciona la preparació</option><option value="sencer">Sencer</option><option value="palometa">En palometa</option><option value="filets">A filets</option><option value="talls">A talls</option></select></div>
 <div id="countUnitField" hidden><label for="countUnit">Què comptem?</label><select id="countUnit" disabled><option value="talls">Talls</option><option value="racions">Racions</option></select></div>
@@ -201,14 +201,14 @@ input[type=file]::file-selector-button:hover{background:var(--g2)}
 </div>
 <div class="card supplier-card" id="supplierPending" hidden>
 <h3>Pendents de vincular</h3>
-<p class="mu">Proveïdors de partides antigues que no són a la llista de GestoComandes. Tria a quin correspon o crea’l.</p>
+<p class="mu">Proveïdors de partides antigues que no són a la llista de GestoCatalog. Tria a quin correspon o crea’l.</p>
 <div id="supplierPendingList"></div>
 </div>
 <div class="card supplier-card">
 <h3>Proveïdors registrats</h3>
 <ul id="supplierRegistry"></ul>
 <p id="noSuppliers" class="mu">Encara no hi ha proveïdors registrats.</p>
-<p class="mu">És la mateixa llista que GestoComandes. Per canviar-ne el nom o el telèfon, fes-ho a GestoComandes.</p>
+<p class="mu">És la mateixa llista que GestoCatalog. Per canviar-ne el nom o el telèfon, fes-ho a GestoCatalog.</p>
 </div>
 </div></div><div id="lots" hidden><div class="card main-card"><h2>Partides</h2><div id="lotsList"></div></div></div><div id="config" hidden><div class="card main-card"><h2>Paràmetres</h2><div id="configBody"></div></div></div><div id="v2" hidden><div class="card main-card"><h2>Historial de vendes</h2><div id="sum" class="sum"></div><div id="sales"></div></div></div>
 </main>
@@ -345,7 +345,7 @@ function renderSuppliers(){
  }).join("");
  var pend=pendingSuppliers();
  $("supplierPending").hidden=!pend.length;
- $("supplierPendingList").innerHTML=pend.map(function(n,i){return '<div class="pending-row"><b>'+esc(n)+'</b><div class="act" style="margin:0"><input list="supplierNames" id="sp'+i+'" placeholder="Proveïdor de GestoComandes" style="flex:1;min-width:160px"><button class="s f" type="button" data-slink="'+i+'">Vincula</button><button class="s" type="button" data-screate="'+i+'">Crea’l</button></div></div>'}).join("");
+ $("supplierPendingList").innerHTML=pend.map(function(n,i){return '<div class="pending-row"><b>'+esc(n)+'</b><div class="act" style="margin:0"><input list="supplierNames" id="sp'+i+'" placeholder="Proveïdor de GestoCatalog" style="flex:1;min-width:160px"><button class="s f" type="button" data-slink="'+i+'">Vincula</button><button class="s" type="button" data-screate="'+i+'">Crea’l</button></div></div>'}).join("");
  $("noSuppliers").hidden=names.length>0;
 }
 function renameSupplier(oldName,newName){
@@ -389,16 +389,16 @@ function preuCartaSuggerit(costNetKg,pesNet){
 function minvaLot(f){var l=(state.lots||[]).find(function(x){return x.id===f.lotId});return l&&l.pesBrut>0&&l.pesNet!=null?(1-l.pesNet/l.pesBrut)*100:null}
 function preuSuggerit(c){var cfg=conf(),n=c*multiplicador(c)*(1+cfg.iva/100),r=Number(cfg.arrodoniment)||0;return r>0?Math.ceil((n-1e-8)/r)*r:n}
 function norm(){state.fish=state.fish||[];state.sales=state.sales||[];state.noms=state.noms||[];state.lots=state.lots||[];state.imports=state.imports||{};state.config=state.config||defaults();
- // Articles i proveïdors: la llista comuna de GestoComandes (no es desen a l'inventari).
+ // Articles i proveïdors: la llista comuna de GestoCatalog (no es desen a l'inventari).
  state.noms=catalog.articles.filter(function(a){return !a.archived}).map(function(a){return a.name});
  state.proveidors=catalog.suppliers.map(function(s){return s.name});
  numberLots();migrateCutStock()}
-// ---- Articles i proveïdors comuns amb GestoComandes ----
+// ---- Articles i proveïdors comuns amb GestoCatalog ----
 var catalog={articles:[],suppliers:[]},linkChanged=false;
 function catKey(n){return String(n||"").trim().toLocaleLowerCase("ca")}
 window.applyCatalog=function(d){if(d&&Array.isArray(d.articles))catalog.articles=d.articles;if(d&&Array.isArray(d.suppliers))catalog.suppliers=d.suppliers;catalogKey=JSON.stringify([catalog.articles,catalog.suppliers])};
 var catalogKey="";
-// Canvis fets a GestoComandes (noms nous, articles nous…) sense canvis a l'inventari.
+// Canvis fets a GestoCatalog (noms nous, articles nous…) sense canvis a l'inventari.
 window.refreshCatalog=function(d,p){
  if(JSON.stringify([d.articles,d.suppliers])===catalogKey)return;
  window.applyCatalog(d);var changed=linkCatalog();norm();fillNames($("ns").value);render();renderNames();
@@ -422,7 +422,7 @@ function linkCatalog(){
  });
  return changed;
 }
-// Noms de partides antigues que encara no estan lligats a cap article de GestoComandes.
+// Noms de partides antigues que encara no estan lligats a cap article de GestoCatalog.
 function pendingSuppliers(){var m=new Set();state.lots.forEach(function(l){var n=lotSupplier(l);if(n&&!l.supplierId)m.add(n)});return Array.from(m).sort(function(a,b){return a.localeCompare(b,"ca")})}
 function pendingNames(){var m=new Map();state.lots.concat(state.fish,state.sales).forEach(function(x){if(x.nom&&!x.articleId)m.set(x.nom,(m.get(x.nom)||0)+1)});return Array.from(m.keys()).sort(function(a,b){return a.localeCompare(b,"ca")})}
 // Dona d'alta un article o un proveïdor a la llista comuna i torna a pintar.
@@ -670,11 +670,11 @@ var catalogSearch="";
 function renderNames(){
  var pend=pendingNames(),h='';
  if(pend.length){
-  h+='<div class="card"><h3>Pendents de vincular</h3><p class="mu">Aquests noms de partides antigues encara no estan lligats a cap article de GestoComandes. Tria l’article que els correspon o crea’l.</p>';
-  pend.forEach(function(n,i){h+='<div class="pending-row"><b>'+esc(n)+'</b><div class="act" style="margin:0"><input list="articleNames" id="pl'+i+'" placeholder="Article de GestoComandes" style="flex:1;min-width:160px"><button class="s f" data-link="'+i+'">Vincula</button><button class="s" data-create="'+i+'">Crea’l</button></div></div>'});
+  h+='<div class="card"><h3>Pendents de vincular</h3><p class="mu">Aquests noms de partides antigues encara no estan lligats a cap article de GestoCatalog. Tria l’article que els correspon o crea’l.</p>';
+  pend.forEach(function(n,i){h+='<div class="pending-row"><b>'+esc(n)+'</b><div class="act" style="margin:0"><input list="articleNames" id="pl'+i+'" placeholder="Article de GestoCatalog" style="flex:1;min-width:160px"><button class="s f" data-link="'+i+'">Vincula</button><button class="s" data-create="'+i+'">Crea’l</button></div></div>'});
   h+='</div>';
  }
- h+='<div class="card"><label for="nn">Article nou</label><div class="act"><input id="nn" placeholder="Ex. Orada" style="flex:1;min-width:130px"><button class="s f" data-na="1">Afegeix</button></div><p class="mu">S’afegeix a la llista d’articles de GestoComandes. Per canviar-ne el nom, arxivar-lo o eliminar-lo, fes-ho a GestoComandes.</p></div>';
+ h+='<div class="card"><label for="nn">Article nou</label><div class="act"><input id="nn" placeholder="Ex. Orada" style="flex:1;min-width:130px"><button class="s f" data-na="1">Afegeix</button></div><p class="mu">S’afegeix a la llista d’articles de GestoCatalog. Per canviar-ne el nom, arxivar-lo o eliminar-lo, fes-ho a GestoCatalog.</p></div>';
  var k=catKey(catalogSearch),list=catalog.articles.filter(function(a){return !a.archived&&(!k||catKey(a.name).indexOf(k)>=0)});
  h+='<div class="card"><label for="catSearch">Cerca un article</label><input id="catSearch" type="search" value="'+esc(catalogSearch).replace(/"/g,"&quot;")+'" placeholder="Nom de l’article"><p class="mu">'+list.length+' de '+state.noms.length+' articles</p>';
  list.slice(0,200).forEach(function(a){h+='<div class="cat-row"><b>'+esc(a.name)+'</b>'+(a.category?'<span class="mu">'+esc(a.category)+'</span>':'')+'</div>'});
@@ -831,7 +831,7 @@ $("supplierForm").onsubmit=function(e){
  var name=cleanSupplierName($("supplierName").value),key=supplierKey(name);
  if(!key){flash("Introdueix el nom del proveïdor");return}
  if(registeredSupplier(name)){flash("Aquest proveïdor ja és a la llista");return}
- createShared("createSupplier",name).then(function(){setSupplierEditor("");flash("Proveïdor afegit a la llista de GestoComandes")}).catch(function(err){flash("No s’ha pogut afegir: "+err.message)});
+ createShared("createSupplier",name).then(function(){setSupplierEditor("");flash("Proveïdor afegit a la llista de GestoCatalog")}).catch(function(err){flash("No s’ha pogut afegir: "+err.message)});
 };
 function setPurchaseVisible(visible){var card=$("purchaseCard"),btn=$("toggleManual");card.hidden=!visible;btn.setAttribute("aria-expanded",String(visible));btn.textContent=visible?"Amaga el formulari":"Nova partida manual"}
 window.nexamarShowPurchase=function(fromImport){setPurchaseVisible(true);if(!fromImport){window.pendingStockLine=null;$("f").reset();$("dc").value=today();$("tp").value="";$("net").value="";$("netMode").value="real";prev()} };
@@ -906,7 +906,7 @@ norm();compactarLotsIguals();fillNames();render();
 window.applyCloudState=function(d){if(!d.proveidors&&!d.lots)setSupplierEditor("");state={fish:d.fish||[],sales:d.sales||[],noms:[],lots:d.lots||[],config:d.config||defaults(),imports:d.imports||{},ultimNumeroPartida:d.ultimNumeroPartida,proveidors:[]};norm();compactarLotsIguals();linkChanged=linkCatalog()||linkChanged;fillNames($("ns").value);render()};
 window.setSyncStatus=function(t){$("syncStatus").textContent=t};
 
-// ---- Compres de GestoComandes pendents de crear la partida ----
+// ---- Compres de GestoCatalog pendents de crear la partida ----
 var pendingLines=[];
 window.pendingStockLine=null;
 window.applyPending=function(list){if(!Array.isArray(list))return;pendingLines=list;renderPending()};
@@ -947,7 +947,7 @@ $("pendingLines").addEventListener("click",function(e){
 $("nsSearch").oninput=function(){var s=$("ns"),q=catKey(this.value),first=state.noms.find(function(n){return catKey(n).indexOf(q)>=0});fillNames(q&&first?first:s.value);if(typeof prev==="function")prev()};
 // Després de carregar: si s’han lligat partides antigues amb articles comuns, es desa (si es té permís).
 window.stockLoaded=function(p){if(linkChanged&&p&&(p.admin||p.buy||p.sell)){linkChanged=false;save()}};
-// Mode fosc: mateixa preferència que GestoComandes i GestoTips (clau "theme").
+// Mode fosc: mateixa preferència que GestoCatalog i GestoTips (clau "theme").
 function setTheme(dark){document.documentElement.dataset.theme=dark?"dark":"light";$("theme").textContent=dark?"Mode clar":"Mode fosc";$("theme").setAttribute("aria-pressed",String(dark))}
 (function(){var saved=null;try{saved=localStorage.getItem("theme")}catch(e){}setTheme(saved?saved==="dark":matchMedia("(prefers-color-scheme: dark)").matches)})();
 $("theme").onclick=function(){var dark=document.documentElement.dataset.theme!=="dark";try{localStorage.setItem("theme",dark?"dark":"light")}catch(e){}setTheme(dark)};
@@ -1009,7 +1009,7 @@ window.peixosSync={ready:false,
  getToken:async()=>auth&&auth.currentUser?auth.currentUser.getIdToken():null,
  login:(email,password)=>auth?signInWithEmailAndPassword(auth,email.trim(),password):Promise.reject(new Error("encara no hi ha connexió amb el servidor de les apps Gesto")),
  logout:()=>auth?signOut(auth):null,
- // Dona d'alta un article o proveïdor a la llista comuna de GestoComandes.
+ // Dona d'alta un article o proveïdor a la llista comuna de GestoCatalog.
  stockLine:async(purchaseId,position,status)=>{const r=await call({action:"stockLine",purchaseId,position,status});if(!r.ok)throw new Error(r.data.error||("Error "+r.status));return r.data},
  create:async(action,name)=>{const r=await call({action,name});if(!r.ok)throw new Error(r.data.error||("Error "+r.status));return r.data},
  save:(data)=>{
