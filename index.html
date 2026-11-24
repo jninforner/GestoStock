@@ -164,6 +164,18 @@ input[type=file]::file-selector-button:hover{background:var(--g2)}
 .pending-row,.cat-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--border)}
 .cat-row .mu{font-size:13px}
 .pending-row .act{flex:1 1 320px;justify-content:flex-end}.pending-row .act input{flex:1}
+/* Catàleg d'articles (només consulta), amb l'aspecte de GestoCatalog */
+.cat-heading{display:flex;align-items:start;justify-content:space-between;gap:10px;flex-wrap:wrap}.cat-heading h2{margin:0}
+.cat-filters{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;gap:8px;min-width:0;flex:1 1 100%}.cat-filters label{display:grid;gap:4px;width:100%}
+.cat-search{display:grid;gap:4px;margin-top:14px}.cat-search input{width:100%}
+.cat-tools{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}.cat-tools p{flex:1 1 220px;margin:0}
+details.cat-group{margin-top:16px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+details.cat-group>summary{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;background:var(--soft);border-radius:11px;font-weight:700;font-size:15px;cursor:pointer;list-style:none}
+details.cat-group>summary::-webkit-details-marker{display:none}details.cat-group>summary::before{content:'▸';margin-right:4px;transition:transform .15s}
+details.cat-group[open]>summary::before{transform:rotate(90deg)}details.cat-group[open]>summary{border-radius:11px 11px 0 0}
+details.cat-group>summary .group-name{flex:1 1 auto}details.cat-group>summary .meta{font-weight:400;font-size:13px}
+.cat-item{display:grid;gap:1px;padding:6px 12px;border-top:1px solid var(--border);line-height:1.2}.cat-item strong{color:var(--red);overflow-wrap:anywhere}.cat-item .meta{overflow-wrap:anywhere}
+@media(max-width:600px){.cat-heading{display:grid;gap:6px}.cat-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 8px}.cat-filters label{font-size:12px;gap:2px}details.cat-group{margin-top:8px}}
 /* ===== Guia d'estil comuna de les apps Gesto (ESTIL.md de GestoApps) ===== */
 /* Colors: mateixos valors que GestoCatalog. Els noms antics (--g1, --rd…) apunten als nous. */
 :root{--bg:#f7f8fd;--tx:#28377e;--mu:#566598;--ln:#303f91;--surface:#fff;--soft:#f0f2fc;--border:#d4daf1;--field:#b6bfdf;--on:#fff;--red:#b42318;--green:#17734a}
@@ -234,8 +246,8 @@ details.new-form[open]>summary{margin-bottom:10px}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.12.1</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
-<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.12.1 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.13.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
+<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.13.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button><button id="theme" type="button" aria-pressed="false">Mode fosc</button></div>
 <div id="v1"><div class="card main-card"><h2>Registrar compra</h2><p class="mu intro">Crea partides a partir de les compres de GestoCatalog o entra-les a mà.</p><section class="panel" id="pendingPanel"><h3>Compres de GestoCatalog</h3><p class="mu">Línies d’albarà que has enviat a GestoStock des de GestoCatalog. Prem el nom per crear-ne la partida o la icona per descartar-la.</p><div id="pendingLines"></div></section><section class="panel"><details class="new-form" id="manualDetails"><summary>Nova partida manual</summary><div id="purchaseCard"><form id="f">
 <div class="full"><label for="ns">Espècie o article</label><input id="nsSearch" type="search" placeholder="Cerca l’article" autocomplete="off" style="margin-bottom:6px"><select id="ns"></select><input id="nom" hidden></div>
@@ -256,7 +268,7 @@ details.new-form[open]>summary{margin-bottom:10px}
 <div id="fishQuantity"><label for="qty">Nombre d’unitats del lot</label><input id="qty" type="number" min="1" max="500" step="1" value="1" required></div><div><label id="sameWeightLabel" for="same">Totes les unitats tenen el mateix pes net?</label><select id="same"><option value="si">Sí</option><option value="no">No</option></select></div>
 <div class="full mu" id="pf"></div><div class="full mu" id="cp"></div>
 <button class="f full" type="submit">Crear partida</button>
-</form></div></details></section></div><div id="np" hidden><div class="card main-card"><h2>Catàleg d’articles</h2><div id="npList"></div></div></div></div>
+</form></div></details></section></div><div id="np" hidden><div id="npList"></div></div></div>
 <div id="v3" hidden><div class="card main-card"><div class="view-head"><h2>Inventari</h2><div class="act"><button id="pdf" class="s f">Descarrega PDF</button><button id="sharePdf" class="s" type="button">Comparteix PDF</button><button id="printLabels" class="s" type="button">Imprimeix etiquetes</button></div></div><div id="stock"></div></div>
 </div>
 <div id="suppliers" hidden><div class="card main-card">
@@ -480,13 +492,13 @@ function norm(){state.fish=state.fish||[];state.sales=state.sales||[];state.noms
  state.proveidors=catalog.suppliers.map(function(s){return s.name});
  numberLots();migrateCutStock()}
 // ---- Articles i proveïdors comuns amb GestoCatalog ----
-var catalog={articles:[],suppliers:[]},linkChanged=false;
+var catalog={articles:[],suppliers:[],offers:[]},linkChanged=false;
 function catKey(n){return String(n||"").trim().toLocaleLowerCase("ca")}
-window.applyCatalog=function(d){if(d&&Array.isArray(d.articles))catalog.articles=d.articles;if(d&&Array.isArray(d.suppliers))catalog.suppliers=d.suppliers;catalogKey=JSON.stringify([catalog.articles,catalog.suppliers])};
+window.applyCatalog=function(d){if(d&&Array.isArray(d.articles))catalog.articles=d.articles;if(d&&Array.isArray(d.suppliers))catalog.suppliers=d.suppliers;if(d&&Array.isArray(d.offers))catalog.offers=d.offers;catalogKey=JSON.stringify([catalog.articles,catalog.suppliers,catalog.offers])};
 var catalogKey="";
 // Canvis fets a GestoCatalog (noms nous, articles nous…) sense canvis a l'inventari.
 window.refreshCatalog=function(d,p){
- if(JSON.stringify([d.articles,d.suppliers])===catalogKey)return;
+ if(JSON.stringify([d.articles,d.suppliers,d.offers||catalog.offers])===catalogKey)return;
  window.applyCatalog(d);var changed=linkCatalog();norm();fillNames($("ns").value);render();renderNames();
  if(changed&&p&&(p.admin||p.buy||p.sell))save();
 };
@@ -773,21 +785,49 @@ function syncSheet(){
 function saveEdit(id){var f=state.fish.find(function(x){return x.id===id});if(!f)return;var nm=$("e_nom").value.trim(),w=Number($("e_pes").value),p=Number($("e_pv").value);if(!nm||!(w>0)||!(p>=0))return;if(f.lotId&&Math.abs(w-fin(f))>.0001){flash("El pes d’un peix de partida no es pot canviar aquí");return}var tipus=$("e_tp").value;
  if(f.lotId&&(f.tipus==="talls")!==(tipus==="talls")){flash("Canvia la preparació a Partides");return}
  f.nom=nm;f.tipus=tipus;f.pesNetIndividual=w;f.pes=w;f.preuVenda=p/w;f.preuManual=true;f.dataCompra=$("e_dc").value;editId=null;norm();save();render()}
-var catalogSearch="",newArticleOpen=false;
+// Catàleg d'articles: el mateix que a GestoCatalog, però només per consultar (sense crear, editar, arxivar ni eliminar).
+var catalogSearch="",catalogCategory="",catalogSupplier="",catalogCollapsed=new Set();
+try{(JSON.parse(localStorage.getItem("gestostock-catalog-collapsed")||"[]")).forEach(function(c){catalogCollapsed.add(c)})}catch(e){}
+function saveCollapsed(){try{localStorage.setItem("gestostock-catalog-collapsed",JSON.stringify(Array.from(catalogCollapsed)))}catch(e){}}
+function catalogCategories(){var m=new Map();catalog.articles.forEach(function(a){if(!a.archived&&a.categoryId)m.set(a.categoryId,a.category||"")});return Array.from(m,function(x){return {id:x[0],name:x[1]}}).sort(function(a,b){return a.name.localeCompare(b.name,"ca",{sensitivity:"base"})})}
+function catalogCategoryName(id){var a=id&&catalog.articles.find(function(x){return x.categoryId===id});return a&&a.category||"Sense categoria"}
+function catalogOptions(list,sel,first){return '<option value="">'+first+'</option>'+list.map(function(x){return '<option value="'+attr(x.id)+'"'+(x.id===sel?' selected':'')+'>'+esc(x.name)+'</option>'}).join('')}
+function articleSuppliers(a,only){return catalog.offers.filter(function(o){return o.articleId===a.id&&(!only||o.supplierId===only)}).map(function(o){var x=supplierById(o.supplierId);return x&&x.name}).filter(Boolean)}
+function catalogDetail(a){return [articleSuppliers(a,catalogSupplier).join(" · ")||"Sense proveïdor",a.unit].filter(Boolean).join(" · ")}
+function catalogListHtml(){
+ var k=catKey(catalogSearch),withSupplier=new Set(catalogSupplier?catalog.offers.filter(function(o){return o.supplierId===catalogSupplier}).map(function(o){return o.articleId}):[]);
+ var list=catalog.articles.filter(function(a){
+  if(a.archived)return false;
+  if(catalogCategory&&(a.categoryId||"-")!==catalogCategory)return false;
+  if(catalogSupplier&&!withSupplier.has(a.id))return false;
+  return !k||catKey(a.name).indexOf(k)>=0});
+ var groups=new Map();list.forEach(function(a){var c=a.categoryId||"";if(!groups.has(c))groups.set(c,[]);groups.get(c).push(a)});
+ var forced=Boolean(k||catalogCategory);
+ var h=Array.from(groups).sort(function(a,b){return catalogCategoryName(a[0]).localeCompare(catalogCategoryName(b[0]),"ca")}).map(function(g){
+  var items=g[1].sort(function(a,b){return a.name.localeCompare(b.name,"ca",{sensitivity:"base"})}),open=forced||!catalogCollapsed.has(g[0]);
+  return '<details class="cat-group" data-cat-group="'+attr(g[0])+'"'+(forced?' data-forced':'')+(open?' open':'')+'><summary><span class="group-name">'+esc(catalogCategoryName(g[0]))+'</span><span class="meta">'+items.length+(items.length===1?' article':' articles')+'</span></summary>'+
+   items.map(function(a){var d=catalogDetail(a);return '<div class="cat-item" title="'+attr(a.name+' · '+d)+'"><strong>'+esc(a.name)+'</strong><span class="meta">'+esc(d)+'</span></div>'}).join('')+'</details>'}).join('');
+ if(h)return h;
+ if(k)return '<div class="empty">Cap article coincideix amb «'+esc(catalogSearch.trim())+'».</div>';
+ if(catalogCategory||catalogSupplier)return '<div class="empty">No hi ha articles que coincideixin amb els filtres.</div>';
+ return '<div class="empty">El catàleg és buit.</div>';
+}
+function refreshCatalogList(){var l=$("catList");if(l)l.innerHTML=catalogListHtml();var t=$("catToggle");if(t)t.textContent=catalogCollapsed.size?"Desplega-ho tot":"Replega-ho tot"}
 function renderNames(){
- var nd=$("newArticle");if(nd)newArticleOpen=nd.open;
  var pend=pendingNames(),h='';
  if(pend.length){
-  h+='<div class="card"><h3>Pendents de vincular</h3><p class="mu">Aquests noms de partides antigues encara no estan lligats a cap article de GestoCatalog. Tria l’article que els correspon o crea’l.</p>';
-  pend.forEach(function(n,i){h+=pendingRow(n,'<input list="articleNames" id="pl'+i+'" placeholder="Article de GestoCatalog" aria-label="Article de GestoCatalog per a '+attr(n)+'">','<button class="s f" data-link="'+i+'">Vincula</button><button class="s" data-create="'+i+'">Crea’l</button>')});
+  h+='<div class="card"><h3>Pendents de vincular</h3><p class="mu">Aquests noms de partides antigues encara no estan lligats a cap article de GestoCatalog. Tria l’article que els correspon. Si no hi és, crea’l a GestoCatalog.</p>';
+  pend.forEach(function(n,i){h+=pendingRow(n,'<input list="articleNames" id="pl'+i+'" placeholder="Article de GestoCatalog" aria-label="Article de GestoCatalog per a '+attr(n)+'">','<button class="s f" data-link="'+i+'">Vincula</button>')});
   h+='</div>';
  }
- h+='<div class="card"><details class="new-form" id="newArticle"'+(newArticleOpen?' open':'')+'><summary>Article nou</summary><label for="nn">Nom de l’article</label><div class="act" style="margin-top:0"><input id="nn" placeholder="Ex. Orada" style="flex:1;min-width:130px"><button class="s f" data-na="1">Afegeix</button></div><p class="mu">S’afegeix a la llista d’articles de GestoCatalog. Per canviar-ne el nom, arxivar-lo o eliminar-lo, fes-ho a GestoCatalog.</p></details></div>';
- var k=catKey(catalogSearch),list=catalog.articles.filter(function(a){return !a.archived&&(!k||catKey(a.name).indexOf(k)>=0)});
- h+='<div class="card"><label for="catSearch">Cerca un article</label><input id="catSearch" type="search" value="'+esc(catalogSearch).replace(/"/g,"&quot;")+'" placeholder="Nom de l’article"><p class="mu">'+list.length+' de '+state.noms.length+' articles</p>';
- list.slice(0,200).forEach(function(a){h+='<div class="list-row"><div class="row-text" title="'+rowTitle(a.name,a.category)+'">'+rowLabel(a.name,a.category)+'</div></div>'});
- if(list.length>200)h+='<p class="mu">Es mostren els 200 primers. Escriu més lletres per trobar-ne d’altres.</p>';
- h+='</div><datalist id="articleNames">'+state.noms.map(function(n){return '<option value="'+esc(n).replace(/"/g,"&quot;")+'">'}).join('')+'</datalist>';
+ var active=catalog.articles.filter(function(a){return !a.archived}).length,meta=active+(active===1?' article':' articles');
+ h+='<div class="card main-card"><div class="cat-heading"><div><h2>Catàleg d’articles</h2><div class="meta">'+esc(meta)+'</div></div>'+
+  '<div class="cat-filters"><label>Categoria<select id="catCategory">'+catalogOptions(catalogCategories(),catalogCategory,"Totes")+'<option value="-"'+(catalogCategory==="-"?' selected':'')+'>Sense categoria</option></select></label>'+
+  '<label>Proveïdor<select id="catSupplier">'+catalogOptions(catalog.suppliers.slice().sort(function(a,b){return a.name.localeCompare(b.name,"ca",{sensitivity:"base"})}),catalogSupplier,"Tots")+'</select></label></div></div>'+
+  '<label for="catSearch" class="cat-search">Cerca un article<input id="catSearch" type="search" value="'+attr(catalogSearch)+'" placeholder="Cerca pel nom" autocomplete="off"></label>'+
+  '<div class="cat-tools"><p class="mu">Només per consultar. Per crear, canviar, arxivar o eliminar articles, fes-ho a GestoCatalog.</p><button type="button" id="catToggle">'+(catalogCollapsed.size?"Desplega-ho tot":"Replega-ho tot")+'</button></div>'+
+  '<div id="catList">'+catalogListHtml()+'</div></div>';
+ h+='<datalist id="articleNames">'+state.noms.map(function(n){return '<option value="'+attr(n)+'">'}).join('')+'</datalist>';
  $("npList").innerHTML=h;
 }
 function save(){
@@ -972,11 +1012,12 @@ $("suppliers").addEventListener("click",function(e){var d=e.target.dataset;if(d.
  var sp=supplierByName($("sp"+i).value);if(!sp){flash("Tria un proveïdor de la llista");return}
  state.lots.forEach(function(l){if(lotSupplier(l)===old&&!l.supplierId){l.supplierId=sp.id;l.proveidor=sp.name}});
  save();render();flash("«"+old+"» vinculat a «"+sp.name+"»",1)});
-$("np").oninput=function(e){if(e.target.id==="catSearch"){catalogSearch=e.target.value;renderNames();var c=$("catSearch");c.focus();c.setSelectionRange(c.value.length,c.value.length)}};
-$("np").onclick=function(e){var d=e.target.dataset;
- if(d.na!==undefined){var v=$("nn").value.trim();if(!v)return;e.target.disabled=true;createShared("createArticle",v).then(function(r){flash(r.existed?"Aquest article ja existia":"Article afegit",1)}).catch(function(err){flash("No s’ha pogut afegir: "+err.message);e.target.disabled=false});return}
- if(d.link!==undefined||d.create!==undefined){var i=Number(d.link!==undefined?d.link:d.create),old=pendingNames()[i];if(!old)return;
-  if(d.create!==undefined){e.target.disabled=true;createShared("createArticle",old).then(function(){flash("«"+old+"» creat i vinculat",1)}).catch(function(err){flash("No s’ha pogut crear: "+err.message);e.target.disabled=false});return}
+$("np").oninput=function(e){if(e.target.id==="catSearch"){catalogSearch=e.target.value;refreshCatalogList()}};
+$("np").onchange=function(e){if(e.target.id==="catCategory"){catalogCategory=e.target.value;refreshCatalogList()}else if(e.target.id==="catSupplier"){catalogSupplier=e.target.value;refreshCatalogList()}};
+$("np").addEventListener("toggle",function(e){var g=e.target;if(!g.dataset||g.dataset.catGroup===undefined||g.dataset.forced!==undefined)return;if(g.open)catalogCollapsed.delete(g.dataset.catGroup);else catalogCollapsed.add(g.dataset.catGroup);saveCollapsed();var t=$("catToggle");if(t)t.textContent=catalogCollapsed.size?"Desplega-ho tot":"Replega-ho tot"},true);
+$("np").onclick=function(e){var b=e.target.closest("button");if(!b)return;var d=b.dataset;
+ if(b.id==="catToggle"){var groups=$("np").querySelectorAll("details[data-cat-group]");if(catalogCollapsed.size)catalogCollapsed.clear();else groups.forEach(function(g){catalogCollapsed.add(g.dataset.catGroup)});saveCollapsed();refreshCatalogList();return}
+ if(d.link!==undefined){var i=Number(d.link),old=pendingNames()[i];if(!old)return;
   var a=articleByName($("pl"+i).value);if(!a){flash("Tria un article de la llista");return}
   state.lots.concat(state.fish,state.sales).forEach(function(x){if(x.nom===old&&!x.articleId){x.articleId=a.id;x.nom=a.name}});
   save();render();renderNames();flash("«"+old+"» vinculat a «"+a.name+"»",1)}
