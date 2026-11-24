@@ -2,7 +2,7 @@
 
 GestoStock és l’aplicació que fa servir el restaurant La Barca de Ca l’Ardet per seguir el peix des de la compra fins a la venda. S’obre al navegador i es pot afegir a la pantalla d’inici de l’iPhone o de l’iPad com una aplicació web progressiva (PWA).
 
-La versió del codi en aquest repositori és la **1.13.1**. L’aplicació del restaurant és a [GestoStock a GitHub Pages](https://jninforner.github.io/GestoStock/).
+La versió del codi en aquest repositori és la **1.13.2**. L’aplicació del restaurant és a [GestoStock a GitHub Pages](https://jninforner.github.io/GestoStock/).
 
 ## Què pots fer amb GestoStock
 

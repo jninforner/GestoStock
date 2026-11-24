@@ -246,8 +246,8 @@ details.new-form[open]>summary{margin-bottom:10px}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.13.1</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
-<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.13.1 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.13.2</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
+<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.13.2 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button><button id="theme" type="button" aria-pressed="false">Mode fosc</button></div>
 <div id="v1"><div class="card main-card"><h2>Registrar compra</h2><p class="mu intro">Crea partides a partir de les compres de GestoCatalog o entra-les a mà.</p><section class="panel" id="pendingPanel"><h3>Compres de GestoCatalog</h3><p class="mu">Línies d’albarà que has enviat a GestoStock des de GestoCatalog. Prem el nom per crear-ne la partida o la icona per descartar-la.</p><div id="pendingLines"></div></section><section class="panel"><details class="new-form" id="manualDetails"><summary>Nova partida manual</summary><div id="purchaseCard"><form id="f">
 <div class="full"><label for="ns">Espècie o article</label><input id="nsSearch" type="search" placeholder="Cerca l’article" autocomplete="off" style="margin-bottom:6px"><select id="ns"></select><input id="nom" hidden></div>
@@ -492,9 +492,9 @@ function norm(){state.fish=state.fish||[];state.sales=state.sales||[];state.noms
  state.proveidors=catalog.suppliers.map(function(s){return s.name});
  numberLots();migrateCutStock()}
 // ---- Articles i proveïdors comuns amb GestoCatalog ----
-var catalog={articles:[],suppliers:[],offers:[]},linkChanged=false;
+var catalog={articles:[],suppliers:[],offers:[],categories:[]},linkChanged=false;
 function catKey(n){return String(n||"").trim().toLocaleLowerCase("ca")}
-window.applyCatalog=function(d){if(d&&Array.isArray(d.articles))catalog.articles=d.articles;if(d&&Array.isArray(d.suppliers))catalog.suppliers=d.suppliers;if(d&&Array.isArray(d.offers))catalog.offers=d.offers;catalogKey=JSON.stringify([catalog.articles,catalog.suppliers,catalog.offers])};
+window.applyCatalog=function(d){if(d&&Array.isArray(d.articles))catalog.articles=d.articles;if(d&&Array.isArray(d.suppliers))catalog.suppliers=d.suppliers;if(d&&Array.isArray(d.offers))catalog.offers=d.offers;if(d&&Array.isArray(d.categories))catalog.categories=d.categories;catalogKey=JSON.stringify([catalog.articles,catalog.suppliers,catalog.offers,catalog.categories])};
 var catalogKey="";
 // Canvis fets a GestoCatalog (noms nous, articles nous…) sense canvis a l'inventari.
 window.refreshCatalog=function(d,p){
@@ -789,7 +789,9 @@ function saveEdit(id){var f=state.fish.find(function(x){return x.id===id});if(!f
 var catalogSearch="",catalogCategory="",catalogSupplier="",catalogCollapsed=new Set();
 try{(JSON.parse(localStorage.getItem("gestostock-catalog-collapsed")||"[]")).forEach(function(c){catalogCollapsed.add(c)})}catch(e){}
 function saveCollapsed(){try{localStorage.setItem("gestostock-catalog-collapsed",JSON.stringify(Array.from(catalogCollapsed)))}catch(e){}}
-function catalogCategories(){var m=new Map();catalog.articles.forEach(function(a){if(!a.archived&&a.categoryId)m.set(a.categoryId,a.category||"")});return Array.from(m,function(x){return {id:x[0],name:x[1]}}).sort(function(a,b){return a.name.localeCompare(b.name,"ca",{sensitivity:"base"})})}
+function catalogCategories(){var m=new Map();catalog.articles.forEach(function(a){if(!a.archived&&a.categoryId)m.set(a.categoryId,a.category||"")});return Array.from(m,function(x){return {id:x[0],name:x[1]}}).sort(function(a,b){return catalogRank(a.id)-catalogRank(b.id)||a.name.localeCompare(b.name,"ca",{sensitivity:"base"})})}
+// Ordre de les categories triat a GestoCatalog (pantalla Categories); «Sense categoria» al final.
+function catalogRank(id){var i=id?catalog.categories.findIndex(function(c){return c.id===id}):-1;return i<0?Infinity:i}
 function catalogCategoryName(id){var a=id&&catalog.articles.find(function(x){return x.categoryId===id});return a&&a.category||"Sense categoria"}
 function catalogOptions(list,sel,first){return '<option value="">'+first+'</option>'+list.map(function(x){return '<option value="'+attr(x.id)+'"'+(x.id===sel?' selected':'')+'>'+esc(x.name)+'</option>'}).join('')}
 function articleSuppliers(a,only){return catalog.offers.filter(function(o){return o.articleId===a.id&&(!only||o.supplierId===only)}).map(function(o){var x=supplierById(o.supplierId);return x&&x.name}).filter(Boolean)}
@@ -803,7 +805,7 @@ function catalogListHtml(){
   return !k||catKey(a.name).indexOf(k)>=0});
  var groups=new Map();list.forEach(function(a){var c=a.categoryId||"";if(!groups.has(c))groups.set(c,[]);groups.get(c).push(a)});
  var forced=Boolean(k||catalogCategory);
- var h=Array.from(groups).sort(function(a,b){return catalogCategoryName(a[0]).localeCompare(catalogCategoryName(b[0]),"ca")}).map(function(g){
+ var h=Array.from(groups).sort(function(a,b){return catalogRank(a[0])-catalogRank(b[0])||catalogCategoryName(a[0]).localeCompare(catalogCategoryName(b[0]),"ca")}).map(function(g){
   var items=g[1].sort(function(a,b){return a.name.localeCompare(b.name,"ca",{sensitivity:"base"})}),open=forced||!catalogCollapsed.has(g[0]);
   return '<details class="cat-group" data-cat-group="'+attr(g[0])+'"'+(forced?' data-forced':'')+(open?' open':'')+'><summary><span class="group-name">'+esc(catalogCategoryName(g[0]))+'</span><span class="meta">'+items.length+(items.length===1?' article':' articles')+'</span></summary>'+
    items.map(function(a){var d=catalogDetail(a);return '<div class="cat-item" title="'+attr(a.name+' · '+d)+'"><strong>'+esc(a.name)+'</strong><span class="meta">'+esc(d)+'</span></div>'}).join('')+'</details>'}).join('');
