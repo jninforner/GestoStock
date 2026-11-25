@@ -142,7 +142,7 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 @media(max-width:460px){#supplierForm{grid-template-columns:1fr}.supplier-actions{justify-content:flex-end}}
 body.no-buy [data-edit],body.no-buy [data-lotedit]{display:none!important}
 body.no-sell [data-sell]{display:none!important}
-body.no-config #newPlat,body.no-config [data-platedit]{display:none}body.no-sell [data-platsell]{display:none}body.no-buy #mixLots,body.no-buy [data-unmix]{display:none}
+body.no-config #newPlat,body.no-config [data-platedit]{display:none}body.no-sell [data-platsell]{display:none}body.no-buy #mixLots,body.no-buy [data-unmix],body.no-buy [data-lotclose],body.no-buy [data-lotcloseedit],body.no-buy [data-lotreopen]{display:none}
 body.no-labels #printLabels,body.no-labels [data-lotlabels]{display:none!important}
 /* Aspecte comú de les apps Gesto (model: GestoCatalog) */
 :root{--main-bg:#eaf0ff;--main-border:#afbfeb}
@@ -254,8 +254,8 @@ details.new-form[open]>summary{margin-bottom:10px}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.15.1</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
-<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.15.1 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.16.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
+<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.16.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="tpl">Plats i escandalls</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button><button id="tb">Paperera</button><button id="theme" type="button" aria-pressed="false">Mode fosc</button></div>
 <div id="v1"><div class="card main-card"><h2>Registrar compra</h2><p class="mu intro">Crea partides a partir de les compres de GestoCatalog o entra-les a mà.</p><section class="panel" id="pendingPanel"><h3>Compres de GestoCatalog</h3><p class="mu">Línies d’albarà que has enviat a GestoStock des de GestoCatalog. Prem el nom per crear-ne la partida o llisca-la cap a l’esquerra per descartar-la.</p><div id="pendingLines"></div></section><section class="panel"><details class="new-form" id="manualDetails"><summary>Nova partida manual</summary><div id="purchaseCard"><form id="f">
 <div class="full"><label for="ns">Espècie o article</label><input id="nsSearch" type="search" placeholder="Cerca l’article" autocomplete="off" style="margin-bottom:6px"><select id="ns"></select><input id="nom" hidden></div>
@@ -301,7 +301,7 @@ details.new-form[open]>summary{margin-bottom:10px}
 <p id="noSuppliers" class="mu">Encara no hi ha proveïdors registrats.</p>
 <p class="mu">És la mateixa llista que GestoCatalog. Per canviar-ne el nom o el telèfon, fes-ho a GestoCatalog.</p>
 </div>
-</div></div><div id="lots" hidden><div class="card main-card"><div class="view-head"><h2>Partides</h2><div class="act"><button id="mixLots" class="s" type="button">Barreja partides</button></div></div><div id="lotsList"></div></div></div><div id="plats" hidden><div class="card main-card"><div class="view-head"><h2>Plats i escandalls</h2><div class="act"><button id="newPlat" class="s f" type="button">Nou plat</button></div></div><p class="mu intro">Cada plat gasta peces o grams dels articles a granel. Prem «−1» quan en surti un i es descomptaran tots els ingredients.</p><div id="platsList"></div></div></div><datalist id="calibres"><option value="10/15"><option value="15/20"><option value="20/25"><option value="20/30"><option value="21/30"><option value="30/40"><option value="40/50"><option value="50/60"><option value="60/80"><option value="80/100"></datalist><div id="config" hidden><div class="card main-card"><h2>Paràmetres</h2><div id="configBody"></div></div></div><div id="v2" hidden><div class="card main-card"><h2>Historial de vendes</h2><div id="sum" class="sum"></div><div id="sales"></div></div></div><div id="trash" hidden><div class="card main-card"><h2>Paperera</h2><p class="mu intro">Llisca un element cap a la dreta per recuperar-lo o cap a l’esquerra per esborrar-lo definitivament. Passats 30 dies, s’esborren sols.</p><div id="trashList"></div></div></div>
+</div></div><div id="lots" hidden><div class="card main-card"><div class="view-head"><h2>Partides</h2><div class="act"><button id="costSummary" class="s" type="button">Resum de costos</button><button id="mixLots" class="s" type="button">Barreja partides</button></div></div><div id="lotsList"></div></div></div><div id="plats" hidden><div class="card main-card"><div class="view-head"><h2>Plats i escandalls</h2><div class="act"><button id="newPlat" class="s f" type="button">Nou plat</button></div></div><p class="mu intro">Cada plat gasta peces o grams dels articles a granel. Prem «−1» quan en surti un i es descomptaran tots els ingredients.</p><div id="platsList"></div></div></div><datalist id="calibres"><option value="10/15"><option value="15/20"><option value="20/25"><option value="20/30"><option value="21/30"><option value="30/40"><option value="40/50"><option value="50/60"><option value="60/80"><option value="80/100"></datalist><div id="config" hidden><div class="card main-card"><h2>Paràmetres</h2><div id="configBody"></div></div></div><div id="v2" hidden><div class="card main-card"><h2>Historial de vendes</h2><div id="sum" class="sum"></div><div id="sales"></div></div></div><div id="trash" hidden><div class="card main-card"><h2>Paperera</h2><p class="mu intro">Llisca un element cap a la dreta per recuperar-lo o cap a l’esquerra per esborrar-lo definitivament. Passats 30 dies, s’esborren sols.</p><div id="trashList"></div></div></div>
 </main>
 <p id="status" role="status" aria-live="polite"></p>
 <dialog id="sheet" class="sheet-dialog" aria-labelledby="sheetTitle"></dialog>
@@ -933,6 +933,8 @@ function sheetKey(){
  if(window.editLot&&state.lots.some(function(l){return l.id===window.editLot}))return "lot:"+window.editLot;
  if(editPlat&&(editPlat==="new"||platById(editPlat)))return "plat:"+editPlat;
  if(mixOpen)return "mix:new";
+ if(closeLotId&&lotById(closeLotId))return "close:"+closeLotId;
+ if(window.costSummaryOpen)return "summary:"+(costMonth||"");
  return "";
 }
 function syncSheet(){
@@ -945,6 +947,8 @@ function syncSheet(){
  if(key.indexOf("fish:")===0)s.innerHTML=editForm(state.fish.find(function(f){return f.id===id}));
  else if(key.indexOf("plat:")===0){s.innerHTML=platForm(id==='new'?null:platById(id));platFormEvents()}
  else if(key.indexOf("mix:")===0){s.innerHTML=mixForm();mixFormEvents()}
+ else if(key.indexOf("close:")===0)s.innerHTML=closeForm(lotById(id));
+ else if(key.indexOf("summary:")===0){s.innerHTML=summaryForm();$("sum_m").onchange=function(){costMonth=this.value;syncSheet()}}
  else{
   var l=state.lots.find(function(x){return x.id===id});
   s.innerHTML=lotEditForm(l);
@@ -1018,7 +1022,7 @@ function renderLots(){
   var a=state.fish.filter(function(f){return f.lotId===l.id}),sold=state.sales.filter(function(f){return f.lotId===l.id}),sum=stockWeight(a),net=l.pesNet,delta=net!=null?net-sum:0,real=net!=null?(1-net/l.pesBrut)*100:null,costKg=net>0?l.pesBrut*l.preuCompra/net:null,open=window.activeLot===l.id,qty=l.quantitat||a.reduce(function(v,f){return v+(f.unitats||1)},0)||1,same=l.pesosIguals!==false,locked=sold.length>0;
   var isCut=l.tipus==="talls",pendingCuts=isCut&&!l.estocATalls;
   if(isCut)qty=Number(l.nombreTalls)||"";
-  var name=l.nom,meta=tag(l)+' · '+lotDetails(l)+' · '+dt(l.dataCompra)+' · '+kg(l.pesBrut)+' bruts · '+eur(l.preuCompra)+'/kg',label=lotReference(l)+' ('+l.nom+')';
+  var name=l.nom,meta=(l.tancada?'Tancada · ':'')+tag(l)+' · '+lotDetails(l)+' · '+dt(l.dataCompra)+' · '+kg(l.pesBrut)+' bruts · '+eur(l.preuCompra)+'/kg',label=lotReference(l)+' ('+l.nom+')';
   var out=swipeOpen('lot:'+l.id,canDelete(),false)+'<div class="list-row swipe-row"><button type="button" class="row-open" data-lot="'+l.id+'" aria-expanded="'+open+'" title="'+rowTitle(name,meta)+'">'+rowLabel(name,meta)+'</button><div class="row-icons">'+iconBtn('print','Imprimeix etiquetes de la '+label,'data-lotlabels="'+l.id+'"')+iconBtn('edit','Edita la '+label,'data-lotedit="'+l.id+'"')+'</div></div></div>';
   if(open&&l.tipus==="granel")out+=granelLotDetail(l,a);
   else if(open){
@@ -1028,10 +1032,11 @@ function renderLots(){
    if(cutCost!=null)out+='<div class="mu">'+Number(l.nombreTalls)+' '+unitLabel(l,Number(l.nombreTalls))+' · Cost per '+unitLabel(l,1)+': '+eur(cutCost)+'</div>';
    if(!l.validada){out+='<label>Pes net total (kg)</label><input id="lnet" type="number" min="0.001" step="0.001" required value="'+(net==null?'':net)+'"><label for="lqty">'+(isCut?'Nombre total de '+unitLabel(l):'Nombre d’unitats del lot')+'</label><input id="lqty" type="number" min="1" '+(isCut?'':'max="500" ')+'step="1" value="'+qty+'"><label for="lsame">'+(isCut?sameWeightQuestion(l.unitatRecompte):'Totes les unitats tenen el mateix pes net?')+'</label><select id="lsame"><option value="si" '+(same?'selected':'')+'>Sí</option><option value="no" '+(!same?'selected':'')+'>No</option></select><div id="lpweights"></div><div class="mu">Desglossat: '+kg(sum)+' · Pendent: '+(net==null?'indica el pes net total':kg(delta))+'</div><div class="act"><button class="s f" data-generate="'+l.id+'">'+(isCut?'Genera l’estoc':'Genera els peixos')+'</button><button class="s f" data-close="'+l.id+'" '+(net==null||Math.abs(delta)>.002||!a.length||pendingCuts?'disabled':'')+'>Valida la partida</button></div>'}
    else if(pendingCuts)out+='<div class="mu">Edita la partida (llapis) per confirmar la quantitat que queda en estoc.</div>';
-   else out+='<div class="pos">Partida validada · '+stockCount(a)+' '+(isCut?unitLabel(l,stockCount(a)):'unitats')+' en estoc</div>';
-   if(!pendingCuts)out+='<div class="mu">'+a.map(function(f){return kg(fin(f))+' · '+(f.unitats||1)+' '+unitLabel(f,f.unitats)+' · Preu de venda: '+eur(carta(f))+'/'+unitLabel(f,1)}).join(' · ')+'</div>';
+   else if(!l.tancada)out+='<div class="pos">Partida validada · '+stockCount(a)+' '+(isCut?unitLabel(l,stockCount(a)):'unitats')+' en estoc</div>';
+   if(!pendingCuts&&a.length)out+='<div class="mu">'+a.map(function(f){return kg(fin(f))+' · '+(f.unitats||1)+' '+unitLabel(f,f.unitats)+' · Preu de venda: '+eur(carta(f))+'/'+unitLabel(f,1)}).join(' · ')+'</div>';
    out+='</div>';
   }
+  if(open)out+=closeSection(l,a);
   return out;
  }).join('');
  $("lotsList").innerHTML=h||'<div class="empty">Encara no hi ha partides.</div>';
@@ -1165,8 +1170,8 @@ window.nexamarShowPurchase=function(fromImport){setPurchaseVisible(true);if(!fro
 window.nexamarPurchaseFinished=function(){setPurchaseVisible(false);$("f").reset();$("dc").value=today();$("tp").value="";$("net").value="";$("netMode").value="real";prev()};
 $("manualDetails").addEventListener("toggle",function(){if(skipManualToggle){skipManualToggle=false;return}if(this.open)window.nexamarShowPurchase(false)});
 // Fitxa en finestra: els botons fan el mateix que feien a la pantalla.
-$("sheet").addEventListener("click",function(e){var k=this.dataset.key||"";if(k.indexOf("fish:")===0)$("stock").onclick(e);else if(k.indexOf("lot:")===0)$("lots").onclick(e);else if(k.indexOf("plat:")===0)platSheetClick(e);else if(k.indexOf("mix:")===0)mixSheetClick(e)});
-$("sheet").addEventListener("cancel",function(e){e.preventDefault();var k=this.dataset.key||"";if(k.indexOf("fish:")===0){editId=null;render()}else if(k.indexOf("lot:")===0){window.editLot=null;renderLots()}else if(k.indexOf("plat:")===0){editPlat=null;syncSheet()}else if(k.indexOf("mix:")===0){mixOpen=false;syncSheet()}});
+$("sheet").addEventListener("click",function(e){var k=this.dataset.key||"";if(k.indexOf("fish:")===0)$("stock").onclick(e);else if(k.indexOf("lot:")===0)$("lots").onclick(e);else if(k.indexOf("plat:")===0)platSheetClick(e);else if(k.indexOf("mix:")===0)mixSheetClick(e);else if(k.indexOf("close:")===0)closeSheetClick(e);else if(k.indexOf("summary:")===0)summarySheetClick(e)});
+$("sheet").addEventListener("cancel",function(e){e.preventDefault();var k=this.dataset.key||"";if(k.indexOf("fish:")===0){editId=null;render()}else if(k.indexOf("lot:")===0){window.editLot=null;renderLots()}else if(k.indexOf("plat:")===0){editPlat=null;syncSheet()}else if(k.indexOf("mix:")===0){mixOpen=false;syncSheet()}else if(k.indexOf("close:")===0){closeLotId=null;syncSheet()}else if(k.indexOf("summary:")===0){window.costSummaryOpen=false;syncSheet()}});
 $("dc").value=today();
 function historicalMinva(nom,tipus){var xs=(state.lots||[]).filter(function(l){return l.nom===nom&&l.tipus===tipus&&l.netMode!=='estimated'&&l.pesNetReal!==false&&Number(l.pesBrut)>0&&Number(l.pesNet)>0&&Number(l.pesNet)<=Number(l.pesBrut)});var gross=xs.reduce(function(a,l){return a+Number(l.pesBrut)},0),net=xs.reduce(function(a,l){return a+Number(l.pesNet)},0);return gross>0?{count:xs.length,percent:100*(gross-net)/gross}:null}
 function showNetSuggestion(){var nom=curNom(),tipus=$('tp').value,brut=Number($('pes').value),h=historicalMinva(nom,tipus),el=$('netSuggestion'),b=$('useSuggestedNet');if(!h||!(brut>0)){el.textContent='Sense dades històriques suficients per a aquesta espècie, preparació i pes brut.';b.hidden=true;return}var suggested=Math.round(brut*(1-h.percent/100)*1000)/1000;el.textContent='Minva històrica ponderada: '+h.percent.toFixed(1).replace('.',',')+'% ('+h.count+' partides amb pes real). Pes net suggerit: '+suggested.toFixed(3).replace('.',',')+' kg. És una estimació, no un pes mesurat.';b.hidden=false;b.dataset.value=String(suggested)}
@@ -1209,8 +1214,10 @@ $("f").onsubmit=function(e){e.preventDefault();if($("tp").value==="granel"){subm
 $("lots").onclick=function(e){
  var d=e.target.dataset,el=e.target.closest("[data-lot]");
  if(el){window.activeLot=window.activeLot===el.dataset.lot?null:el.dataset.lot;renderLots();return}
- var id=d.unmix||d.lotlabels||d.lotedit||d.lotsave||d.lotcancel||d.generate||d.close;
+ var id=d.lotclose||d.lotcloseedit||d.lotreopen||d.unmix||d.lotlabels||d.lotedit||d.lotsave||d.lotcancel||d.generate||d.close;
  var l=state.lots.find(function(x){return x.id===id});if(!l)return;
+ if(d.lotclose||d.lotcloseedit){closeLotId=id;syncSheet();return}
+ if(d.lotreopen){reopenLot(id);return}
  if(d.unmix){undoMix(id);return}
  if(d.lotlabels){printStockLabels(l);return}
  if(d.lotedit){window.editLot=id;renderLots();return}
@@ -1552,6 +1559,67 @@ $("plats").onclick=function(e){
  if(d.platsell){sellPlat(d.platsell);return}
  if(d.platedit){editPlat=d.platedit;syncSheet()}
 };
+// ---- Tancar partides: tot el que queda es dona per gastat i es guarden els costos (dies, racions, cost per ració) ----
+var closeLotId=null,costMonth=null;
+function lotCost(l){return Number(l.pesBrut)*Number(l.preuCompra)||0}
+function daysBetween(a,b){var x=Date.parse(a+"T12:00:00"),y=Date.parse(b+"T12:00:00");return isFinite(x)&&isFinite(y)?Math.max(1,Math.round((y-x)/864e5)):1}
+function sameArticle(a,b){return a.articleId&&b.articleId?a.articleId===b.articleId:catKey(a.nom)===catKey(b.nom)}
+function closeStats(l){
+ var t=l.tancada,cost=lotCost(l),dies=daysBetween(l.dataCompra,t.data),r=Number(t.racions)||0;
+ return {cost:cost,dies:dies,perDia:cost/dies,racions:r,perRacio:r>0?cost/r:null,netKg:Number(l.pesNet)||0,perKgNet:l.pesNet>0?cost/l.pesNet:null};
+}
+function closeSection(l,a){
+ if(!l.validada)return "";
+ if(!l.tancada)return '<div class="row-detail"><div class="act"><button type="button" class="s" data-lotclose="'+l.id+'">Tanca la partida</button></div><p class="mu">Quan comencis la partida següent, tanca aquesta: el que quedi es dona per gastat i es calcula el que t’ha costat.</p></div>';
+ var s=closeStats(l),t=l.tancada,h='<div class="row-detail"><div class="pos">Tancada el '+dt(t.data)+' · '+s.dies+' '+(s.dies===1?'dia':'dies')+'</div>';
+ h+='<div class="mu">Cost de la partida: <b>'+eur(s.cost)+'</b> · '+eur(s.perDia)+' per dia'+(s.perKgNet!=null?' · '+eur(s.perKgNet)+'/kg net':'')+'</div>';
+ h+='<div class="mu">'+(s.racions?s.racions+' racions · <b>'+eur(s.perRacio)+' per ració</b>':'Sense racions apuntades (prem «Canvia el tancament» per posar-les).')+'</div>';
+ if(t.restant&&t.restant.kg>0)h+='<div class="mu">En tancar-la quedaven '+kg(t.restant.kg)+' (cost '+eur(t.restant.cost)+').</div>';
+ var prev=state.lots.filter(function(x){return x!==l&&x.tancada&&sameArticle(x,l)}).sort(function(x,y){return String(y.tancada.data).localeCompare(String(x.tancada.data))}).slice(0,5);
+ if(prev.length){h+='<div class="mu" style="margin-top:6px"><b>Partides anteriors</b></div>'+prev.map(function(x){var p=closeStats(x);return '<div class="mu">'+esc(lotReference(x))+' · '+dt(x.dataCompra)+' · '+esc(lotSupplier(x)||'Sense proveïdor')+' · '+eur(x.preuCompra)+'/kg · '+p.dies+' dies · '+eur(p.perDia)+'/dia'+(p.perRacio!=null?' · '+eur(p.perRacio)+'/ració':'')+'</div>'}).join('')}
+ return h+'<div class="act"><button type="button" class="s" data-lotcloseedit="'+l.id+'">Canvia el tancament</button><button type="button" class="s" data-lotreopen="'+l.id+'">Reobre la partida</button></div></div>';
+}
+function closeForm(l){
+ var a=lotFish(l),t=l.tancada,rk=stockWeight(a),rc=a.reduce(function(n,f){return n+unitCost(f)*Number(f.unitats)},0);
+ var h=sheetHead((t?'Tancament de la ':'Tanca la ')+lotReference(l)+' · '+l.nom,'data-closecancel="1"')+'<div class="sheet-part"><div class="g2"><div><label for="cl_data">Data de tancament</label><input id="cl_data" type="date" min="'+attr(l.dataCompra)+'" value="'+attr(t?t.data:today())+'"></div><div><label for="cl_rac">Racions que han sortit (opcional)</label><input id="cl_rac" type="number" min="1" step="1" inputmode="numeric" value="'+attr(t&&t.racions||'')+'"></div></div>';
+ if(!t)h+='<p class="mu">'+(a.length?'Encara hi ha '+kg(rk)+' a l’estoc (cost '+eur(rc)+'): es donarà per gastat i desapareixerà de l’inventari.':'Ja no en queda res a l’inventari.')+' Cost de la partida: '+eur(lotCost(l))+'.</p>';
+ h+='<p class="mu">Les racions les pots comptar a ull o mirar-les a l’informe de vendes de Revo. Amb les racions es calcula el cost per ració.</p></div>';
+ return h+'<div class="sheet-foot"><button class="s f" data-closesave="1">'+(t?'Desa':'Tanca la partida')+'</button><button class="s" data-closecancel="1">Cancel·la</button></div>';
+}
+function closeSheetClick(e){
+ var b=e.target.closest("button");if(!b)return;
+ if(b.dataset.closecancel){closeLotId=null;syncSheet();return}
+ if(!b.dataset.closesave)return;
+ var l=lotById(closeLotId);if(!l)return;
+ var data=$("cl_data").value,rac=$("cl_rac").value===""?null:Number($("cl_rac").value);
+ if(!data||data<l.dataCompra){flash("La data de tancament no pot ser anterior a la de compra");return}
+ if(rac!=null&&!validCuts(rac)){flash("Les racions han de ser un nombre enter");return}
+ if(l.tancada){l.tancada.data=data;l.tancada.racions=rac;closeLotId=null;save();render();flash("Tancament actualitzat",1);return}
+ var a=lotFish(l),rk=stockWeight(a),rc=a.reduce(function(n,f){return n+unitCost(f)*Number(f.unitats)},0);
+ l.tancada={data:data,racions:rac,restant:{kg:rk,cost:rc},fish:JSON.parse(JSON.stringify(a))};
+ state.fish=state.fish.filter(function(f){return f.lotId!==l.id});
+ closeLotId=null;save();render();
+ var s=closeStats(l);
+ flash(lotReference(l)+" tancada: "+eur(s.cost)+" en "+s.dies+" "+(s.dies===1?"dia":"dies")+(s.perRacio!=null?" · "+eur(s.perRacio)+" per ració":"")+".",1);
+}
+function reopenLot(id){
+ var l=lotById(id);if(!l||!l.tancada)return;
+ (l.tancada.fish||[]).forEach(function(f){if(!state.fish.some(function(x){return x.id===f.id}))state.fish.push(f)});
+ delete l.tancada;save();render();flash("Partida reoberta: el que quedava torna a l’inventari.",1);
+}
+// Resum de costos per mes (segons la data de tancament).
+function costMonths(){var m=new Set(state.lots.filter(function(l){return l.tancada}).map(function(l){return String(l.tancada.data).slice(0,7)}));m.add(today().slice(0,7));return Array.from(m).sort().reverse()}
+function monthName(m){var p=m.split("-");return ["gener","febrer","març","abril","maig","juny","juliol","agost","setembre","octubre","novembre","desembre"][Number(p[1])-1]+" "+p[0]}
+function summaryForm(){
+ var m=costMonth||today().slice(0,7),lots=state.lots.filter(function(l){return l.tancada&&String(l.tancada.data).slice(0,7)===m}),groups=new Map();
+ lots.forEach(function(l){var k=l.articleId||catKey(l.nom),g=groups.get(k)||{nom:l.nom,n:0,cost:0,kg:0,rac:0,racCost:0,dies:0};var s=closeStats(l);g.n++;g.cost+=s.cost;g.kg+=s.netKg;g.dies+=s.dies;if(s.racions){g.rac+=s.racions;g.racCost+=s.cost}groups.set(k,g)});
+ var list=Array.from(groups.values()).sort(function(a,b){return b.cost-a.cost}),total=list.reduce(function(n,g){return n+g.cost},0);
+ var h=sheetHead('Resum de costos','data-sumclose="1"')+'<div class="sheet-part"><label for="sum_m">Mes</label><select id="sum_m">'+costMonths().map(function(x){return '<option value="'+x+'"'+(x===m?' selected':'')+'>'+monthName(x)+'</option>'}).join('')+'</select><p class="mu">Partides tancades aquest mes, agrupades per article.</p>';
+ h+=list.length?list.map(function(g){return '<div class="list-row"><div class="row-text">'+rowLabel(g.nom,g.n+' '+(g.n===1?'partida':'partides')+' · '+kg(g.kg)+' nets · '+eur(g.cost)+(g.rac?' · '+g.rac+' racions · '+eur(g.racCost/g.rac)+'/ració':'')+' · '+Math.round(g.dies/g.n)+' dies de mitjana')+'</div></div>'}).join('')+'<div class="pos" style="margin-top:10px">Total: '+eur(total)+'</div>':'<div class="empty">Aquest mes encara no has tancat cap partida.</div>';
+ return h+'</div><div class="sheet-foot"><button class="s" data-sumclose="1">Tanca</button></div>';
+}
+function summarySheetClick(e){var b=e.target.closest("button");if(b&&b.dataset.sumclose){costMonth=null;window.costSummaryOpen=false;syncSheet()}}
+$("costSummary").onclick=function(){window.costSummaryOpen=true;costMonth=today().slice(0,7);syncSheet()};
 norm();compactarLotsIguals();fillNames();render();
 window.applyCloudState=function(d){if(!d.proveidors&&!d.lots)setSupplierEditor("");state={fish:d.fish||[],sales:d.sales||[],noms:[],lots:d.lots||[],config:d.config||defaults(),imports:d.imports||{},ultimNumeroPartida:d.ultimNumeroPartida,proveidors:[],trash:d.trash};norm();compactarLotsIguals();linkChanged=linkCatalog()||linkChanged;fillNames($("ns").value);render()};
 window.setSyncStatus=function(t){$("syncStatus").textContent=t};
