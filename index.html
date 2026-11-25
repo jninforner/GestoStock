@@ -142,7 +142,7 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 @media(max-width:460px){#supplierForm{grid-template-columns:1fr}.supplier-actions{justify-content:flex-end}}
 body.no-buy [data-edit],body.no-buy [data-lotedit]{display:none!important}
 body.no-sell [data-sell]{display:none!important}
-body.no-config #newPlat,body.no-config [data-platedit]{display:none}body.no-sell [data-platsell]{display:none}body.no-buy #mixLots,body.no-buy [data-unmix],body.no-buy [data-lotclose],body.no-buy [data-lotcloseedit],body.no-buy [data-lotreopen]{display:none}
+body.no-config #newPlat,body.no-config #bulkPlats,body.no-config [data-platedit]{display:none}body.no-sell [data-platsell]{display:none}body.no-buy #mixLots,body.no-buy [data-unmix],body.no-buy [data-lotclose],body.no-buy [data-lotcloseedit],body.no-buy [data-lotreopen]{display:none}
 body.no-labels #printLabels,body.no-labels [data-lotlabels]{display:none!important}
 /* Aspecte comú de les apps Gesto (model: GestoCatalog) */
 :root{--main-bg:#eaf0ff;--main-border:#afbfeb}
@@ -254,8 +254,8 @@ details.new-form[open]>summary{margin-bottom:10px}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.16.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
-<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.16.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.17.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
+<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.17.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
 <div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="tpl">Plats i escandalls</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button><button id="tb">Paperera</button><button id="theme" type="button" aria-pressed="false">Mode fosc</button></div>
 <div id="v1"><div class="card main-card"><h2>Registrar compra</h2><p class="mu intro">Crea partides a partir de les compres de GestoCatalog o entra-les a mà.</p><section class="panel" id="pendingPanel"><h3>Compres de GestoCatalog</h3><p class="mu">Línies d’albarà que has enviat a GestoStock des de GestoCatalog. Prem el nom per crear-ne la partida o llisca-la cap a l’esquerra per descartar-la.</p><div id="pendingLines"></div></section><section class="panel"><details class="new-form" id="manualDetails"><summary>Nova partida manual</summary><div id="purchaseCard"><form id="f">
 <div class="full"><label for="ns">Espècie o article</label><input id="nsSearch" type="search" placeholder="Cerca l’article" autocomplete="off" style="margin-bottom:6px"><select id="ns"></select><input id="nom" hidden></div>
@@ -301,7 +301,7 @@ details.new-form[open]>summary{margin-bottom:10px}
 <p id="noSuppliers" class="mu">Encara no hi ha proveïdors registrats.</p>
 <p class="mu">És la mateixa llista que GestoCatalog. Per canviar-ne el nom o el telèfon, fes-ho a GestoCatalog.</p>
 </div>
-</div></div><div id="lots" hidden><div class="card main-card"><div class="view-head"><h2>Partides</h2><div class="act"><button id="costSummary" class="s" type="button">Resum de costos</button><button id="mixLots" class="s" type="button">Barreja partides</button></div></div><div id="lotsList"></div></div></div><div id="plats" hidden><div class="card main-card"><div class="view-head"><h2>Plats i escandalls</h2><div class="act"><button id="newPlat" class="s f" type="button">Nou plat</button></div></div><p class="mu intro">Cada plat gasta peces o grams dels articles a granel. Prem «−1» quan en surti un i es descomptaran tots els ingredients.</p><div id="platsList"></div></div></div><datalist id="calibres"><option value="10/15"><option value="15/20"><option value="20/25"><option value="20/30"><option value="21/30"><option value="30/40"><option value="40/50"><option value="50/60"><option value="60/80"><option value="80/100"></datalist><div id="config" hidden><div class="card main-card"><h2>Paràmetres</h2><div id="configBody"></div></div></div><div id="v2" hidden><div class="card main-card"><h2>Historial de vendes</h2><div id="sum" class="sum"></div><div id="sales"></div></div></div><div id="trash" hidden><div class="card main-card"><h2>Paperera</h2><p class="mu intro">Llisca un element cap a la dreta per recuperar-lo o cap a l’esquerra per esborrar-lo definitivament. Passats 30 dies, s’esborren sols.</p><div id="trashList"></div></div></div>
+</div></div><div id="lots" hidden><div class="card main-card"><div class="view-head"><h2>Partides</h2><div class="act"><button id="costSummary" class="s" type="button">Resum de costos</button><button id="mixLots" class="s" type="button">Barreja partides</button></div></div><div id="lotsList"></div></div></div><div id="plats" hidden><div class="card main-card"><div class="view-head"><h2>Plats i escandalls</h2><div class="act"><button id="bulkPlats" class="s" type="button">Productes d’una categoria</button><button id="newPlat" class="s f" type="button">Nou plat</button></div></div><p class="mu intro">El cost de cada plat surt de l’estoc a granel o de l’últim albarà de GestoCatalog. Quan un albarà canvia el cost, ho veuràs a dalt. Els vins i les copes es poden crear de cop amb «Productes d’una categoria».</p><div id="platsList"></div></div></div><datalist id="calibres"><option value="10/15"><option value="15/20"><option value="20/25"><option value="20/30"><option value="21/30"><option value="30/40"><option value="40/50"><option value="50/60"><option value="60/80"><option value="80/100"></datalist><div id="config" hidden><div class="card main-card"><h2>Paràmetres</h2><div id="configBody"></div></div></div><div id="v2" hidden><div class="card main-card"><h2>Historial de vendes</h2><div id="sum" class="sum"></div><div id="sales"></div></div></div><div id="trash" hidden><div class="card main-card"><h2>Paperera</h2><p class="mu intro">Llisca un element cap a la dreta per recuperar-lo o cap a l’esquerra per esborrar-lo definitivament. Passats 30 dies, s’esborren sols.</p><div id="trashList"></div></div></div>
 </main>
 <p id="status" role="status" aria-live="polite"></p>
 <dialog id="sheet" class="sheet-dialog" aria-labelledby="sheetTitle"></dialog>
@@ -508,7 +508,7 @@ function norm(){state.fish=state.fish||[];state.sales=state.sales||[];state.noms
 // ---- Articles i proveïdors comuns amb GestoCatalog ----
 var catalog={articles:[],suppliers:[],offers:[],categories:[]},linkChanged=false;
 function catKey(n){return String(n||"").trim().toLocaleLowerCase("ca")}
-window.applyCatalog=function(d){if(d&&Array.isArray(d.articles))catalog.articles=d.articles;if(d&&Array.isArray(d.suppliers))catalog.suppliers=d.suppliers;if(d&&Array.isArray(d.offers))catalog.offers=d.offers;if(d&&Array.isArray(d.categories))catalog.categories=d.categories;catalogKey=JSON.stringify([catalog.articles,catalog.suppliers,catalog.offers,catalog.categories])};
+window.applyCatalog=function(d){if(d&&Array.isArray(d.articles))catalog.articles=d.articles;if(d&&Array.isArray(d.suppliers))catalog.suppliers=d.suppliers;if(d&&Array.isArray(d.offers))catalog.offers=d.offers;if(d&&Array.isArray(d.categories))catalog.categories=d.categories;if(d&&d.prices&&typeof d.prices==="object")prices=d.prices;catalogKey=JSON.stringify([catalog.articles,catalog.suppliers,catalog.offers,catalog.categories])};
 var catalogKey="";
 // Canvis fets a GestoCatalog (noms nous, articles nous…) sense canvis a l'inventari.
 window.refreshCatalog=function(d,p){
@@ -933,6 +933,7 @@ function sheetKey(){
  if(window.editLot&&state.lots.some(function(l){return l.id===window.editLot}))return "lot:"+window.editLot;
  if(editPlat&&(editPlat==="new"||platById(editPlat)))return "plat:"+editPlat;
  if(mixOpen)return "mix:new";
+ if(bulkOpen)return "bulk:new";
  if(closeLotId&&lotById(closeLotId))return "close:"+closeLotId;
  if(window.costSummaryOpen)return "summary:"+(costMonth||"");
  return "";
@@ -947,6 +948,7 @@ function syncSheet(){
  if(key.indexOf("fish:")===0)s.innerHTML=editForm(state.fish.find(function(f){return f.id===id}));
  else if(key.indexOf("plat:")===0){s.innerHTML=platForm(id==='new'?null:platById(id));platFormEvents()}
  else if(key.indexOf("mix:")===0){s.innerHTML=mixForm();mixFormEvents()}
+ else if(key.indexOf("bulk:")===0){s.innerHTML=bulkForm();bulkFormEvents()}
  else if(key.indexOf("close:")===0)s.innerHTML=closeForm(lotById(id));
  else if(key.indexOf("summary:")===0){s.innerHTML=summaryForm();$("sum_m").onchange=function(){costMonth=this.value;syncSheet()}}
  else{
@@ -1135,7 +1137,19 @@ function generateLotFish(l){
  save();render();flash("Estoc generat. Ja pots validar la partida.",1);
 }
 
-function renderConfig(){var c=conf();$("configBody").innerHTML='<div class="card"><div class="g2"><div><label>IVA (%)</label><input id="civa" type="number" step="0.1" min="0" value="'+c.iva+'"></div><div><label>Arrodoniment (€)</label><input id="cr" type="number" step="0.1" min="0" value="'+c.arrodoniment+'"></div><div><label>Grams mínims / pax</label><input id="cmin" type="number" min="1" value="'+c.paxMin+'"></div><div><label>Grams màxims / pax</label><input id="cmax" type="number" min="1" value="'+c.paxMax+'"></div></div><h3>Multiplicador segons cost net</h3>'+c.trams.map(function(t,i){return '<div class="g2"><div><label>Cost €/kg</label><input id="ct'+i+'" type="number" min="0" step="0.01" value="'+t.cost+'"></div><div><label>Multiplicador</label><input id="cm'+i+'" type="number" min="1" step="0.1" value="'+t.mult+'"></div></div>'}).join('')+'<div class="act"><button class="s f" id="saveConfig">Desa paràmetres</button></div><p class="mu">El preu suggerit inclou IVA. Pots corregir-lo per a cada peix.</p></div>'}
+function renderConfig(){var c=conf();$("configBody").innerHTML='<div class="card"><div class="g2"><div><label>IVA (%)</label><input id="civa" type="number" step="0.1" min="0" value="'+c.iva+'"></div><div><label>Arrodoniment (€)</label><input id="cr" type="number" step="0.1" min="0" value="'+c.arrodoniment+'"></div><div><label>Grams mínims / pax</label><input id="cmin" type="number" min="1" value="'+c.paxMin+'"></div><div><label>Grams màxims / pax</label><input id="cmax" type="number" min="1" value="'+c.paxMax+'"></div></div><h3>Multiplicador segons cost net</h3>'+c.trams.map(function(t,i){return '<div class="g2"><div><label>Cost €/kg</label><input id="ct'+i+'" type="number" min="0" step="0.01" value="'+t.cost+'"></div><div><label>Multiplicador</label><input id="cm'+i+'" type="number" min="1" step="0.1" value="'+t.mult+'"></div></div>'}).join('')+'<p class="mu">El preu suggerit inclou IVA. Pots corregir-lo per a cada peix.</p>'+costConfigHtml(c)+'<div class="act"><button class="s f" id="saveConfig">Desa paràmetres</button></div></div>'}
+// Paràmetres de costos: % de cost objectiu i taules de preu recomanat per categoria (vins…).
+function costConfigHtml(c){
+ var t=c.preusCategories||{},ids=Object.keys(t),used=new Set(ids);
+ var h='<h3>Costos dels plats</h3><div class="g2"><div><label for="cobj">% de cost objectiu</label><input id="cobj" type="number" min="1" max="100" step="0.5" value="'+objectiu()+'"></div></div><p class="mu">Els plats amb un % de cost més alt surten marcats.</p>';
+ h+='<h3>Preu recomanat per categoria</h3><p class="mu">Per als productes directes (vins, copes…): cost per ampolla de l’últim albarà × multiplicador del tram + IVA, arrodonit cap amunt. Una subcategoria sense taula pròpia fa servir la de la categoria principal.</p>';
+ ids.forEach(function(id){var x=t[id],cat=categoryById(id);
+  h+='<div class="panel" style="margin:10px 0"><div class="view-head"><b>'+esc(cat?cat.name:'Categoria eliminada')+'</b><button type="button" class="s" data-ptdel="'+attr(id)+'">Treu la taula</button></div>'+x.trams.map(function(tr,i){return '<div class="g2"><div><label>Cost fins a (€)</label><input id="pt_'+attr(id)+'_c'+i+'" type="number" min="0" step="0.01" value="'+tr.cost+'"></div><div><label>Multiplicador</label><input id="pt_'+attr(id)+'_m'+i+'" type="number" min="1" step="0.05" value="'+tr.mult+'"></div></div>'}).join('')+
+  '<div class="g2"><div><label>Arrodoniment (€)</label><input id="pt_'+attr(id)+'_r" type="number" min="0" step="0.1" value="'+x.arrodoniment+'"></div><div><label>Copes per ampolla</label><input id="pt_'+attr(id)+'_q" type="number" min="1" step="1" value="'+(x.copes||4)+'"></div><div><label>Recàrrec de la copa (×)</label><input id="pt_'+attr(id)+'_k" type="number" min="1" step="0.05" value="'+(x.recarrecCopa||1)+'"></div></div></div>'});
+ var free=categoryTreeStock().filter(function(x){return !used.has(x.c.id)});
+ if(free.length)h+='<div class="g2" style="align-items:end"><div><label for="ptNew">Afegeix una taula per a</label><select id="ptNew"><option value="">Tria la categoria</option>'+free.map(function(x){return '<option value="'+attr(x.c.id)+'">'+(x.depth?'\u00a0\u00a0— ':'')+esc(x.c.name)+'</option>'}).join('')+'</select></div><div><button type="button" class="s" id="ptAdd">Afegeix</button></div></div>';
+ return h;
+}
 function tab(n){$("menu").hidden=true;$("mb").setAttribute("aria-expanded","false");["v1","v3","v2","np","lots","config","suppliers","trash","plats"].forEach(function(id,i){$(id).hidden=i!==n});["t0","t1","t2","en","tl","tc","ts","tb","tpl"].forEach(function(id,i){$(id).className=i===n?"on":""});if(n===3)renderNames();if(n===8)renderPlats();if(n===7)renderTrash();if(n===4)renderLots();if(n===5)renderConfig();window.scrollTo(0,0)}
 ["t0","t1","t2","en","tl","tc","ts","tb","tpl"].forEach(function(id,i){$(id).onclick=function(){tab(i)}});
 var editingSupplier="";
@@ -1170,8 +1184,8 @@ window.nexamarShowPurchase=function(fromImport){setPurchaseVisible(true);if(!fro
 window.nexamarPurchaseFinished=function(){setPurchaseVisible(false);$("f").reset();$("dc").value=today();$("tp").value="";$("net").value="";$("netMode").value="real";prev()};
 $("manualDetails").addEventListener("toggle",function(){if(skipManualToggle){skipManualToggle=false;return}if(this.open)window.nexamarShowPurchase(false)});
 // Fitxa en finestra: els botons fan el mateix que feien a la pantalla.
-$("sheet").addEventListener("click",function(e){var k=this.dataset.key||"";if(k.indexOf("fish:")===0)$("stock").onclick(e);else if(k.indexOf("lot:")===0)$("lots").onclick(e);else if(k.indexOf("plat:")===0)platSheetClick(e);else if(k.indexOf("mix:")===0)mixSheetClick(e);else if(k.indexOf("close:")===0)closeSheetClick(e);else if(k.indexOf("summary:")===0)summarySheetClick(e)});
-$("sheet").addEventListener("cancel",function(e){e.preventDefault();var k=this.dataset.key||"";if(k.indexOf("fish:")===0){editId=null;render()}else if(k.indexOf("lot:")===0){window.editLot=null;renderLots()}else if(k.indexOf("plat:")===0){editPlat=null;syncSheet()}else if(k.indexOf("mix:")===0){mixOpen=false;syncSheet()}else if(k.indexOf("close:")===0){closeLotId=null;syncSheet()}else if(k.indexOf("summary:")===0){window.costSummaryOpen=false;syncSheet()}});
+$("sheet").addEventListener("click",function(e){var k=this.dataset.key||"";if(k.indexOf("fish:")===0)$("stock").onclick(e);else if(k.indexOf("lot:")===0)$("lots").onclick(e);else if(k.indexOf("plat:")===0)platSheetClick(e);else if(k.indexOf("mix:")===0)mixSheetClick(e);else if(k.indexOf("close:")===0)closeSheetClick(e);else if(k.indexOf("bulk:")===0)bulkSheetClick(e);else if(k.indexOf("summary:")===0)summarySheetClick(e)});
+$("sheet").addEventListener("cancel",function(e){e.preventDefault();var k=this.dataset.key||"";if(k.indexOf("fish:")===0){editId=null;render()}else if(k.indexOf("lot:")===0){window.editLot=null;renderLots()}else if(k.indexOf("plat:")===0){editPlat=null;syncSheet()}else if(k.indexOf("mix:")===0){mixOpen=false;syncSheet()}else if(k.indexOf("close:")===0){closeLotId=null;syncSheet()}else if(k.indexOf("bulk:")===0){bulkOpen=false;syncSheet()}else if(k.indexOf("summary:")===0){window.costSummaryOpen=false;syncSheet()}});
 $("dc").value=today();
 function historicalMinva(nom,tipus){var xs=(state.lots||[]).filter(function(l){return l.nom===nom&&l.tipus===tipus&&l.netMode!=='estimated'&&l.pesNetReal!==false&&Number(l.pesBrut)>0&&Number(l.pesNet)>0&&Number(l.pesNet)<=Number(l.pesBrut)});var gross=xs.reduce(function(a,l){return a+Number(l.pesBrut)},0),net=xs.reduce(function(a,l){return a+Number(l.pesNet)},0);return gross>0?{count:xs.length,percent:100*(gross-net)/gross}:null}
 function showNetSuggestion(){var nom=curNom(),tipus=$('tp').value,brut=Number($('pes').value),h=historicalMinva(nom,tipus),el=$('netSuggestion'),b=$('useSuggestedNet');if(!h||!(brut>0)){el.textContent='Sense dades històriques suficients per a aquesta espècie, preparació i pes brut.';b.hidden=true;return}var suggested=Math.round(brut*(1-h.percent/100)*1000)/1000;el.textContent='Minva històrica ponderada: '+h.percent.toFixed(1).replace('.',',')+'% ('+h.count+' partides amb pes real). Pes net suggerit: '+suggested.toFixed(3).replace('.',',')+' kg. És una estimació, no un pes mesurat.';b.hidden=false;b.dataset.value=String(suggested)}
@@ -1225,7 +1239,17 @@ $("lots").onclick=function(e){
  if(d.lotsave){saveLotChanges(l);return}
  if(d.generate){generateLotFish(l)}else if(d.close){if(Number($("lnet").value)!==Number(l.pesNet)||Number($("lqty").value)!==Number(l.quantitat||0)||($("lsame").value==="si")!==Boolean(l.pesosIguals)){flash("Has canviat dades: torna a generar l’estoc abans de validar");return}var a=state.fish.filter(function(f){return f.lotId===id}),sum=stockWeight(a);if(l.pesNet==null||!a.length||Math.abs(sum-l.pesNet)>.002||(l.tipus==="talls"&&(!l.estocATalls||stockCount(a)!==Number(l.nombreTalls)))){flash("Falta quadrar el pes net");return}l.validada=true;save();render();flash("Partida validada",1)}
 };
-$("config").onclick=function(e){if(e.target.id!=="saveConfig")return;var c=conf();c.iva=Number($("civa").value);c.arrodoniment=Number($("cr").value);c.paxMin=Number($("cmin").value);c.paxMax=Number($("cmax").value);c.trams=c.trams.map(function(t,i){return {cost:Number($("ct"+i).value),mult:Number($("cm"+i).value)}});if(!Number.isFinite(c.iva)||c.iva<0||c.iva>100||c.paxMin<=0||c.paxMax<c.paxMin||c.trams.some(function(t){return t.cost<0||t.mult<1})||c.arrodoniment<0){flash("Revisa els paràmetres");return}state.config=c;save();render();flash("Paràmetres desats",1)};
+$("config").onclick=function(e){
+ if(e.target.id==="ptAdd"){var id=$("ptNew").value;if(!id){flash("Tria la categoria");return}var c0=conf();c0.preusCategories=Object.assign({},c0.preusCategories||{});c0.preusCategories[id]=JSON.parse(JSON.stringify(DEFAULT_WINE_TABLE));state.config=c0;save();render();flash("Taula afegida amb uns valors d’exemple: revisa-la i desa.",1);return}
+ if(e.target.dataset&&e.target.dataset.ptdel){var del=e.target.dataset.ptdel,c1=conf(),old=(c1.preusCategories||{})[del];c1.preusCategories=Object.assign({},c1.preusCategories||{});delete c1.preusCategories[del];state.config=c1;save();render();showUndo("S’ha tret la taula de preus.",function(){var c2=conf();c2.preusCategories=Object.assign({},c2.preusCategories||{});c2.preusCategories[del]=old;state.config=c2;save();render()});return}
+ if(e.target.id!=="saveConfig")return;var c=conf();
+ var obj=Number($("cobj").value),tables={},badT=false;
+ Object.keys(c.preusCategories||{}).forEach(function(id){var x=c.preusCategories[id],p="pt_"+id+"_";
+  var t={trams:x.trams.map(function(tr,i){return {cost:Number($(p+"c"+i).value),mult:Number($(p+"m"+i).value)}}),arrodoniment:Number($(p+"r").value),copes:Number($(p+"q").value),recarrecCopa:Number($(p+"k").value)};
+  if(t.trams.some(function(tr){return !(tr.cost>=0)||!(tr.mult>=1)})||!(t.arrodoniment>=0)||!(t.copes>=1&&Number.isInteger(t.copes))||!(t.recarrecCopa>=1))badT=true;
+  tables[id]=t});
+ if(!(obj>0&&obj<=100)||badT){flash("Revisa els paràmetres de costos");return}
+ c.costObjectiu=obj;c.preusCategories=tables;c.iva=Number($("civa").value);c.arrodoniment=Number($("cr").value);c.paxMin=Number($("cmin").value);c.paxMax=Number($("cmax").value);c.trams=c.trams.map(function(t,i){return {cost:Number($("ct"+i).value),mult:Number($("cm"+i).value)}});if(!Number.isFinite(c.iva)||c.iva<0||c.iva>100||c.paxMin<=0||c.paxMax<c.paxMin||c.trams.some(function(t){return t.cost<0||t.mult<1})||c.arrodoniment<0){flash("Revisa els paràmetres");return}state.config=c;save();render();flash("Paràmetres desats",1)};
 $("stock").onclick=function(e){var o=e.target.closest("[data-open]");if(o){openId=openId===o.dataset.open?null:o.dataset.open;sellId=null;confirmId=null;render();return}
   var d=e.target.dataset;if(!d)return;
   if(d.sell){sellOne(d.sell);}
@@ -1357,6 +1381,7 @@ function refName(ref){
 }
 function barrejaNames(){var seen=new Map();state.lots.slice().reverse().forEach(function(l){if(l.barreja&&!seen.has(catKey(l.nom)))seen.set(catKey(l.nom),l.nom)});return Array.from(seen.values())}
 function ingredientMatchesLot(ing,l){
+ if(ing.unitat==="u")return false;
  if(!l||l.tipus!=="granel"||(ing.unitat==="g")!==(l.consum==="grams"))return false;
  if(ing.ref.indexOf("a:")===0)return !l.barreja&&l.articleId===ing.ref.slice(2);
  return Boolean(l.barreja)&&catKey(l.nom)===catKey(ing.ref.slice(2));
@@ -1366,7 +1391,33 @@ function ingredientFish(ing){
  return availableStock().filter(function(f){return ingredientMatchesLot(ing,lotById(f.lotId))}).sort(function(a,b){var la=lotById(a.lotId),lb=lotById(b.lotId);return String(a.dataCompra).localeCompare(String(b.dataCompra))||(la.numero||0)-(lb.numero||0)});
 }
 function platsUsing(l){return (state.config.plats||[]).filter(function(p){return p.ingredients.some(function(i){return ingredientMatchesLot(i,l)})})}
+// ---- Preus dels albarans (GestoCatalog) ----
+// prices[articleId] = {last:{price,unitId,unit,date,supplier}, prev:{...}|null}: preu per la unitat de preu de l'article.
+var prices={};
+function kgPrice(p){return Boolean(p)&&(p.unitId==="kg"||/^(kg|quilos?|kilos?)$/i.test(String(p.unit||"").trim()))}
+function unitShortName(p){if(!p)return "";if(kgPrice(p))return "kg";var u=String(p.unit||"unitat").trim().toLowerCase();return /es$/.test(u)?u.replace(/es$/,"a"):u.replace(/s$/,"")}
+// Peces per kg d'un article: les de l'ingredient o, si no n'hi ha, el calibre de l'última partida a granel.
+function ingPecesKg(ing){
+ if(Number(ing.pecesKg)>0)return Number(ing.pecesKg);
+ var l=state.lots.slice().reverse().find(function(x){return x.tipus==="granel"&&x.consum==="peces"&&ing.ref==="a:"+x.articleId&&Number(x.quantitat)>0&&Number(x.pesBrut)>0});
+ return l?l.quantitat/l.pesBrut:null;
+}
+// Cost d'una unitat de l'ingredient (1 g, 1 peça o 1 unitat de preu) amb el preu d'un albarà. Igual que el servidor.
+function albaraUnitCost(ing,p){
+ if(!p||!(p.price>=0))return null;
+ var rend=Number(ing.rendiment)>0&&Number(ing.rendiment)<=100?Number(ing.rendiment)/100:1,c=null;
+ if(ing.unitat==="g")c=kgPrice(p)?p.price/1000:null;
+ else if(ing.unitat==="peces"){var pk=ingPecesKg(ing);c=kgPrice(p)?(pk>0?p.price/pk:null):p.price}
+ else c=p.price;
+ return c==null?null:c/rend;
+}
+function articlePrice(ing,which){return ing.ref.indexOf("a:")===0?(prices[ing.ref.slice(2)]||{})[which||"last"]||null:null}
+
+// ---- Disponibilitat (només per als plats amb tots els ingredients a granel a l'estoc) ----
+function ingredientTracked(ing){return ing.unitat!=="u"&&state.lots.some(function(l){return ingredientMatchesLot(ing,l)})}
+function platTracked(p){return p.ingredients.length>0&&p.ingredients.every(ingredientTracked)}
 function platAvailability(p){
+ if(!platTracked(p))return null;
  var res=null;
  p.ingredients.forEach(function(ing){
   var q=Number(ing.quantitat);if(!(q>0))return;
@@ -1382,9 +1433,14 @@ function platAvailability(p){
  return res;
 }
 function availText(a){return a.n>0?(a.min!==a.max?'~'+a.n+' ('+a.min+'–'+a.max+')':String(a.n))+' disponibles':'no en queden'}
-// Cost d'una unitat (peça o gram) d'un ingredient: el de l'estoc que es gastarà primer o, si no n'hi ha, el de l'última partida.
+
+// ---- Escandall ----
+// Cost d'una unitat d'un ingredient: el de l'estoc que es gastarà primer; si no n'hi ha, l'últim albarà; si no, l'última partida.
 function ingredientUnitCost(ing){
- var f=ingredientFish(ing)[0];if(f)return {cost:unitCost(f),from:"stock"};
+ if(ing.unitat!=="u"){var f=ingredientFish(ing)[0];if(f)return {cost:unitCost(f),from:"stock"}}
+ var p=articlePrice(ing),c=albaraUnitCost(ing,p);
+ if(c!=null)return {cost:c,from:"albara",price:p};
+ if(ing.unitat==="u")return null;
  var l=state.lots.filter(function(x){return ingredientMatchesLot(ing,x)&&Number(x.quantitat)>0}).sort(function(a,b){return String(b.dataCompra).localeCompare(String(a.dataCompra))||(b.numero||0)-(a.numero||0)})[0];
  return l?{cost:l.pesBrut*l.preuCompra/l.quantitat,from:"last"}:null;
 }
@@ -1393,31 +1449,113 @@ function platCost(p){
  var fix=Number(p.costFix)||0,total=fix+lines.reduce(function(s,x){return s+x.subtotal},0),carta=Number(p.preuCarta)||0,net=carta/(1+(Number(c.iva)||0)/100);
  return {lines:lines,fix:fix,total:total,missing:lines.some(function(x){return !x.unit}),carta:carta,net:net,marge:net-total,pct:net>0?total/net*100:null};
 }
-function qtyText(ing,q){return ing.unitat==="g"?fmtNum(q)+" g":fmtNum(q)+" "+(q===1?"peça":"peces")}
+function qtyText(ing,q){
+ if(ing.unitat==="g")return fmtNum(q)+" g";
+ if(ing.unitat==="u"){var p=articlePrice(ing),u=p?unitShortName(p):"unitat";if(q>0&&q<1&&Math.abs(1/q-Math.round(1/q))<1e-6)return "1/"+Math.round(1/q)+" de "+u;return fmtNum(q)+" "+u}
+ return fmtNum(q)+" "+(q===1?"peça":"peces");
+}
+function unitCostText(x){
+ if(x.ing.unitat==="g")return eur(x.unit.cost*1000)+"/kg";
+ if(x.ing.unitat==="u")return eur(x.unit.cost)+"/"+unitShortName(x.unit.price);
+ return eur(x.unit.cost)+"/peça";
+}
+function fromText(u){
+ if(u.from==="last")return " (última partida; ara no n’hi ha a l’estoc)";
+ if(u.from==="albara")return " (albarà del "+dt(u.price.date)+(u.price.supplier?", "+u.price.supplier:"")+")";
+ return "";
+}
+// ---- Preu recomanat (productes directes: vins, copes…) ----
+// Taules per categoria a config.preusCategories[categoryId] = {trams,arrodoniment,copes,recarrecCopa}.
+// Una subcategoria fa servir la seva taula o, si no en té, la de la categoria principal.
+var DEFAULT_WINE_TABLE={trams:[{cost:5,mult:4},{cost:10,mult:3},{cost:20,mult:2.5},{cost:40,mult:2},{cost:80,mult:1.7}],arrodoniment:0.5,copes:4,recarrecCopa:1.2};
+function categoryById(id){return (catalog.categories||[]).find(function(c){return c.id===id})||null}
+function priceTableFor(categoryId){
+ var t=conf().preusCategories||{},c=categoryById(categoryId);
+ if(!c)return null;
+ if(t[c.id])return {table:t[c.id],categoryId:c.id};
+ if(c.parentId&&t[c.parentId])return {table:t[c.parentId],categoryId:c.parentId};
+ return null;
+}
+function multFromTrams(trams,c){var pts=(trams||[]).slice().sort(function(a,b){return a.cost-b.cost});if(!pts.length)return 3;if(c<=pts[0].cost)return pts[0].mult;for(var i=1;i<pts.length;i++){if(c<=pts[i].cost){var a=pts[i-1],b=pts[i];return a.mult+(b.mult-a.mult)*(c-a.cost)/(b.cost-a.cost)}}return pts[pts.length-1].mult}
+// Preu de carta recomanat (IVA inclòs) d'un producte directe. Retorna null si no en té.
+function recommendedPrice(p,which){
+ if(!p.directe||p.ingredients.length!==1)return null;
+ var ing=p.ingredients[0];if(ing.unitat!=="u"||ing.ref.indexOf("a:")!==0)return null;
+ var a=articleById(ing.ref.slice(2)),pt=a&&priceTableFor(a.categoryId),pr=articlePrice(ing,which);
+ if(!pt||!pr||!(pr.price>0))return null;
+ var t=pt.table,q=Number(ing.quantitat)||1,cost=pr.price,iva=(Number(conf().iva)||0)/100;
+ var n=cost*multFromTrams(t.trams,cost)*q*(q<1?(Number(t.recarrecCopa)||1):1)*(1+iva),step=Number(t.arrodoniment)||0;
+ return step>0?Math.ceil((n-1e-8)/step)*step:Math.round(n*100)/100;
+}
+// Cost del plat amb l'últim preu i amb l'anterior de cada article (només ingredients que surten dels albarans).
+function platCostChange(p){
+ var c=platCost(p),before=Number(p.costFix)||0,after=Number(p.costFix)||0,changed=[],recent=false,limit=new Date(Date.now()-30*864e5).toISOString().slice(0,10);
+ for(var i=0;i<c.lines.length;i++){
+  var x=c.lines[i];if(!x.unit)return null;
+  if(x.unit.from!=="albara"){before+=x.subtotal;after+=x.subtotal;continue}
+  var last=articlePrice(x.ing,"last"),prev=articlePrice(x.ing,"prev"),cl=albaraUnitCost(x.ing,last),cp=prev?albaraUnitCost(x.ing,prev):null;
+  after+=cl*x.q;before+=(cp==null?cl:cp)*x.q;
+  if(cp!=null&&Math.abs(cl-cp)>1e-9){changed.push({nom:refName(x.ing.ref),from:prev.price,to:last.price,unit:unitShortName(last),date:last.date});if(String(last.date)>=limit)recent=true}
+ }
+ if(!changed.length||Math.abs(after-before)<0.005)return null;
+ var net=c.net;
+ return {before:before,after:after,recent:recent,changed:changed,pctBefore:net>0?before/net*100:null,pctAfter:net>0?after/net*100:null,date:changed.map(function(x){return x.date}).sort().pop()};
+}
 function escandallHtml(p,k){
  var h='<div class="mu" style="margin-bottom:4px"><b>Escandall</b></div>';
- k.lines.forEach(function(x){h+='<div class="mu">'+esc(refName(x.ing.ref))+' · '+qtyText(x.ing,x.q)+' · '+(x.unit?(x.ing.unitat==='g'?eur(x.unit.cost*1000)+'/kg':eur(x.unit.cost)+'/peça')+' → <b>'+eur(x.subtotal)+'</b>'+(x.unit.from==='last'?' (preu de l’última partida, ara no n’hi ha)':''):'sense preu: encara no hi ha cap partida a granel d’aquest article')+'</div>'});
+ k.lines.forEach(function(x){h+='<div class="mu">'+esc(refName(x.ing.ref))+' · '+qtyText(x.ing,x.q)+(Number(x.ing.rendiment)>0&&Number(x.ing.rendiment)<100?' · aprofitament '+fmtNum(Number(x.ing.rendiment))+'%':'')+' · '+(x.unit?unitCostText(x)+' → <b>'+eur(x.subtotal)+'</b>'+esc(fromText(x.unit)):'sense preu: '+(x.ing.unitat==="peces"&&articlePrice(x.ing)&&kgPrice(articlePrice(x.ing))?'falten les peces per kg (llapis)':'encara no hi ha cap albarà ni partida d’aquest article'))+'</div>'});
  if(k.fix)h+='<div class="mu">Altres costos (arròs, oli, gas…) → <b>'+eur(k.fix)+'</b></div>';
- h+='<div class="pos" style="margin-top:6px">Cost del plat: '+eur(k.total)+(k.missing?' (incomplet)':'')+'</div>';
- if(k.carta>0)h+='<div class="mu">Carta: '+eur(k.carta)+' (IVA inclòs) · Sense IVA: '+eur(k.net)+' · Marge: '+eur(k.marge)+' · Cost: '+n2(k.pct)+'%</div>';
+ h+='<div class="pos" style="margin-top:6px">Cost: '+eur(k.total)+(k.missing?' (incomplet)':'')+'</div>';
+ if(k.carta>0)h+='<div class="mu">Carta: '+eur(k.carta)+' (IVA inclòs) · Sense IVA: '+eur(k.net)+' · Marge: '+eur(k.marge)+' · <span class="'+(k.pct>objectiu()?'neg':'')+'">Cost: '+n2(k.pct)+'%</span></div>';
  else h+='<div class="mu">Posa el preu de carta (llapis) per veure el marge i el % de cost.</div>';
+ var r=recommendedPrice(p);
+ if(r!=null)h+='<div class="mu">Preu recomanat: <b>'+eur(r)+'</b>'+(k.carta>0&&r>k.carta+0.004?' · <span class="neg">per sobre del de carta</span>':'')+'</div>';
+ var ch=platCostChange(p);
+ if(ch)h+='<div class="mu">Últim canvi de cost: '+eur(ch.before)+' → '+eur(ch.after)+' ('+ch.changed.map(function(x){return esc(x.nom)+' '+eur(x.from)+' → '+eur(x.to)+'/'+esc(x.unit)}).join(', ')+')</div>';
  var sold=state.sales.filter(function(s){return s.tipus==="plat"&&s.platId===p.id});
- if(sold.length){var month=today().slice(0,7),ms=sold.filter(function(s){return String(s.dataVenda).slice(0,7)===month}),mc=ms.reduce(function(n,s){return n+cost(s)},0),mr=ms.reduce(function(n,s){return n+rev(s)},0);
-  h+='<div class="mu">Aquest mes: '+ms.length+' · Cost real: '+eur(mc)+(mr>0?' · Carta: '+eur(mr):'')+' · Total des del principi: '+sold.length+'</div>'}
+ if(sold.length){var month=today().slice(0,7),ms=sold.filter(function(s){return String(s.dataVenda).slice(0,7)===month}),mc=ms.reduce(function(n,s){return n+cost(s)},0);
+  h+='<div class="mu">Descomptats aquest mes: '+ms.length+' · Cost real: '+eur(mc)+' · Total: '+sold.length+'</div>'}
  return h;
+}
+function objectiu(){var o=Number(conf().costObjectiu);return o>0?o:33}
+// Categoria per filtrar: la de l'article d'un producte directe; els altres són «Plats de cuina».
+function platCategory(p){if(!p.directe)return "";var a=p.ingredients[0]&&p.ingredients[0].ref.indexOf("a:")===0&&articleById(p.ingredients[0].ref.slice(2));return a&&a.categoryId||""}
+var platFilter="";
+function platFilterOptions(){
+ var cats=new Set((state.config.plats||[]).map(platCategory).filter(Boolean)),list=(catalog.categories||[]).filter(function(c){return cats.has(c.id)||(catalog.categories||[]).some(function(x){return x.parentId===c.id&&cats.has(x.id)})});
+ if(!list.length)return "";
+ return '<label for="platFilter">Mostra</label><select id="platFilter"><option value="">Tots</option><option value="-"'+(platFilter==="-"?' selected':'')+'>Plats de cuina</option>'+list.map(function(c){return '<option value="'+attr(c.id)+'"'+(platFilter===c.id?' selected':'')+'>'+(c.parentId?'  — ':'')+esc(c.name)+'</option>'}).join('')+'</select>';
+}
+function platVisible(p){
+ if(!platFilter)return true;var c=platCategory(p);
+ if(platFilter==="-")return !c;
+ var cat=categoryById(c);return c===platFilter||Boolean(cat&&cat.parentId===platFilter);
 }
 function renderPlats(){
  var el=$("platsList");if(!el)return;
- var list=(state.config&&state.config.plats||[]).slice().sort(function(a,b){return a.nom.localeCompare(b.nom,"ca",{sensitivity:"base"})});
- el.innerHTML=list.map(function(p){
-  var a=platAvailability(p),k=platCost(p),op=openPlat===p.id;
-  var meta=availText(a)+(a.limit&&a.n>=0?' · limita: '+a.limit:'')+' · Cost: '+eur(k.total)+(k.missing?' (incomplet)':'')+(k.pct!=null?' · '+n2(k.pct)+'% de cost':'');
-  return '<div class="list-row"><button type="button" class="row-open" data-platopen="'+attr(p.id)+'" aria-expanded="'+op+'" title="'+rowTitle(p.nom,meta)+'">'+rowLabel(p.nom,meta)+'</button><div class="row-icons"><button type="button" class="s f" data-platsell="'+attr(p.id)+'" title="Descompta 1 '+attr(p.nom)+'"'+(a.n>0?'':' disabled')+'>−1</button>'+iconBtn('edit','Edita '+p.nom,'data-platedit="'+attr(p.id)+'"')+'</div></div>'+(op?'<div class="row-detail">'+escandallHtml(p,k)+'</div>':'');
- }).join('')||'<div class="empty">Encara no hi ha plats.'+(document.body.classList.contains('no-config')?' Els crea qui té el permís de Paràmetres.':' Prem «Nou plat» per crear-ne un.')+'</div>';
+ var all=(state.config&&state.config.plats||[]).slice().sort(function(a,b){return a.nom.localeCompare(b.nom,"ca",{sensitivity:"base"})});
+ var list=all.filter(platVisible),obj=objectiu(),h='';
+ // Canvis de cost dels últims 30 dies (albarans de GestoCatalog).
+ var changes=all.map(function(p){return {p:p,c:platCostChange(p)}}).filter(function(x){return x.c&&x.c.recent}).sort(function(a,b){return String(b.c.date).localeCompare(String(a.c.date))});
+ var alerts=all.filter(function(p){var r=recommendedPrice(p);return r!=null&&Number(p.preuCarta)>0&&r>Number(p.preuCarta)+0.004});
+ if(changes.length||alerts.length){
+  h+='<section class="panel"><h3>Canvis de cost recents</h3>';
+  h+=changes.slice(0,12).map(function(x){var c=x.c;return '<div class="mu">'+esc(x.p.nom)+': '+eur(c.before)+' → <b>'+eur(c.after)+'</b> ('+(c.after>c.before?'+':'−')+eur(Math.abs(c.after-c.before))+')'+(c.pctAfter!=null?' · <span class="'+(c.pctAfter>obj?'neg':'')+'">'+Math.round(c.pctBefore)+'% → '+Math.round(c.pctAfter)+'% de cost</span>':'')+' · '+c.changed.map(function(y){return esc(y.nom)+' '+eur(y.from)+' → '+eur(y.to)+'/'+esc(y.unit)+' ('+dt(y.date)+')'}).join(', ')+'</div>'}).join('');
+  if(alerts.length)h+='<div class="mu" style="margin-top:6px"><b>Preu de carta per sota del recomanat</b></div>'+alerts.map(function(p){return '<div class="mu">'+esc(p.nom)+': carta '+eur(p.preuCarta)+' · recomanat <b>'+eur(recommendedPrice(p))+'</b></div>'}).join('');
+  h+='</section>';
+ }
+ var fo=platFilterOptions();if(fo)h+='<div style="margin:8px 0">'+fo+'</div>';
+ h+=list.map(function(p){
+  var a=platAvailability(p),k=platCost(p),op=openPlat===p.id,r=recommendedPrice(p);
+  var meta=(a?availText(a)+(a.limit?' · limita: '+a.limit:'')+' · ':'')+'Cost: '+eur(k.total)+(k.missing?' (incomplet)':'')+(k.carta>0?' · Carta: '+eur(k.carta):'')+(k.pct!=null?' · '+n2(k.pct)+'% de cost'+(k.pct>obj?' ⚠︎':''):'')+(r!=null?' · Recomanat: '+eur(r):'');
+  return '<div class="list-row"><button type="button" class="row-open" data-platopen="'+attr(p.id)+'" aria-expanded="'+op+'" title="'+rowTitle(p.nom,meta)+'">'+rowLabel(p.nom,meta)+'</button><div class="row-icons">'+(a?'<button type="button" class="s f" data-platsell="'+attr(p.id)+'" title="Descompta 1 '+attr(p.nom)+'"'+(a.n>0?'':' disabled')+'>−1</button>':'')+iconBtn('edit','Edita '+p.nom,'data-platedit="'+attr(p.id)+'"')+'</div></div>'+(op?'<div class="row-detail">'+escandallHtml(p,k)+'</div>':'');
+ }).join('')||'<div class="empty">'+(all.length?'Cap plat amb aquest filtre.':'Encara no hi ha plats.'+(document.body.classList.contains('no-config')?' Els crea qui té el permís de Paràmetres.':' Prem «Nou plat» o «Productes d’una categoria».'))+'</div>';
+ el.innerHTML=h;
+ if($("platFilter"))$("platFilter").onchange=function(){platFilter=this.value;renderPlats()};
  syncSheet();
 }
 function sellPlat(id){
- var p=platById(id);if(!p)return;
+ var p=platById(id);if(!p||!platTracked(p))return;
  var left=new Map(),plan=[];
  for(var i=0;i<p.ingredients.length;i++){
   var ing=p.ingredients[i],need=Number(ing.quantitat);if(!(need>0))continue;
@@ -1448,22 +1586,30 @@ function ingredientOptions(sel){
  if(sel&&sel.indexOf("b:")===0&&!mixes.some(function(n){return catKey(n)===catKey(sel.slice(2))}))mixes.push(sel.slice(2));
  return '<option value="">Tria l’article</option>'+(mixes.length?'<optgroup label="Barreges">'+mixes.map(function(n){return opt("b:"+n,n)}).join('')+'</optgroup>':'')+(first.length?'<optgroup label="Comprats a granel">'+first.map(function(a){return opt("a:"+a.id,a.name)}).join('')+'</optgroup>':'')+'<optgroup label="Altres articles">'+rest.map(function(a){return opt("a:"+a.id,a.name)}).join('')+'</optgroup>';
 }
-function ingRow(i){return '<div class="g2 pl-ing" style="align-items:end;padding:8px 0;border-bottom:1px solid var(--border)"><div class="full"><label>Article</label><select class="pl_ref">'+ingredientOptions(i.ref||"")+'</select></div><div><label>Quantitat per plat</label><input class="pl_q" type="number" min="0" step="any" inputmode="decimal" value="'+attr(i.quantitat==null?"":i.quantitat)+'"></div><div><label>Unitat</label><select class="pl_u"><option value="peces">Peces</option><option value="g"'+(i.unitat==="g"?' selected':'')+'>Grams</option></select></div><div class="full"><button type="button" class="s" data-platdeli="1">Treu aquest ingredient</button></div></div>'}
+function ingRow(i){
+ var u=i.unitat||"peces";
+ return '<div class="g2 pl-ing" style="align-items:end;padding:8px 0;border-bottom:1px solid var(--border)"><div class="full"><label>Article</label><select class="pl_ref">'+ingredientOptions(i.ref||"")+'</select></div><div><label>Quantitat per plat</label><input class="pl_q" type="number" min="0" step="any" inputmode="decimal" value="'+attr(i.quantitat==null?"":i.quantitat)+'"></div><div><label>Unitat</label><select class="pl_u"><option value="peces">Peces</option><option value="g"'+(u==="g"?' selected':'')+'>Grams</option><option value="u"'+(u==="u"?' selected':'')+'>Unitat de compra (ampolla, unitat…)</option></select></div><div class="pl_pkf"'+(u==="peces"?'':' hidden')+'><label>Peces per kg (si es compra a kg)</label><input class="pl_pk" type="number" min="0" step="any" inputmode="decimal" placeholder="del calibre" value="'+attr(i.pecesKg||"")+'"></div><div><label>Aprofitament (%)</label><input class="pl_r" type="number" min="1" max="100" step="any" inputmode="decimal" placeholder="100" value="'+attr(i.rendiment||"")+'"></div><div class="full"><button type="button" class="s" data-platdeli="1">Treu aquest ingredient</button></div></div>';
+}
 function platForm(p){
- var d=p||{id:"",nom:"",preuCarta:"",costFix:"",ingredients:[{ref:"",quantitat:"",unitat:"peces"}]};
- return sheetHead(p?'Edita el plat':'Nou plat','data-platclose="1"')+'<div class="sheet-part"><div class="g2"><div class="full"><label for="pl_nom">Nom del plat</label><input id="pl_nom" value="'+attr(d.nom)+'" placeholder="Paella"></div><div><label for="pl_carta">Preu de carta (€, IVA inclòs)</label><input id="pl_carta" type="number" min="0" step="0.01" inputmode="decimal" value="'+attr(d.preuCarta)+'"></div><div><label for="pl_fix">Altres costos per plat (€)</label><input id="pl_fix" type="number" min="0" step="0.01" inputmode="decimal" value="'+attr(d.costFix)+'"></div></div><p class="mu">«Altres costos» és el que no controles a l’estoc: arròs, oli, fumet, gas…</p><h3>Ingredients de l’estoc</h3><div id="pl_ings">'+d.ingredients.map(ingRow).join('')+'</div><div class="act"><button type="button" class="s" data-plataddi="1">Afegeix un ingredient</button></div><p class="mu">Els ingredients es descompten de les partides «A granel»: per peces (calibre) o per grams. Una barreja de partides també pot ser un ingredient.</p></div><div class="sheet-foot"><button class="s f" data-platsave="1">Desa</button>'+(p?'<button class="s d" data-platdel="1">Elimina el plat</button>':'')+'<button class="s" data-platclose="1">Cancel·la</button></div>';
+ var d=p||{id:"",nom:"",preuCarta:"",costFix:"",ingredients:[{ref:"",quantitat:"",unitat:"peces"}]},r=p?recommendedPrice(p):null;
+ return sheetHead(p?'Edita el plat':'Nou plat','data-platclose="1"')+'<div class="sheet-part"><div class="g2"><div class="full"><label for="pl_nom">Nom del plat</label><input id="pl_nom" value="'+attr(d.nom)+'" placeholder="Paella"></div><div><label for="pl_carta">Preu de carta (€, IVA inclòs)</label><input id="pl_carta" type="number" min="0" step="0.01" inputmode="decimal" value="'+attr(d.preuCarta||"")+'"></div><div><label for="pl_fix">Altres costos per plat (€)</label><input id="pl_fix" type="number" min="0" step="0.01" inputmode="decimal" value="'+attr(d.costFix||"")+'"></div></div>'+(r!=null?'<div class="act"><span class="mu">Preu recomanat: <b>'+eur(r)+'</b></span><button type="button" class="s" data-platrec="'+attr(r)+'">Fes servir el recomanat</button></div>':'')+'<p class="mu">«Altres costos» és el que no fas servir com a ingredient: arròs, oli, fumet, gas…</p><h3>Ingredients</h3><div id="pl_ings">'+d.ingredients.map(ingRow).join('')+'</div><div class="act"><button type="button" class="s" data-plataddi="1">Afegeix un ingredient</button></div><p class="mu">El cost surt de l’estoc a granel o, si no n’hi ha, de l’últim albarà de GestoCatalog. «Unitat de compra» fa servir el preu per ampolla, unitat… de l’albarà: per a una copa d’un vi de 4 copes, posa 0,25. L’aprofitament descompta la minva (rap net: 45%).</p></div><div class="sheet-foot"><button class="s f" data-platsave="1">Desa</button>'+(p?'<button class="s d" data-platdel="1">Elimina el plat</button>':'')+'<button class="s" data-platclose="1">Cancel·la</button></div>';
 }
 function platFormEvents(){
  $("pl_ings").onchange=function(e){
+  var row=e.target.closest(".pl-ing");if(!row)return;
+  if(e.target.classList.contains("pl_u")){row.querySelector(".pl_pkf").hidden=e.target.value!=="peces";return}
   if(!e.target.classList.contains("pl_ref")||!e.target.value)return;
-  var ref=e.target.value,u=e.target.closest(".pl-ing").querySelector(".pl_u");
+  var ref=e.target.value,u=row.querySelector(".pl_u");
   var l=state.lots.slice().reverse().find(function(x){return ingredientMatchesLot({ref:ref,unitat:"peces"},x)||ingredientMatchesLot({ref:ref,unitat:"g"},x)});
   if(l)u.value=l.consum==="grams"?"g":"peces";
+  else{var p=ref.indexOf("a:")===0&&(prices[ref.slice(2)]||{}).last;if(p)u.value=kgPrice(p)?"g":"u"}
+  row.querySelector(".pl_pkf").hidden=u.value!=="peces";
  };
 }
 function platSheetClick(e){
  var b=e.target.closest("button");if(!b)return;var d=b.dataset;
  if(d.platclose){editPlat=null;syncSheet();return}
+ if(d.platrec){$("pl_carta").value=Number(d.platrec).toFixed(2);return}
  if(d.plataddi){$("pl_ings").insertAdjacentHTML("beforeend",ingRow({unitat:"peces"}));return}
  if(d.platdeli){b.closest(".pl-ing").remove();return}
  if(d.platdel){var p=platById(editPlat);if(!p)return;var ix=state.config.plats.indexOf(p);state.config.plats.splice(ix,1);editPlat=null;save();render();
@@ -1474,14 +1620,63 @@ function savePlat(){
  var nom=$("pl_nom").value.trim(),carta=$("pl_carta").value===""?0:Number($("pl_carta").value),fix=$("pl_fix").value===""?0:Number($("pl_fix").value);
  if(!nom){flash("Escriu el nom del plat");return}
  if(!(carta>=0)||!(fix>=0)){flash("Revisa el preu de carta i els altres costos");return}
- var ings=[],bad=false;
- document.querySelectorAll("#pl_ings .pl-ing").forEach(function(r){var ref=r.querySelector(".pl_ref").value,q=r.querySelector(".pl_q").value;if(!ref&&!q)return;if(!ref||!(Number(q)>0)){bad=true;return}ings.push({ref:ref,nom:refName(ref),quantitat:Number(q),unitat:r.querySelector(".pl_u").value})});
- if(bad){flash("A cada ingredient, tria l’article i posa una quantitat més gran que 0");return}
- if(!ings.length){flash("Afegeix almenys un ingredient de l’estoc");return}
+ var ings=[],bad="";
+ document.querySelectorAll("#pl_ings .pl-ing").forEach(function(r){
+  var ref=r.querySelector(".pl_ref").value,q=r.querySelector(".pl_q").value,u=r.querySelector(".pl_u").value,pk=r.querySelector(".pl_pk").value,rd=r.querySelector(".pl_r").value;
+  if(!ref&&!q)return;
+  if(!ref||!(Number(q)>0)){bad="A cada ingredient, tria l’article i posa una quantitat més gran que 0";return}
+  if(rd!==""&&!(Number(rd)>0&&Number(rd)<=100)){bad="L’aprofitament ha de ser entre 1 i 100%";return}
+  if(u==="u"&&ref.indexOf("b:")===0){bad="Una barreja es gasta per peces o per grams";return}
+  var ing={ref:ref,nom:refName(ref),quantitat:Number(q),unitat:u};
+  if(u==="peces"&&Number(pk)>0)ing.pecesKg=Number(pk);
+  if(rd!==""&&Number(rd)<100)ing.rendiment=Number(rd);
+  ings.push(ing);
+ });
+ if(bad){flash(bad);return}
+ if(!ings.length){flash("Afegeix almenys un ingredient");return}
  var plats=state.config.plats,cur=editPlat==="new"?null:platById(editPlat);
  if(plats.some(function(p){return p!==cur&&catKey(p.nom)===catKey(nom)})){flash("Ja hi ha un plat amb aquest nom");return}
- var p=cur||{id:uid()};Object.assign(p,{nom:nom,preuCarta:carta,costFix:fix,ingredients:ings});if(!cur)plats.push(p);
+ var p=cur||{id:uid()};Object.assign(p,{nom:nom,preuCarta:carta,costFix:fix,ingredients:ings});
+ // Producte directe = un sol ingredient per unitat de compra (vi, copa…): agafa la taula de preus de la categoria.
+ p.directe=ings.length===1&&ings[0].unitat==="u";
+ if(!cur)plats.push(p);
  editPlat=null;openPlat=p.id;save();render();flash("Plat desat",1);
+}
+
+// ---- Productes d'una categoria (vins i copes): un producte directe per article ----
+var bulkOpen=false;
+function categoryTreeStock(){var cs=catalog.categories||[],ids=new Set(cs.map(function(c){return c.id})),out=[];cs.forEach(function(c){if(c.parentId&&ids.has(c.parentId))return;out.push({c:c,depth:0});cs.forEach(function(x){if(x.parentId===c.id)out.push({c:x,depth:1})})});return out}
+function bulkArticles(catId){
+ return catalog.articles.filter(function(a){if(a.archived)return false;var c=categoryById(a.categoryId);return a.categoryId===catId||Boolean(c&&c.parentId===catId)}).sort(function(a,b){return a.name.localeCompare(b.name,"ca",{sensitivity:"base"})});
+}
+function directeOf(articleId,copa){return (state.config.plats||[]).find(function(p){return p.directe&&p.ingredients[0]&&p.ingredients[0].ref==="a:"+articleId&&((Number(p.ingredients[0].quantitat)<1)===copa)})}
+function bulkForm(){
+ var opts=categoryTreeStock().map(function(x){return '<option value="'+attr(x.c.id)+'">'+(x.depth?'  — ':'')+esc(x.c.name)+'</option>'}).join('');
+ return sheetHead('Productes d’una categoria','data-bulkclose="1"')+'<div class="sheet-part"><p class="mu">Crea un producte per a cada article d’una categoria (per exemple, cada vi), amb el cost de l’últim albarà. Després només cal posar-hi el preu de carta.</p><label for="bk_cat">Categoria</label><select id="bk_cat"><option value="">Tria la categoria</option>'+opts+'</select><label style="display:flex;gap:8px;align-items:center;margin:12px 0"><input type="checkbox" id="bk_copa" style="width:auto"> Crea també la copa</label><div class="g2"><div><label for="bk_copes">Copes per ampolla</label><input id="bk_copes" type="number" min="1" step="1" value="4"></div></div><div class="mu" id="bk_info" aria-live="polite"></div></div><div class="sheet-foot"><button class="s f" data-bulkgo="1">Crea els productes</button><button class="s" data-bulkclose="1">Cancel·la</button></div>';
+}
+function bulkFormEvents(){
+ var upd=function(){var cat=$("bk_cat").value,el=$("bk_info");if(!cat){el.textContent="";return}
+  var arts=bulkArticles(cat),copa=$("bk_copa").checked,n=arts.filter(function(a){return !directeOf(a.id,false)}).length,m=copa?arts.filter(function(a){return !directeOf(a.id,true)}).length:0,pt=priceTableFor(cat);
+  el.textContent=arts.length+" articles · es crearan "+n+" productes"+(copa?" i "+m+" copes":"")+(n+m<arts.length*(copa?2:1)?" (els que ja hi són no es repeteixen)":"")+"."+(pt?"":" Aquesta categoria encara no té taula de preu recomanat: la pots afegir a Paràmetres.")};
+ $("bk_cat").onchange=$("bk_copa").onchange=$("bk_copes").oninput=upd;
+ $("bk_cat").onchange=function(){var pt=priceTableFor(this.value);if(pt&&pt.table.copes)$("bk_copes").value=pt.table.copes;upd()};
+}
+function bulkSheetClick(e){
+ var b=e.target.closest("button");if(!b)return;
+ if(b.dataset.bulkclose){bulkOpen=false;syncSheet();return}
+ if(!b.dataset.bulkgo)return;
+ var cat=$("bk_cat").value,copa=$("bk_copa").checked,copes=Number($("bk_copes").value);
+ if(!cat){flash("Tria la categoria");return}
+ if(copa&&!(copes>=1&&Number.isInteger(copes))){flash("Les copes per ampolla han de ser un nombre enter");return}
+ var made=0,names=new Set(state.config.plats.map(function(p){return catKey(p.nom)}));
+ bulkArticles(cat).forEach(function(a){
+  [[false,a.name,1],[true,a.name+" (copa)",1/copes]].forEach(function(v){
+   if(v[0]&&!copa)return;if(directeOf(a.id,v[0])||names.has(catKey(v[1])))return;
+   state.config.plats.push({id:uid(),nom:v[1],directe:true,preuCarta:0,costFix:0,ingredients:[{ref:"a:"+a.id,nom:a.name,quantitat:v[2],unitat:"u"}]});names.add(catKey(v[1]));made++;
+  });
+ });
+ bulkOpen=false;platFilter=cat;save();render();
+ flash(made?"S’han creat "+made+" productes. Posa’ls el preu de carta amb el llapis.":"No n’hi havia cap de nou per crear.",1);
 }
 
 // ---- Barrejar partides ----
@@ -1553,6 +1748,7 @@ function undoMix(id){
 }
 $("mixLots").onclick=function(){mixOpen=true;syncSheet()};
 $("newPlat").onclick=function(){editPlat="new";syncSheet()};
+$("bulkPlats").onclick=function(){bulkOpen=true;syncSheet()};
 $("plats").onclick=function(e){
  var b=e.target.closest("button");if(!b)return;var d=b.dataset;
  if(d.platopen){openPlat=openPlat===d.platopen?null:d.platopen;renderPlats();return}
