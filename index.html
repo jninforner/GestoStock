@@ -143,7 +143,7 @@ select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
 body.no-buy [data-edit],body.no-buy [data-lotedit]{display:none!important}
 body.no-sell [data-sell]{display:none!important}
 body.no-config #newPlat,body.no-config #bulkPlats,body.no-config [data-platedit]{display:none}body.no-sell [data-platsell]{display:none}body.no-buy #mixLots,body.no-buy [data-unmix],body.no-buy [data-lotclose],body.no-buy [data-lotcloseedit],body.no-buy [data-lotreopen]{display:none}
-body.no-labels #printLabels,body.no-labels [data-lotlabels]{display:none!important}
+body.no-labels #printLabels,body.no-labels [data-lotlabels],body.no-labels [data-grouplabels]{display:none!important}
 /* Aspecte comú de les apps Gesto (model: GestoCatalog) */
 :root{--main-bg:#eaf0ff;--main-border:#afbfeb}
 :root[data-theme="dark"]{--main-bg:#202e55;--main-border:#516798}
@@ -251,12 +251,48 @@ details.new-form[open]>summary{margin-bottom:10px}
 .swipe.right>.swipe-bg{display:flex;justify-content:flex-start;background:var(--ln)}
 .swipe>.swipe-bg svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .swipe>.swipe-row{position:relative}
+/* Capçalera: botons Menú i Sortir iguals que a GestoCatalog (ESTIL.md) */
+.topbar{position:relative}
+.topactions{gap:8px}
+.topbtn{gap:7px;min-height:42px;padding:8px 12px;border:1px solid var(--ln);border-radius:10px;background:var(--surface,var(--g1));color:var(--tx);font-size:15px;font-weight:600;white-space:nowrap;box-shadow:none}
+.topbtn span:first-child{font-family:inherit;font-size:18px;line-height:1}
+.topbtn:not(:disabled):hover{background:var(--g2);color:var(--tx);box-shadow:none}
+#menu{top:calc(100% + 8px);right:0}
+@media(max-width:430px){.topactions{gap:6px}.topbtn{font-size:14px;padding:7px 9px}}
+@media(max-width:480px){
+ .topbar{align-items:flex-start;gap:8px;margin-bottom:8px;padding-bottom:4px}
+ .topactions{gap:4px}
+ .topbtn{width:44px;min-height:44px;padding:0;border-color:transparent;background:transparent}
+ .topbtn .top-action-label{display:none}
+ #menu{right:0;max-width:calc(100vw - 24px)}
+}
+/* Botons de la capçalera d'una vista (ESTIL.md, «Botons de la capçalera d'una vista») */
+.view-head .act button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:6px 13px;font-size:15px;white-space:nowrap}
+.view-head .act svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.list-row:has(>.row-price+.row-icons){grid-template-columns:minmax(0,1fr) auto auto}
+@media(max-width:480px){
+ .view-head{display:block}
+ .view-head .act{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;margin-top:8px}
+ .view-head .act button{min-height:40px;padding:4px 6px;gap:5px;font-size:14px;line-height:1.15;min-width:0;white-space:normal;text-align:center}
+}
+/* Diàleg d'etiquetes (ESTIL.md, «Imprimir») */
+.label-what{margin:0 0 10px}.label-what b,.label-pick b{display:block}.label-what .mu,.label-pick .mu{display:block}
+.label-picks{display:grid;margin:8px 0}
+.label-pick{display:flex;gap:12px;align-items:center;padding:8px 4px;border-top:1px solid var(--border);color:var(--tx);font-size:16px;margin:0;cursor:pointer}
+.label-pick:hover{background:var(--soft,var(--g2))}
+.label-pick input{width:20px;height:20px;min-height:0;flex:none;margin:0}
+.label-tools{display:flex;gap:8px;flex-wrap:wrap}
+.label-settings>summary{font-weight:600;cursor:pointer;padding:4px 0}
+.label-settings[open]>summary{margin-bottom:10px}
+.label-settings p.mu{margin:6px 0 0}
+.label-count{margin:10px 0 0}.label-count:empty{display:none}
+.labels-dialog .sheet-foot button{min-height:44px}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.17.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
-<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.17.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Obre el menú" aria-expanded="false"><span aria-hidden="true">☰</span><span>Menú</span></button><button id="logout" class="topbtn" type="button"><span aria-hidden="true">↪</span><span>Sortir</span></button></div></div>
-<div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="tpl">Plats i escandalls</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button><button id="tb">Paperera</button><button id="theme" type="button" aria-pressed="false">Mode fosc</button></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.18.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
+<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.18.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Menú" aria-expanded="false" aria-controls="menu"><span aria-hidden="true">☰</span><span class="top-action-label" aria-hidden="true">Menú</span></button><button id="logout" class="topbtn" type="button" aria-label="Sortir"><span aria-hidden="true">↪︎</span><span class="top-action-label" aria-hidden="true">Sortir</span></button></div>
+<div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="tpl">Plats i escandalls</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button><button id="tb">Paperera</button><button id="theme" type="button" aria-pressed="false">Mode fosc</button></div></div>
 <div id="v1"><div class="card main-card"><h2>Registrar compra</h2><p class="mu intro">Crea partides a partir de les compres de GestoCatalog o entra-les a mà.</p><section class="panel" id="pendingPanel"><h3>Compres de GestoCatalog</h3><p class="mu">Línies d’albarà que has enviat a GestoStock des de GestoCatalog. Prem el nom per crear-ne la partida o llisca-la cap a l’esquerra per descartar-la.</p><div id="pendingLines"></div></section><section class="panel"><details class="new-form" id="manualDetails"><summary>Nova partida manual</summary><div id="purchaseCard"><form id="f">
 <div class="full"><label for="ns">Espècie o article</label><input id="nsSearch" type="search" placeholder="Cerca l’article" autocomplete="off" style="margin-bottom:6px"><select id="ns"></select><input id="nom" hidden></div>
 <div><label>Preparació</label><select id="tp" required><option value="" disabled>Selecciona la preparació</option><option value="sencer">Sencer</option><option value="palometa">En palometa</option><option value="filets">A filets</option><option value="talls">A talls</option><option value="granel">A granel (peces o grams)</option></select></div>
@@ -278,7 +314,7 @@ details.new-form[open]>summary{margin-bottom:10px}
 <div class="full mu" id="pf"></div><div class="full mu" id="cp"></div>
 <button class="f full" type="submit">Crear partida</button>
 </form></div></details></section></div><div id="np" hidden><div id="npList"></div></div></div>
-<div id="v3" hidden><div class="card main-card"><div class="view-head"><h2>Inventari</h2><div class="act"><button id="pdf" class="s f">Descarrega PDF</button><button id="sharePdf" class="s" type="button">Comparteix PDF</button><button id="printLabels" class="s" type="button">Imprimeix etiquetes</button></div></div><div id="stock"></div></div>
+<div id="v3" hidden><div class="card main-card"><div class="view-head"><h2>Inventari</h2><div class="act"><button id="pdf" type="button" title="Descarrega l’inventari en PDF" aria-label="Descarrega l’inventari en PDF"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg><span>PDF</span></button><button id="sharePdf" type="button" title="Comparteix l’inventari en PDF" aria-label="Comparteix l’inventari en PDF"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M7 11H5v9h14v-9h-2"/></svg><span>Comparteix</span></button><button id="printLabels" type="button" title="Imprimeix etiquetes de diverses partides" aria-label="Imprimeix etiquetes de diverses partides"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5"/><rect x="4" y="9" width="16" height="7" rx="1.5"/><path d="M7 14h10v6H7z"/></svg><span>Etiquetes</span></button></div></div><div id="stock"></div></div>
 </div>
 <div id="suppliers" hidden><div class="card main-card">
 <h2>Proveïdors</h2>
@@ -301,7 +337,7 @@ details.new-form[open]>summary{margin-bottom:10px}
 <p id="noSuppliers" class="mu">Encara no hi ha proveïdors registrats.</p>
 <p class="mu">És la mateixa llista que GestoCatalog. Per canviar-ne el nom o el telèfon, fes-ho a GestoCatalog.</p>
 </div>
-</div></div><div id="lots" hidden><div class="card main-card"><div class="view-head"><h2>Partides</h2><div class="act"><button id="costSummary" class="s" type="button">Resum de costos</button><button id="mixLots" class="s" type="button">Barreja partides</button></div></div><div id="lotsList"></div></div></div><div id="plats" hidden><div class="card main-card"><div class="view-head"><h2>Plats i escandalls</h2><div class="act"><button id="bulkPlats" class="s" type="button">Productes d’una categoria</button><button id="newPlat" class="s f" type="button">Nou plat</button></div></div><p class="mu intro">El cost de cada plat surt de l’estoc a granel o de l’últim albarà de GestoCatalog. Quan un albarà canvia el cost, ho veuràs a dalt. Els vins i les copes es poden crear de cop amb «Productes d’una categoria».</p><div id="platsList"></div></div></div><datalist id="calibres"><option value="10/15"><option value="15/20"><option value="20/25"><option value="20/30"><option value="21/30"><option value="30/40"><option value="40/50"><option value="50/60"><option value="60/80"><option value="80/100"></datalist><div id="config" hidden><div class="card main-card"><h2>Paràmetres</h2><div id="configBody"></div></div></div><div id="v2" hidden><div class="card main-card"><h2>Historial de vendes</h2><div id="sum" class="sum"></div><div id="sales"></div></div></div><div id="trash" hidden><div class="card main-card"><h2>Paperera</h2><p class="mu intro">Llisca un element cap a la dreta per recuperar-lo o cap a l’esquerra per esborrar-lo definitivament. Passats 30 dies, s’esborren sols.</p><div id="trashList"></div></div></div>
+</div></div><div id="lots" hidden><div class="card main-card"><div class="view-head"><h2>Partides</h2><div class="act"><button id="costSummary" type="button">Resum de costos</button><button id="mixLots" type="button">Barreja partides</button></div></div><div id="lotsList"></div></div></div><div id="plats" hidden><div class="card main-card"><div class="view-head"><h2>Plats i escandalls</h2><div class="act"><button id="bulkPlats" type="button">Productes d’una categoria</button><button id="newPlat" class="f" type="button">Nou plat</button></div></div><p class="mu intro">El cost de cada plat surt de l’estoc a granel o de l’últim albarà de GestoCatalog. Quan un albarà canvia el cost, ho veuràs a dalt. Els vins i les copes es poden crear de cop amb «Productes d’una categoria».</p><div id="platsList"></div></div></div><datalist id="calibres"><option value="10/15"><option value="15/20"><option value="20/25"><option value="20/30"><option value="21/30"><option value="30/40"><option value="40/50"><option value="50/60"><option value="60/80"><option value="80/100"></datalist><div id="config" hidden><div class="card main-card"><h2>Paràmetres</h2><div id="configBody"></div></div></div><div id="v2" hidden><div class="card main-card"><h2>Historial de vendes</h2><div id="sum" class="sum"></div><div id="sales"></div></div></div><div id="trash" hidden><div class="card main-card"><h2>Paperera</h2><p class="mu intro">Llisca un element cap a la dreta per recuperar-lo o cap a l’esquerra per esborrar-lo definitivament. Passats 30 dies, s’esborren sols.</p><div id="trashList"></div></div></div>
 </main>
 <p id="status" role="status" aria-live="polite"></p>
 <dialog id="sheet" class="sheet-dialog" aria-labelledby="sheetTitle"></dialog>
@@ -603,7 +639,7 @@ function renderStock(){
   var priceLabel=eur(low)+(high-low>.009?' – '+eur(high):'');
   if(first.tipus==="granel"){h+=granelStockRow(g,lot,op,total,costTotal);return}
   var meta=tag(first)+' · '+total+' '+unitLabel(first,total)+' · '+kg(grossTotal)+' bruts'+(g.items.some(function(f){return stockGross(f).estimated})?' (estimats)':'')+' · '+lotDetails(lot);
-  h+='<div class="list-row"><button type="button" class="row-open" data-open="'+attr(g.key)+'" aria-expanded="'+op+'" title="'+rowTitle(first.nom,meta)+'">'+rowLabel(first.nom,meta)+'</button><span class="row-price">'+priceLabel+'</span></div>';
+  h+='<div class="list-row"><button type="button" class="row-open" data-open="'+attr(g.key)+'" aria-expanded="'+op+'" title="'+rowTitle(first.nom,meta)+'">'+rowLabel(first.nom,meta)+'</button><span class="row-price">'+priceLabel+'</span><div class="row-icons">'+iconBtn('print','Imprimeix etiquetes de '+first.nom+' ('+lotReference(lot)+')','data-grouplabels="'+attr(g.key)+'"')+'</div></div>';
   if(op){
    h+='<div class="row-detail"><div class="mu">Comprat el '+dt(first.dataCompra)+' · '+(first.tipus==='talls'?'Cost total en estoc ('+unitLabel(first)+'): ':'Cost total de les unitats disponibles: ')+eur(costTotal)+(cutCost==null?'':' · Cost per '+unitLabel(first,1)+': '+eur(cutCost))+'</div>';
    h+='<div class="mu" style="margin-bottom:6px">'+(first.tipus==='talls'?'Tria el pes per registrar la venda.':'Tria el pes concret per registrar una venda. Les persones es calculen amb el pes brut.')+'</div>';
@@ -776,50 +812,61 @@ function swipeAction(key,dir){
  },{passive:false});
 })();
 
-// Etiquetes A4: 3 columnes × 8 files per als exemplars d’inventari i les còpies del resum de partida.
-function printStockLabels(lot){
- var groups=lot?[]:stockGroups().filter(function(g){return g.items[0].tipus!=="granel"});
- if(!lot&&!groups.length){flash('No hi ha peixos a l’inventari (els articles a granel no porten etiqueta)');return}
- var dialog=document.createElement('dialog');dialog.id='labelsDialog';dialog.className='sheet-dialog';dialog.setAttribute('aria-label',lot?'Imprimeix etiquetes de la partida':'Selecciona partides per imprimir');
- var panel=dialog;
- var h=lot?sheetHead('Etiquetes de la partida','id="labelsClose"')+'<div class="sheet-part"><p><b>'+esc(lot.nom)+' · '+esc(tag(lot))+'</b> · '+dt(lot.dataCompra)+' · '+esc(lotReference(lot))+'</p><label for="labelsQuantity"><b>Quantes etiquetes vols imprimir?</b></label><input id="labelsQuantity" type="number" inputmode="numeric" min="1" max="2400" step="1" value="1" required>':sheetHead('Etiquetes d’inventari','id="labelsClose"')+'<div class="sheet-part"><p class="mu">Selecciona partides senceres. S’imprimirà una etiqueta per cada peix o tall disponible, en fulls A4 APLI 01272 de 24 etiquetes (3 × 8, 70 × 35 mm).</p><div class="act"><button type="button" class="s" id="labelsAll">Selecciona totes</button><button type="button" class="s" id="labelsNone">Cap</button></div>';
- groups.forEach(function(g,i){var f=g.items[0],units=g.items.reduce(function(n,x){return n+Number(x.unitats||0)},0);h+='<label style="display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)"><input type="checkbox" data-label-group="'+i+'" style="width:20px;height:20px;flex:none" checked><span><b>'+esc(f.nom)+' · '+esc(tag(f))+'</b><span class="mu" style="display:block">'+dt(f.dataCompra)+' · '+units+' etiquetes · '+esc(lotReference(state.lots.find(function(l){return l.id===g.lotId})))+'</span></span></label>'});
- if(lot)h+='<details style="margin-top:16px"><summary>Ajustos del full (opcional)</summary>';
- h+='<div style="margin:16px 0"><label for="labelsStart" style="display:block;margin-bottom:8px;font-weight:600">Posició inicial al full</label><select id="labelsStart" aria-label="Primera etiqueta disponible del full" style="width:100%">'+Array.from({length:24},function(_,i){return '<option value="'+(i+1)+'">'+(i+1)+(i===0?' (full nou)':'')+'</option>'}).join('')+'</select><p class="mu" style="margin-top:8px">Si el full és nou, deixa la posició 1. En un full començat, tria la primera casella lliure d’esquerra a dreta i de dalt a baix.</p></div>';
- h+='<div style="margin:12px 0"><label for="labelsGap" style="display:block;margin-bottom:8px;font-weight:600">Separació vertical entre etiquetes (mm)</label><input id="labelsGap" type="number" min="0" max="2.4" step="0.1" value="2.1" style="width:100%"><p class="mu" style="margin-top:6px">Distància lliure entre files, a més dels 35 mm d’alçada de cada etiqueta. Valor inicial: 2,1 mm; ajustable segons el full real.</p></div>';
- h+='<div style="margin:12px 0"><label for="labelsOffset" style="display:block;margin-bottom:8px;font-weight:600">Marge superior / ajust vertical (mm)</label><input id="labelsOffset" type="number" min="0" max="17" step="0.5" value="1" style="width:100%"><p class="mu" style="margin-top:6px">Distància des de dalt del full fins a la primera fila. No modifica la separació entre files. Per a una prova inicial: 1 mm.</p></div>';
- if(lot)h+='</details>';
- h+='<p class="mu" id="labelsCount" aria-live="polite"></p></div><div class="sheet-foot"><button type="button" class="s f" id="labelsGo">Imprimeix</button><button type="button" class="s" id="labelsCancel">Cancel·la</button></div>';panel.innerHTML=h;document.body.appendChild(dialog);dialog.addEventListener('close',function(){dialog.remove()});dialog.showModal();
- var checks=Array.from(panel.querySelectorAll('[data-label-group]')),quantity=panel.querySelector('#labelsQuantity');
- function selected(){return checks.filter(function(c){return c.checked}).map(function(c){return groups[Number(c.dataset.labelGroup)]})}
- function labelCount(){
-  return quantity?(quantity.validity.valid?Number(quantity.value):0):selected().reduce(function(n,g){return n+stockCount(g.items)},0);
- }
- function update(){
-  var n=labelCount(),start=Number(panel.querySelector('#labelsStart').value)||1;
-  var copies=n+(n===1?' etiqueta':' etiquetes'),pages=n?Math.ceil((start-1+n)/24):0,button=panel.querySelector('#labelsGo');
-  panel.querySelector('#labelsCount').textContent=copies+' · '+pages+(pages===1?' full A4':' fulls A4')+(start>1?' · Posició inicial '+start:'');
-  button.disabled=!n;
-  if(quantity)button.textContent=n?'Imprimeix '+copies:'Imprimeix';
- }
- panel.querySelector('#labelsStart').onchange=update;
- if(quantity)quantity.oninput=update;
+// Etiquetes A4 APLI 01272: 3 columnes × 8 files (70 × 35 mm).
+// Criteri únic (ESTIL.md, «Imprimir»): icona d'impressora a la fila per a un element i botó «Etiquetes» a la capçalera per a diversos.
+// Sempre el mateix diàleg: què s'imprimeix i quantes, «Ajustos del full» plegat (recordat al dispositiu) i, a baix, «Imprimeix N etiquetes».
+// opts: {lot} → resum d'una partida (quantes còpies es vulgui); {groupKey} → peces d'un grup de l'inventari; {} → tria de grups de l'inventari.
+var LABELS_KEY="gestostock-etiquetes";
+function labelSettings(){try{var s=JSON.parse(localStorage.getItem(LABELS_KEY)||"{}");return {gap:Number.isFinite(s.gap)?s.gap:2.1,offset:Number.isFinite(s.offset)?s.offset:1}}catch(e){return {gap:2.1,offset:1}}}
+function saveLabelSettings(s){try{localStorage.setItem(LABELS_KEY,JSON.stringify(s))}catch(e){}}
+function printStockLabels(opts){
+ opts=opts||{};
+ var lot=opts.lot||null,all=lot?[]:stockGroups().filter(function(g){return g.items[0].tipus!=="granel"});
+ var groups=opts.groupKey?all.filter(function(g){return g.key===opts.groupKey}):all,single=!lot&&groups.length===1&&!!opts.groupKey;
+ if(!lot&&!groups.length){flash('No hi ha peces a l’inventari (els articles a granel no porten etiqueta)');return}
+ var set=labelSettings();
+ var dialog=document.createElement('dialog');dialog.id='labelsDialog';dialog.className='sheet-dialog labels-dialog';
+ var title=lot?'Etiquetes de la partida':single?'Etiquetes de '+groups[0].items[0].nom:'Etiquetes de l’inventari';
+ dialog.setAttribute('aria-label',title);
+ function groupInfo(g){var f=g.items[0],l=state.lots.find(function(x){return x.id===g.lotId});return '<b>'+esc(f.nom)+' · '+esc(tag(f))+'</b><span class="mu">'+dt(f.dataCompra)+' · '+esc(lotReference(l))+' · '+stockCount(g.items)+' '+(stockCount(g.items)===1?'etiqueta':'etiquetes')+'</span>'}
+ var h=sheetHead(title,'data-labelsclose="1"')+'<div class="sheet-part">';
+ if(lot)h+='<p class="label-what"><b>'+esc(lot.nom)+' · '+esc(tag(lot))+'</b><span class="mu">'+dt(lot.dataCompra)+' · '+esc(lotReference(lot))+' · Resum de costos de la partida</span></p><label for="labelsQuantity">Quantes etiquetes?</label><input id="labelsQuantity" type="number" inputmode="numeric" min="1" max="2400" step="1" value="1" required>';
+ else if(single)h+='<p class="label-what">'+groupInfo(groups[0])+'</p><p class="mu">Una etiqueta per cada peça disponible, amb el seu pes.</p>';
  else{
-  checks.forEach(function(c){c.onchange=update});
-  panel.querySelector('#labelsAll').onclick=function(){checks.forEach(function(c){c.checked=true});update()};
-  panel.querySelector('#labelsNone').onclick=function(){checks.forEach(function(c){c.checked=false});update()};
+  h+='<p class="mu">Una etiqueta per cada peça disponible de les partides marcades, amb el seu pes.</p><div class="label-picks">';
+  groups.forEach(function(g,i){h+='<label class="label-pick"><input type="checkbox" data-label-group="'+i+'" checked><span>'+groupInfo(g)+'</span></label>'});
+  h+='</div><div class="label-tools"><button type="button" class="s" id="labelsAll">Marca-les totes</button><button type="button" class="s" id="labelsNone">Desmarca-les</button></div>';
  }
- panel.querySelector('#labelsCancel').onclick=panel.querySelector('#labelsClose').onclick=function(){dialog.close()};
- panel.querySelector('#labelsGo').onclick=function(){
-  var n=labelCount();
-  if(!n)return;
-  var start=Number(panel.querySelector('#labelsStart').value)||1,offset=Number(panel.querySelector('#labelsOffset').value),gap=Number(panel.querySelector('#labelsGap').value);
-  if(!Number.isFinite(offset))offset=1;
-  if(!Number.isFinite(gap))gap=2.1;
-  offset=Math.max(0,Math.min(17,offset));gap=Math.max(0,Math.min(2.4,gap));
+ h+='</div><details class="sheet-part label-settings"><summary>Ajustos del full <span class="mu" id="labelsSummary"></span></summary><div class="g2">'+
+  '<div class="full"><label for="labelsStart">Primera casella lliure</label><select id="labelsStart">'+Array.from({length:24},function(_,i){return '<option value="'+(i+1)+'">'+(i+1)+(i===0?' (full nou)':'')+'</option>'}).join('')+'</select><p class="mu">En un full començat, compta d’esquerra a dreta i de dalt a baix.</p></div>'+
+  '<div><label for="labelsGap">Separació entre files (mm)</label><input id="labelsGap" type="number" inputmode="decimal" min="0" max="2.4" step="0.1" value="'+set.gap+'"></div>'+
+  '<div><label for="labelsOffset">Marge superior (mm)</label><input id="labelsOffset" type="number" inputmode="decimal" min="0" max="17" step="0.5" value="'+set.offset+'"></div>'+
+  '</div><p class="mu">La separació i el marge es recorden en aquest dispositiu.</p></details>';
+ h+='<p class="mu label-count" id="labelsCount" aria-live="polite"></p><div class="sheet-foot"><button type="button" class="f" id="labelsGo">Imprimeix</button><button type="button" id="labelsCancel">Cancel·la</button></div>';
+ dialog.innerHTML=h;document.body.appendChild(dialog);dialog.addEventListener('close',function(){dialog.remove()});dialog.showModal();
+ var checks=Array.from(dialog.querySelectorAll('[data-label-group]')),quantity=dialog.querySelector('#labelsQuantity');
+ function chosen(){return checks.length?checks.filter(function(c){return c.checked}).map(function(c){return groups[Number(c.dataset.labelGroup)]}):groups}
+ function labelCount(){return quantity?(quantity.validity.valid?Number(quantity.value):0):chosen().reduce(function(n,g){return n+stockCount(g.items)},0)}
+ function num(id,def,min,max){var v=Number(dialog.querySelector(id).value);return Number.isFinite(v)?Math.max(min,Math.min(max,v)):def}
+ function update(){
+  var n=labelCount(),start=Number(dialog.querySelector('#labelsStart').value)||1,pages=n?Math.ceil((start-1+n)/24):0,button=dialog.querySelector('#labelsGo');
+  button.disabled=!n;button.textContent=n?'Imprimeix '+n+(n===1?' etiqueta':' etiquetes'):'Imprimeix';
+  dialog.querySelector('#labelsCount').textContent=n?'Ocupa '+pages+(pages===1?' full A4':' fulls A4')+(start>1?', començant a la casella '+start:'')+'.':'';
+  dialog.querySelector('#labelsSummary').textContent='· '+(start>1?'casella '+start:'full nou')+' · '+String(num('#labelsGap',2.1,0,2.4)).replace('.',',')+' mm · '+String(num('#labelsOffset',1,0,17)).replace('.',',')+' mm';
+ }
+ dialog.oninput=dialog.onchange=update;
+ if(checks.length){
+  dialog.querySelector('#labelsAll').onclick=function(){checks.forEach(function(c){c.checked=true});update()};
+  dialog.querySelector('#labelsNone').onclick=function(){checks.forEach(function(c){c.checked=false});update()};
+ }
+ dialog.querySelector('#labelsCancel').onclick=dialog.querySelector('[data-labelsclose]').onclick=function(){dialog.close()};
+ dialog.querySelector('#labelsGo').onclick=function(){
+  var n=labelCount();if(!n)return;
+  var start=Number(dialog.querySelector('#labelsStart').value)||1,offset=num('#labelsOffset',1,0,17),gap=num('#labelsGap',2.1,0,2.4);
   if(offset+8*35+7*gap>297){flash('El marge i la separació superen l’alçada del full A4');return}
+  saveLabelSettings({gap:gap,offset:offset});
   var labels=lot?Array.from({length:n},function(){return {lot:lot}}):[];
-  if(!lot)selected().forEach(function(g){g.items.forEach(function(f){for(var k=0;k<Number(f.unitats||0);k++)labels.push({f:f,gross:stockGross(f).kg})})});
+  if(!lot)chosen().forEach(function(g){g.items.forEach(function(f){for(var k=0;k<Number(f.unitats||0);k++)labels.push({f:f,gross:stockGross(f).kg})})});
   dialog.close();openLabelsPrint(labels,start,offset,gap);
  };
  update();
@@ -1233,7 +1280,7 @@ $("lots").onclick=function(e){
  if(d.lotclose||d.lotcloseedit){closeLotId=id;syncSheet();return}
  if(d.lotreopen){reopenLot(id);return}
  if(d.unmix){undoMix(id);return}
- if(d.lotlabels){printStockLabels(l);return}
+ if(d.lotlabels){printStockLabels({lot:l});return}
  if(d.lotedit){window.editLot=id;renderLots();return}
  if(d.lotcancel){window.editLot=null;renderLots();return}
  if(d.lotsave){saveLotChanges(l);return}
@@ -1250,7 +1297,7 @@ $("config").onclick=function(e){
   tables[id]=t});
  if(!(obj>0&&obj<=100)||badT){flash("Revisa els paràmetres de costos");return}
  c.costObjectiu=obj;c.preusCategories=tables;c.iva=Number($("civa").value);c.arrodoniment=Number($("cr").value);c.paxMin=Number($("cmin").value);c.paxMax=Number($("cmax").value);c.trams=c.trams.map(function(t,i){return {cost:Number($("ct"+i).value),mult:Number($("cm"+i).value)}});if(!Number.isFinite(c.iva)||c.iva<0||c.iva>100||c.paxMin<=0||c.paxMax<c.paxMin||c.trams.some(function(t){return t.cost<0||t.mult<1})||c.arrodoniment<0){flash("Revisa els paràmetres");return}state.config=c;save();render();flash("Paràmetres desats",1)};
-$("stock").onclick=function(e){var o=e.target.closest("[data-open]");if(o){openId=openId===o.dataset.open?null:o.dataset.open;sellId=null;confirmId=null;render();return}
+$("stock").onclick=function(e){var pl=e.target.closest("[data-grouplabels]");if(pl){printStockLabels({groupKey:pl.dataset.grouplabels});return}var o=e.target.closest("[data-open]");if(o){openId=openId===o.dataset.open?null:o.dataset.open;sellId=null;confirmId=null;render();return}
   var d=e.target.dataset;if(!d)return;
   if(d.sell){sellOne(d.sell);}
   else if(d.no){sellId=null;confirmId=null;editId=null;render();}
