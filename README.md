@@ -2,7 +2,7 @@
 
 GestoStock és l’aplicació que fa servir el restaurant La Barca de Ca l’Ardet per seguir el peix des de la compra fins a la venda. S’obre al navegador i es pot afegir a la pantalla d’inici de l’iPhone o de l’iPad com una aplicació web progressiva (PWA).
 
-La versió del codi en aquest repositori és la **1.14.0**. L’aplicació del restaurant és a [GestoStock a GitHub Pages](https://jninforner.github.io/GestoStock/).
+La versió del codi en aquest repositori és la **1.15.0**. L’aplicació del restaurant és a [GestoStock a GitHub Pages](https://jninforner.github.io/GestoStock/).
 
 ## Què pots fer amb GestoStock
 
@@ -10,6 +10,9 @@ La versió del codi en aquest repositori és la **1.14.0**. L’aplicació del r
 - **Gestionar proveïdors.** Afegeix noms a Proveïdors o desa una partida amb un proveïdor nou. Pots editar un nom i actualitzar-lo a les partides associades. En revisar un albarà, pots seleccionar un nom del registre. Si la lectura és dubtosa, es mostren coincidències pel nom o per les compres anteriors dels mateixos articles.
 - **Calcular la minva i els preus.** L’aplicació calcula la diferència entre el pes brut i el net, el cost per exemplar i un preu de venda orientatiu. Quan falta el pes net, pot suggerir-ne un a partir de partides anteriors.
 - **Consultar l’estoc i registrar vendes.** Els exemplars s’agrupen per partida. Tant a Partides com a Inventari hi veuràs el mateix número de partida i el proveïdor. Pots desplegar-la per veure els peixos disponibles i indicar quin has venut.
+- **Comprar a granel i gastar per peces o grams.** Amb la preparació «A granel», una partida es compra a pes però es gasta per peces (escamarlans, gambes, llagostins… amb el calibre, per exemple 20/25 peces per kg, o amb les peces comptades) o per grams. L’app calcula les peces que surten (i el mínim i el màxim segons el calibre) i el cost per peça o per kg.
+- **Plats i escandalls.** A «Plats i escandalls» es defineix cada plat amb els ingredients de l’estoc (2 escamarlans, 150 g de gambeta…), el preu de carta i els altres costos (arròs, oli, gas…). Es veu quants plats en queden i quin ingredient s’acaba primer, el cost del plat, el marge i el % de cost. El botó «−1» descompta tots els ingredients alhora, de la partida més antiga a la més nova, i es pot desfer.
+- **Barrejar partides.** A Partides, «Barreja partides» ajunta dues o més partides a granel (per exemple, gambeta vermella i gamba blanca) en una partida nova amb el cost mitjà segons els kg. La barreja guarda de quines partides està feta, les partides d’origen perden els kg que hi van i, mentre no se n’hagi gastat res, es pot desfer.
 - **Imprimir etiquetes.** L’aplicació genera un PDF amb una etiqueta per exemplar de les partides seleccionades. Està pensat per a fulls A4 APLI 01272 de 24 etiquetes, de 70 × 35 mm. Pots començar en qualsevol posició del full i ajustar el marge superior i la separació entre files. L’etiqueta d’inventari mostra el cost real del peix. Des de Partides també pots imprimir el nombre d’etiquetes resum que necessitis, amb la data, el pes, la minva i els costos de la partida.
 
 ## Descarregar el projecte al Mac
