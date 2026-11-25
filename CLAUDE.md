@@ -1,17 +1,7 @@
-# GestoStock (inventari de peix i articles)
+# GestoStock — només la versió publicada
 
-Respon sempre en català; Joan és principiant, explica pas a pas i una cosa cada vegada.
+Respon sempre en català; Joan és principiant.
 
-Llegeix `README.md`: hi ha el funcionament, el flux de treball i la numeració de versions. Resum de les regles:
-- App d'un sol fitxer (`index.html`) + `sw.js` + `manifest.webmanifest`; sense compilació.
-- Des de la 1.8.6: login amb els comptes de les apps Gesto (Firebase, configuració a `https://gesto-apps.jninforner.workers.dev/auth-config`) i inventari a D1 a través del Worker `gesto-apps` (`/GestoStock/api`, codi al repo privat GestoApps, `stock/api.mjs`). És **l'inventari real del restaurant**: no fer proves contra aquestes dades. Permisos `stock_*` a GestoAdmin.
-- Fins a la 8.4 (l’última publicada amb Firebase): Firestore (projecte `control-de-peixos`, document `inventari/dades`). Es manté uns dies com a reserva després del canvi.
-- Des de la 1.10.0: articles i proveïdors són la llista comuna de GestoComandes (taules `articles` i `suppliers` de D1). Les partides, peces i vendes guarden `articleId` (i les partides `supplierId`) a més del nom; el nom es refresca des de GestoComandes. Els noms antics sense lligar surten a «Pendents de vincular». Canvis de nom, arxivar i eliminar es fan a GestoComandes.
-- Des de la 1.11.0 GestoStock **no llegeix albarans**: es llegeixen a GestoComandes (servidor gesto-apps, acció `readInvoice`) i les línies marcades «Envia a GestoStock» surten a «Compres de GestoComandes» (`pendingLines` de `/GestoStock/api`; acció `stockLine` per marcar-les `done`/`discarded`). La partida creada guarda `purchaseLine` = `idCompra:posició`. El Worker `nexamar-ia` (`nexamar-ia.mjs`) ja no el fa servir GestoStock.
-- Des de la 1.14.0: eliminar es fa lliscant cap a l'esquerra (Inventari, Partides, Compres de GestoCatalog), sense confirmació i amb «Desfés» (ESTIL.md de GestoApps). Els eliminats van a `trash` de l'inventari (Paperera al menú, permís `stock_buy`): es recuperen lliscant a la dreta i s'esborren sols als 30 dies. Recuperar una compra descartada fa `stockLine` amb `pending`.
-- Es treballa a `develop`; `main` és producció (GitHub Pages). **No fer commit ni push a `main` sense el vistiplau de Joan.**
-- Cada canvi puja la versió (tres números, com les altres apps Gesto; criteri al README) a `index.html`, al README i al nom de la memòria cau de `sw.js`.
-- L'app abans es deia NexaMar. Els noms interns (`nexamar-ia`, `window.nexamar*`, projecte `control-de-peixos`) es mantenen.
-- Des de la 1.15.0: preparació «A granel» (`tipus:'granel'`, `consum:'peces'|'grams'`, `calibre`, `calibreMin/Max`, `pecesReals`): cada unitat d'estoc és una peça o un gram. Plats a `config.plats` (`{id,nom,preuCarta,costFix,ingredients:[{ref:'a:<articleId>'|'b:<nom barreja>',quantitat,unitat:'peces'|'g'}]}`); vendre un plat crea una venda `tipus:'plat'` amb `consum` (peces gastades de cada partida) i `costTall` = cost total. Barreges: partides amb `barreja:true` i `components` (amb les peces que es van treure, per poder-la desfer). Sense canvis al servidor.
-- Des de la 1.16.0: tancar partides (`lot.tancada = {data, racions|null, restant:{kg,cost}, fish:[còpies de l'estoc que quedava]}`; en tancar, les peces de la partida surten de `fish`; reobrir les torna). «Resum de costos» (Partides) agrupa per article les partides tancades del mes. Joan vol que GestoStock se centri en els costos més que en l'estoc al dia.
-- Des de la 1.17.0 (cal GestoApps 1.39.0): `prices` de `/GestoStock/api` (últim i anterior preu d'albarà per article). Ingredients amb `unitat:'u'` (unitat de preu de l'article), `pecesKg` i `rendiment` (%). Plats amb `directe:true` (un sol ingredient `u`). `config.costObjectiu` (% de cost) i `config.preusCategories[categoryId] = {trams, arrodoniment, copes, recarrecCopa}`. El càlcul del cost amb albarà (`albaraUnitCost`) ha de ser igual que `stockIngredientUnitCost` del servidor.
+**Aquest repositori no s'edita a mà.** Des del 25/11/2026 el codi de GestoStock és a la carpeta `stock/` del repositori privat **GestoApps** (amb tot l'historial). En pujar un canvi a `main` de GestoApps, GitHub Actions copia aquí `index.html`, `sw.js`, `manifest.webmanifest` i les icones, i GitHub Pages ho publica a https://jninforner.github.io/GestoStock/.
+
+Per fer qualsevol canvi a GestoStock, treballa a GestoApps (`stock/index.html` i `stock/CLAUDE.md`).
