@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GestoStock</title>
 <link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#303f91"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="icon" type="image/png" href="./icon.png?v=1.8.7"><link rel="apple-touch-icon" href="./icon.png?v=1.8.7">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
 <style>
 :root{--bg:#fff;--tx:#2e3a8c;--mu:#6a73b0;--ln:#2e3a8c;--g1:#ffffff;--g2:#dfe2f3;--in:#fff;--on:#fff;--rd:#b42318;--gr:#1d7a3a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1230;--tx:#c9d0ff;--mu:#8e98d8;--ln:#7f8cf0;--g1:#141a44;--g2:#1d2560;--in:#0e1230;--on:#0e1230;--rd:#ff8f85;--gr:#6ee08f}}
@@ -25,25 +26,15 @@ label{font-size:15px;color:var(--mu);display:block;margin-bottom:3px}
 input,select{width:100%;padding:10px 12px;border:2px solid var(--ln);border-radius:14px;background:var(--in);color:var(--tx);font:inherit;font-size:17px;min-height:46px}
 select{font-variant:small-caps}
 button{font:inherit;font-variant:small-caps;font-size:18px;color:var(--tx);background:transparent;border:2px solid var(--ln);border-radius:12px;padding:10px 18px;min-height:46px}
-button.f,.tabs button.on,#menu button.on{background:var(--ln);color:var(--on)}
+button.f,.tabs button.on{background:var(--ln);color:var(--on)}
 button.d{color:var(--rd);border-color:var(--rd)}
 button.s{padding:6px 14px;min-height:40px;font-size:16px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.g2 .full{grid-column:1/-1}
 .ov{position:fixed;inset:0;z-index:50;background:rgba(10,14,40,.5);display:flex;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}.ov[hidden]{display:none}
-#menu{position:absolute;top:100%;right:0;z-index:30;display:flex;flex-direction:column;gap:8px;padding:12px;background:var(--bg);border:2px solid var(--ln);border-radius:12px;min-width:210px}
-#menu[hidden]{display:none}
 main{position:relative}
-@media(min-width:700px){#menu{right:16px;top:76px;box-shadow:0 10px 28px rgba(20,30,80,.12)}}
-@media(max-width:699px){#menu{right:16px;top:76px;max-width:calc(100% - 32px)}}
-#menu button{text-align:left;width:100%}
 input,select{height:46px}
 .g2>div,form>div{min-width:0}
 input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-width:0;text-align:left}
-/* Avisos flotants comuns de les apps Gesto (ESTIL.md → Avisos i errors; copiat de shared/notices.css de GestoApps). */
-#status:empty{display:none}
-#status{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:1000;width:max-content;max-width:min(600px,calc(100% - 24px));margin:0;padding:12px 16px;border-radius:12px;background:var(--surface);color:var(--tx);border:1px solid var(--border);box-shadow:0 8px 28px #11183140;font-weight:600;cursor:pointer}
-#status.error{color:var(--red);border-color:var(--red)}
-#status button{margin-left:12px;min-height:36px;padding:4px 12px;font-size:16px}
 .x{min-height:40px;min-width:40px;padding:0;font-size:20px;line-height:1}
 .sheet{width:100%;max-width:560px;max-height:100%;overflow:auto;background:var(--bg);margin:0}
 .row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
@@ -57,7 +48,6 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-width
 .sum b{display:block;font-weight:400;font-size:22px}
 .pos{color:var(--gr)}.neg{color:var(--rd)}
 .empty{text-align:center;color:var(--mu);padding:24px}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}.brand{min-width:0;flex:1}.brand h1{margin:0;font-size:clamp(21px,4.5vw,30px);line-height:1.1}.version{font-size:13px;margin-top:5px}.topactions{display:flex;align-items:center;gap:8px;flex-shrink:0}.topbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 12px;min-height:42px;border-radius:12px;font-size:15px;white-space:nowrap;background:var(--g1)}.topbtn span:first-child{font-family:Arial,sans-serif;font-size:18px;line-height:1}@media(max-width:430px){.topbar{gap:8px}.topactions{gap:5px}.topbtn{padding:7px 9px;font-size:13px}.brand h1{font-size:22px}}
 
 /* GestoStock 4.1 · refinament visual sense alterar la lògica */
 :root{--bg:#f7f8fd;--tx:#28377e;--mu:#6876ad;--ln:#303f91;--g1:#fff;--g2:#f0f2fc;--in:#fff;--on:#fff;--rd:#b42318;--gr:#17734a;--border:#d4daf1;--field:#b6bfdf}
@@ -71,19 +61,16 @@ h1{font-size:28px}
 .card{border:1px solid var(--border);border-radius:18px;background:var(--g1);padding:20px;margin-bottom:16px;box-shadow:0 3px 14px rgba(40,55,126,.055)}
 button{border:1px solid var(--ln);border-radius:10px;font-family:inherit;font-size:15px;font-weight:600;padding:10px 15px;transition:background-color .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease;cursor:pointer}
 button:not(:disabled):hover{background:var(--ln);color:var(--on);box-shadow:0 3px 12px rgba(48,63,145,.15)}
-button.f:not(:disabled):hover,.tabs button.on:not(:disabled):hover,#menu button.on:not(:disabled):hover{filter:brightness(1.13)}
+button.f:not(:disabled):hover,.tabs button.on:not(:disabled):hover{filter:brightness(1.13)}
 button.d:not(:disabled):hover{background:var(--rd);border-color:var(--rd);color:#fff}
 button:disabled{cursor:not-allowed;opacity:.55}
 button:focus-visible,input:focus-visible,select:focus-visible,[role="button"]:focus-visible{outline:3px solid #788cf0;outline-offset:2px}
 input,select{border:1px solid var(--field);border-radius:10px;font-family:inherit;font-size:16px}
 input:focus,select:focus{border-color:var(--ln)}
 select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
-.topbar{padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:18px}
-.topbtn{border-radius:10px;font-size:14px;background:var(--g1)}
 .nm{font-size:21px;font-weight:650}.mu{font-size:14px}.big{font-weight:700}
-#menu{border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 30px rgba(40,55,126,.15)}
 .sum div{border:1px solid var(--border);border-radius:12px;background:var(--g1)}
-@media(max-width:430px){main{padding:14px 12px 28px}.card{padding:15px}.brand h1{font-size:22px}.topbtn{font-size:13px}}
+@media(max-width:430px){main{padding:14px 12px 28px}.card{padding:15px}}
 @media(prefers-reduced-motion:reduce){button{transition:none}}
 /* Importació d'albarans: jerarquia i espaiat coherents */
 #albaraResult .alb-line{margin:18px 0 0;padding:20px;border:1px solid var(--border);border-radius:14px;background:var(--g1);box-shadow:0 2px 9px rgba(40,55,126,.04)}
@@ -154,7 +141,6 @@ body.no-labels #printLabels,body.no-labels [data-lotlabels],body.no-labels [data
 .panel h3{font-size:17px;margin:0 0 6px}
 .panel .manual-head{margin:0}
 #purchaseCard{margin-top:14px}
-.topbar{border-bottom:0;padding-bottom:10px}
 input[type=file]{padding:6px;height:auto}
 input[type=file]::file-selector-button{margin-right:10px;padding:8px 14px;border:1px solid var(--ln);border-radius:10px;background:var(--g1);color:var(--tx);font:600 15px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer}
 input[type=file]::file-selector-button:hover{background:var(--g2)}
@@ -230,9 +216,6 @@ dialog.sheet-dialog::backdrop{background:#11183180}
 /* Formularis de «nou» plegats */
 details.new-form>summary{cursor:pointer;font-weight:700;font-size:17px;padding:4px 0}
 details.new-form[open]>summary{margin-bottom:10px}
-/* Menú: cap nom tallat */
-#menu{width:max-content;min-width:200px;max-width:none;background:var(--surface);padding:10px;gap:6px}
-#menu button{white-space:nowrap}
 /* Mòbil (≤ 560px) */
 @media(max-width:560px){
  .card{padding:11px}
@@ -244,28 +227,6 @@ details.new-form[open]>summary{margin-bottom:10px}
  .icon-button{min-height:36px;height:36px}
  #f button[type=submit]{margin-top:8px}
 }
-/* Lliscar (ESTIL.md): cap a l'esquerra elimina (vermell); cap a la dreta arxiva o recupera (blau) */
-.swipe{position:relative;overflow:hidden;touch-action:pan-y;-webkit-user-select:none;user-select:none}
-.swipe>.swipe-bg{position:absolute;inset:0;display:none;align-items:center;padding:0 18px;color:var(--on)}
-.swipe.left>.swipe-bg{display:flex;justify-content:flex-end;background:var(--red)}
-.swipe.right>.swipe-bg{display:flex;justify-content:flex-start;background:var(--ln)}
-.swipe>.swipe-bg svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.swipe>.swipe-row{position:relative}
-/* Capçalera: botons Menú i Sortir iguals que a GestoCatalog (ESTIL.md) */
-.topbar{position:relative}
-.topactions{gap:8px}
-.topbtn{gap:7px;min-height:42px;padding:8px 12px;border:1px solid var(--ln);border-radius:10px;background:var(--surface,var(--g1));color:var(--tx);font-size:15px;font-weight:600;white-space:nowrap;box-shadow:none}
-.topbtn span:first-child{font-family:inherit;font-size:18px;line-height:1}
-.topbtn:not(:disabled):hover{background:var(--g2);color:var(--tx);box-shadow:none}
-#menu{top:calc(100% + 8px);right:0}
-@media(max-width:430px){.topactions{gap:6px}.topbtn{font-size:14px;padding:7px 9px}}
-@media(max-width:480px){
- .topbar{align-items:flex-start;gap:8px;margin-bottom:8px;padding-bottom:4px}
- .topactions{gap:4px}
- .topbtn{width:44px;min-height:44px;padding:0;border-color:transparent;background:transparent}
- .topbtn .top-action-label{display:none}
- #menu{right:0;max-width:calc(100vw - 24px)}
-}
 /* Botons de la capçalera d'una vista (ESTIL.md, «Botons de la capçalera d'una vista») */
 .view-head .act button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:6px 13px;font-size:15px;white-space:nowrap}
 .view-head .act svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -275,24 +236,97 @@ details.new-form[open]>summary{margin-bottom:10px}
  .view-head .act{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;margin-top:8px}
  .view-head .act button{min-height:40px;padding:4px 6px;gap:5px;font-size:14px;line-height:1.15;min-width:0;white-space:normal;text-align:center}
 }
-/* Diàleg d'etiquetes (ESTIL.md, «Imprimir») */
-.label-what{margin:0 0 10px}.label-what b,.label-pick b{display:block}.label-what .mu,.label-pick .mu{display:block}
+/* Capçalera comuna de les apps Gesto: nom, versió, ☰ Menú i ↪︎ Sortir (ESTIL.md, «Capçalera de l'app» i «Menú»).
+   Font única: si canvies alguna cosa aquí, canvia a totes les apps. Va després del CSS de cada app. */
+.topbar{display:flex;align-items:center;justify-content:space-between;position:relative;gap:12px;margin:0 0 18px;padding:0 0 10px;border:0}
+.topbar .brand{min-width:0;flex:1}
+.topbar .brand h1{margin:0;font-size:clamp(20px,4.5vw,30px);font-weight:700;letter-spacing:-.035em;line-height:1.1;overflow-wrap:anywhere;font-variant:normal}
+.topbar .version{margin-top:5px;font-size:14px;color:var(--mu)}
+.top-actions{display:flex;flex-shrink:0;gap:8px;align-items:center}
+.top-actions>button,.top-actions>.menu-anchor>button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:8px 12px;border:1px solid var(--ln);border-radius:10px;background:var(--surface);color:var(--tx);font:600 15px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;font-variant:normal;white-space:nowrap;cursor:pointer;box-shadow:none}
+.top-actions>button:hover,.top-actions>.menu-anchor>button:hover{background:var(--soft);color:var(--tx);box-shadow:none;filter:none}
+.top-actions button span:first-child{font-size:18px;line-height:1}
+.top-actions [hidden]{display:none!important}
+.menu-anchor{position:relative}
+#menu-panel{position:absolute;top:calc(100% + 8px);right:0;z-index:30;display:block;width:max-content;min-width:200px;max-width:calc(100vw - 24px);background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 30px rgba(40,55,126,.15);padding:10px}
+#menu-panel[hidden]{display:none}
+#menu-panel #tabs{display:grid;gap:6px;margin:0 0 6px}
+#menu-panel #tabs:empty{display:none}
+#menu-panel button{display:flex;align-items:center;justify-content:flex-start;width:100%;min-height:44px;margin:0;padding:9px 15px;border:1px solid var(--ln);border-radius:10px;background:var(--surface);color:var(--tx);font:600 15px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;font-variant:normal;text-align:left;white-space:nowrap;cursor:pointer;box-shadow:none}
+#menu-panel button:hover{background:var(--soft);color:var(--tx);box-shadow:none;filter:none}
+#menu-panel button[aria-current=page],#menu-panel button.on{background:var(--ln);color:var(--on)}
+#menu-panel button[aria-current=page]:hover,#menu-panel button.on:hover{background:var(--ln);color:var(--on);filter:brightness(1.13)}
+@media(max-width:430px){
+  .top-actions>button,.top-actions>.menu-anchor>button{font-size:14px;padding:7px 9px}
+  .topbar .version{font-size:13px}
+}
+/* Mòbil: només les icones, sense vora ni fons; el menú s'ancora a la capçalera. */
+@media(max-width:480px){
+  .topbar{align-items:flex-start;gap:8px;margin-bottom:8px;padding-bottom:4px}
+  .top-actions{gap:4px}
+  .top-actions #menu-toggle,.top-actions #logout{width:44px;min-height:44px;padding:0;border-color:transparent;background:transparent}
+  .top-actions .top-action-label{display:none}
+  .menu-anchor{position:static}
+  #menu-panel{top:100%;right:0}
+}
+
+/* Avisos flotants comuns de les apps Gesto (vegeu ESTIL.md → Avisos i errors). */
+#status:empty{display:none}
+#status{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:1000;width:max-content;max-width:min(600px,calc(100% - 24px));margin:0;padding:12px 16px;border-radius:12px;background:var(--surface);color:var(--tx);border:1px solid var(--border);box-shadow:0 8px 28px #11183140;font-weight:600;cursor:pointer}
+#status.error{color:var(--red);border-color:var(--red)}
+
+/* Lliscar (ESTIL.md): cap a l'esquerra elimina (vermell); cap a la dreta arxiva o recupera (blau) */
+.swipe{position:relative;overflow:hidden;touch-action:pan-y;-webkit-user-select:none;user-select:none}
+.swipe>.swipe-bg{position:absolute;inset:0;display:none;align-items:center;padding:0 18px;color:var(--on)}
+.swipe.left>.swipe-bg{display:flex;justify-content:flex-end;background:var(--red)}
+.swipe.right>.swipe-bg{display:flex;justify-content:flex-start;background:var(--ln)}
+.swipe>.swipe-bg svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.swipe>.swipe-row{position:relative}
+#status .undo-button{min-height:32px;margin-inline-start:10px;padding:4px 12px;font-size:14px}
+/* Paperera */
+.trash-list{margin-top:10px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface)}
+.trash-list>.meta{padding:12px;margin:0}
+.trash-row{display:flex;flex-direction:column;gap:2px;padding:10px 12px;min-height:44px;justify-content:center}
+.swipe+.swipe>.trash-row{border-top:1px solid var(--border)}
+.trash-row strong,.trash-row .meta{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Diàleg d'etiquetes comú (ESTIL.md, «Imprimir»). Va amb shared/labels.js. */
+.labels-dialog .meta{font-size:14px;color:var(--mu)}
+.labels-dialog .sheet-part>label,.labels-dialog .label-grid label{display:block;margin:0 0 4px;font-size:15px;color:var(--mu)}
+.label-what{margin:0 0 10px}.label-what b,.label-pick b{display:block}.label-what .meta,.label-pick .meta{display:block}
 .label-picks{display:grid;margin:8px 0}
 .label-pick{display:flex;gap:12px;align-items:center;padding:8px 4px;border-top:1px solid var(--border);color:var(--tx);font-size:16px;margin:0;cursor:pointer}
-.label-pick:hover{background:var(--soft,var(--g2))}
+.label-pick:hover{background:var(--soft)}
 .label-pick input{width:20px;height:20px;min-height:0;flex:none;margin:0}
 .label-tools{display:flex;gap:8px;flex-wrap:wrap}
+.label-tools button{min-height:40px;padding:6px 14px;font-size:15px}
 .label-settings>summary{font-weight:600;cursor:pointer;padding:4px 0}
 .label-settings[open]>summary{margin-bottom:10px}
-.label-settings p.mu{margin:6px 0 0}
+.label-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
+.label-grid>div{min-width:0}
+.label-grid .label-wide{grid-column:1/-1}
+.label-settings p.meta{margin:6px 0 0}
 .label-count{margin:10px 0 0}.label-count:empty{display:none}
 .labels-dialog .sheet-foot button{min-height:44px}
+
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.18.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
-<main><div class="topbar"><div class="brand"><h1>GestoStock</h1><div class="mu version">Versió 1.18.0 <span aria-hidden="true">·</span> <span id="syncStatus">Connectant…</span></div></div><div class="topactions"><button id="mb" class="topbtn" type="button" aria-label="Menú" aria-expanded="false" aria-controls="menu"><span aria-hidden="true">☰</span><span class="top-action-label" aria-hidden="true">Menú</span></button><button id="logout" class="topbtn" type="button" aria-label="Sortir"><span aria-hidden="true">↪︎</span><span class="top-action-label" aria-hidden="true">Sortir</span></button></div>
-<div id="menu" hidden><button id="t0" class="on">Registrar compra</button><button id="t1">Inventari</button><button id="tpl">Plats i escandalls</button><button id="t2">Historial de vendes</button><button id="en">Catàleg d’articles</button><button id="tl">Partides</button><button id="tc">Paràmetres</button><button id="ts">Proveïdors</button><button id="tb">Paperera</button><button id="theme" type="button" aria-pressed="false">Mode fosc</button></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.19.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
+<main><header class="topbar">
+  <div class="brand"><h1>GestoStock</h1><div class="meta version">Versió 1.19.0<span id="sync-state" role="status"></span></div></div>
+  <div class="top-actions">
+    <div class="menu-anchor">
+      <button id="menu-toggle" type="button" aria-label="Menú" aria-expanded="false" aria-controls="menu-panel"><span aria-hidden="true">☰</span><span class="top-action-label" aria-hidden="true">Menú</span></button>
+      <div id="menu-panel" hidden>
+        <nav aria-label="Seccions" id="tabs"><button id="t0" type="button" class="on" aria-current="page">Registrar compra</button><button id="t1" type="button">Inventari</button><button id="tpl" type="button">Plats i escandalls</button><button id="t2" type="button">Historial de vendes</button><button id="en" type="button">Catàleg d’articles</button><button id="tl" type="button">Partides</button><button id="tc" type="button">Paràmetres</button><button id="ts" type="button">Proveïdors</button><button id="tb" type="button">Paperera</button></nav>
+        <button id="theme" type="button" aria-pressed="false">Mode fosc</button>
+      </div>
+    </div>
+    <button id="logout" type="button" aria-label="Sortir"><span aria-hidden="true">↪︎</span><span class="top-action-label" aria-hidden="true">Sortir</span></button>
+  </div>
+</header>
+
 <div id="v1"><div class="card main-card"><h2>Registrar compra</h2><p class="mu intro">Crea partides a partir de les compres de GestoCatalog o entra-les a mà.</p><section class="panel" id="pendingPanel"><h3>Compres de GestoCatalog</h3><p class="mu">Línies d’albarà que has enviat a GestoStock des de GestoCatalog. Prem el nom per crear-ne la partida o llisca-la cap a l’esquerra per descartar-la.</p><div id="pendingLines"></div></section><section class="panel"><details class="new-form" id="manualDetails"><summary>Nova partida manual</summary><div id="purchaseCard"><form id="f">
 <div class="full"><label for="ns">Espècie o article</label><input id="nsSearch" type="search" placeholder="Cerca l’article" autocomplete="off" style="margin-bottom:6px"><select id="ns"></select><input id="nom" hidden></div>
 <div><label>Preparació</label><select id="tp" required><option value="" disabled>Selecciona la preparació</option><option value="sencer">Sencer</option><option value="palometa">En palometa</option><option value="filets">A filets</option><option value="talls">A talls</option><option value="granel">A granel (peces o grams)</option></select></div>
@@ -343,6 +377,395 @@ details.new-form[open]>summary{margin-bottom:10px}
 <dialog id="sheet" class="sheet-dialog" aria-labelledby="sheetTitle"></dialog>
 
 <script>
+// Capçalera comuna de les apps Gesto: menú ☰ i mode fosc (ESTIL.md, «Capçalera de l'app» i «Menú»).
+// Font única per a GestoCatalog, GestoTips, GestoAdmin i GestoStock. L'HTML el genera shared/header.mjs.
+// gestoHeader() es pot cridar diverses vegades: només prepara els botons la primera.
+function gestoHeader() {
+  if (gestoHeader.ready) return gestoHeader.ready;
+  const toggle = document.getElementById('menu-toggle');
+  const panel = document.getElementById('menu-panel');
+  const theme = document.getElementById('theme');
+  function setMenu(open) {
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+  }
+  toggle.addEventListener('click', event => {
+    event.stopPropagation();
+    setMenu(panel.hidden);
+  });
+  // Es tanca en tocar fora, amb Esc o en triar una secció.
+  document.addEventListener('click', event => {
+    if (!panel.hidden && !event.target.closest('.menu-anchor')) setMenu(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || panel.hidden) return;
+    setMenu(false);
+    toggle.focus();
+  });
+  panel.addEventListener('click', event => {
+    if (event.target.closest('#tabs button')) setMenu(false);
+  });
+  // Mode fosc: clau `theme` del navegador, comuna a totes les apps (mateix domini).
+  // El <head> ja l'aplica abans de pintar la pàgina; aquí només s'actualitza el botó.
+  function setTheme(dark) {
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    theme.textContent = dark ? 'Mode clar' : 'Mode fosc';
+    theme.setAttribute('aria-pressed', String(dark));
+  }
+  let saved = null;
+  try { saved = localStorage.getItem('theme'); } catch {}
+  setTheme(saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches);
+  theme.addEventListener('click', () => {
+    const dark = document.documentElement.dataset.theme !== 'dark';
+    try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch {}
+    setTheme(dark);
+  });
+  gestoHeader.ready = {
+    setMenu,
+    setTheme,
+    showMenu() { toggle.hidden = false; },
+    tabs: document.getElementById('tabs')
+  };
+  return gestoHeader.ready;
+}
+
+// Avisos flotants comuns de les apps Gesto (vegeu ESTIL.md → Avisos i errors). Els fan servir GestoTips, GestoAdmin i GestoStock.
+// Funciona sobre l'element #status: els d'èxit marxen sols als 6 segons, els d'error (classe .error) es queden fins que es premen.
+// Si hi ha un <dialog> obert, l'avís s'hi mou perquè no quedi tapat. Els camps obligatoris buits avisen aquí, sense la bombolla del navegador.
+function setupNotices() {
+  const status = document.querySelector('#status');
+  if (!status || status.dataset.notices) return;
+  status.dataset.notices = '1';
+  let timer = 0;
+  // Lloc habitual de l'avís: #workspace (o el <body> si l'app no en té).
+  const home = () => document.querySelector('#workspace') || document.body;
+  const place = () => {
+    const parent = document.querySelector('dialog[open]') || home();
+    if (status.parentElement !== parent) parent.append(status);
+  };
+  new MutationObserver(() => {
+    clearTimeout(timer);
+    if (!status.textContent.trim()) return;
+    place();
+    if (!status.classList.contains('error') && status.textContent !== 'Desant…') timer = setTimeout(() => { status.textContent = ''; },6000);
+  }).observe(status,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});
+  status.addEventListener('click',event => { if (!event.target.closest('[data-undo]')) status.textContent = ''; });
+  document.addEventListener('close',() => {
+    if (status.parentElement !== home()) home().append(status);
+  },true);
+  let invalidShown = false;
+  document.addEventListener('invalid',event => {
+    event.preventDefault();
+    if (invalidShown) return;
+    invalidShown = true;
+    setTimeout(() => { invalidShown = false; },0);
+    const field = event.target;
+    // Nom del camp: l'etiqueta que l'envolta, la <label for> o la que té just abans; si no, aria-label o placeholder.
+    const previous = field.previousElementSibling;
+    const outer = field.closest('label')?.childNodes[0]?.textContent?.trim();
+    const linked = (field.id && document.querySelector('label[for="'+CSS.escape(field.id)+'"]')) || (previous?.tagName === 'LABEL' ? previous : null);
+    const label = outer || linked?.textContent?.trim() || field.getAttribute('aria-label') || field.placeholder || '';
+    field.focus();
+    status.classList.add('error');
+    status.textContent = field.validity.valueMissing
+      ? (field.tagName === 'SELECT' ? 'Tria una opció a «'+label+'».' : 'Omple el camp «'+label+'».')
+      : (label ? 'Revisa el camp «'+label+'». ' : '')+field.validationMessage;
+  },true);
+}
+setupNotices();
+
+// Lliscar per eliminar o arxivar i avís amb «Desfés» (ESTIL.md), comú a GestoTips i GestoAdmin.
+// Fila lliscable: swipeOpen(clau, es pot eliminar, es pot arxivar/restaurar, icona de la dreta) + fila amb la classe «swipe-row» + '</div>'.
+// setupSwipe(acció, ocupat): acció(clau, 'left'|'right') retorna (o promet) true si s'ha fet; si no, la fila torna al seu lloc.
+const swipeIcons = {
+  left:'<svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></svg>',
+  archive:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9"/><path d="M10 13h4"/></svg>',
+  restore:'<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v5h5"/></svg>'
+};
+function swipeOpen(key, left, right, rightIcon = 'archive') {
+  const attr = String(key).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  return '<div class="swipe" data-swipe="'+attr+'"'+(left ? ' data-left="1"' : '')+(right ? ' data-right="1" data-right-icon="'+rightIcon+'"' : '')+'><div class="swipe-bg" aria-hidden="true"></div>';
+}
+// Avís d'èxit amb el botó «Desfés» (dura els 6 segons dels avisos d'èxit).
+function showUndo(message, undo) {
+  const status = document.querySelector('#status');
+  status.classList.remove('error');
+  status.textContent = message;
+  if (!undo) return;
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'undo-button';
+  button.dataset.undo = '';
+  button.textContent = 'Desfés';
+  button.addEventListener('click',() => { status.textContent = ''; undo(); },{once:true});
+  status.append(' ',button);
+}
+function setupSwipe(action, isBusy = () => false) {
+  let touch = null;
+  let wheel = null;
+  let quietUntil = 0;
+  let blockClick = 0;
+  function backgroundOf(element) {
+    for (let node = element; node && node !== document.documentElement; node = node.parentElement) {
+      const color = getComputedStyle(node).backgroundColor;
+      if (color && color !== 'transparent' && color !== 'rgba(0, 0, 0, 0)') return color;
+    }
+    return getComputedStyle(document.body).backgroundColor;
+  }
+  function begin(wrap) {
+    const row = wrap.querySelector('.swipe-row');
+    if (getComputedStyle(row).backgroundColor === 'rgba(0, 0, 0, 0)') row.style.background = backgroundOf(wrap.parentElement);
+    row.style.transition = 'none';
+    return {wrap,row,dx:0,width:wrap.offsetWidth || 1};
+  }
+  function move(state, dx) {
+    if (dx < 0 && !state.wrap.dataset.left) dx = 0;
+    if (dx > 0 && !state.wrap.dataset.right) dx = 0;
+    state.dx = dx;
+    state.row.style.transform = dx ? 'translateX('+dx+'px)' : '';
+    state.wrap.classList.toggle('left',dx < 0);
+    state.wrap.classList.toggle('right',dx > 0);
+    const side = dx < 0 ? 'l' : dx > 0 ? 'r' : '';
+    const bg = state.wrap.firstElementChild;
+    if (bg.dataset.icon !== side) {
+      bg.dataset.icon = side;
+      bg.innerHTML = side === 'l' ? swipeIcons.left : side === 'r' ? swipeIcons[state.wrap.dataset.rightIcon] || swipeIcons.archive : '';
+    }
+  }
+  function reset(state) {
+    state.row.style.transition = 'transform .2s';
+    state.row.style.transform = '';
+    setTimeout(() => { state.wrap.classList.remove('left','right'); state.row.style.background = ''; state.row.style.transition = ''; },200);
+  }
+  function end(state) {
+    quietUntil = Date.now()+400;
+    const dir = state.dx <= -state.width/2 ? 'left' : state.dx >= state.width/2 ? 'right' : '';
+    if (!dir) { reset(state); return; }
+    state.row.style.transition = 'transform .18s';
+    state.row.style.transform = 'translateX('+(dir === 'left' ? -state.width : state.width)+'px)';
+    setTimeout(async () => {
+      let ok = false;
+      try { ok = await action(state.wrap.dataset.swipe,dir); } catch { ok = false; }
+      // Si no s'ha pogut fer, la fila torna al seu lloc; l'avís d'error n'explica el motiu.
+      if (!ok && state.wrap.isConnected) reset(state);
+    },180);
+  }
+  // Dit o ratolí: arrossegar la fila.
+  document.addEventListener('pointerdown',event => {
+    if (event.button > 0) return;
+    const wrap = event.target.closest('.swipe');
+    if (!wrap || event.target.closest('input,select,textarea')) return;
+    touch = {wrap,x:event.clientX,y:event.clientY,id:event.pointerId,state:null};
+  });
+  document.addEventListener('pointermove',event => {
+    if (!touch || event.pointerId !== touch.id) return;
+    const dx = event.clientX-touch.x;
+    const dy = event.clientY-touch.y;
+    if (!touch.state) {
+      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+      if (Math.abs(dy) >= Math.abs(dx) || isBusy()) { touch = null; return; }
+      touch.state = begin(touch.wrap);
+      try { touch.wrap.setPointerCapture(event.pointerId); } catch { /* sense captura */ }
+    }
+    event.preventDefault();
+    move(touch.state,dx);
+  },{passive:false});
+  function release(event) {
+    if (!touch || event.pointerId !== touch.id) return;
+    const state = touch.state;
+    touch = null;
+    if (!state) return;
+    blockClick = Date.now();
+    if (event.type === 'pointercancel') reset(state); else end(state);
+  }
+  document.addEventListener('pointerup',release);
+  document.addEventListener('pointercancel',release);
+  // Després d'arrossegar, no s'obre la fila.
+  document.addEventListener('click',event => {
+    if (Date.now()-blockClick < 400 && event.target.closest('.swipe')) { event.preventDefault(); event.stopImmediatePropagation(); }
+  },true);
+  // Trackpad: lliscar amb dos dits.
+  document.addEventListener('wheel',event => {
+    const wrap = event.target.closest('.swipe');
+    if (!wheel) {
+      if (!wrap || isBusy() || Date.now() < quietUntil || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+      wheel = {wrap,state:begin(wrap),dx:0};
+    } else if (wheel.wrap !== wrap && !wheel.wrap.contains(event.target)) return;
+    event.preventDefault();
+    wheel.dx -= event.deltaX;
+    move(wheel.state,wheel.dx);
+    clearTimeout(wheel.timer);
+    wheel.timer = setTimeout(() => { const state = wheel.state; wheel = null; end(state); },120);
+  },{passive:false});
+}
+
+// Etiquetes comunes de les apps Gesto (ESTIL.md, «Imprimir»): el diàleg i el PDF dels fulls A4 APLI 01272
+// (3 columnes × 8 files, etiquetes de 70 × 35 mm). Cada app només diu què s'imprimeix i què hi va escrit.
+//
+// gestoLabels({
+//   title: 'Etiquetes de Llobarro',       // capçalera del diàleg
+//   what: '<p>…</p>',                      // HTML de «què s'imprimeix» (opcional)
+//   picks: [{html, count}],                // llista amb caselles (opcional): cada element i quantes etiquetes en surten
+//   ask: true,                             // camp «Quantes etiquetes?» (en lloc de picks)
+//   count: 4,                              // nombre fix d'etiquetes (si no hi ha ni picks ni ask)
+//   storage: 'gestostock-etiquetes',       // clau on es recorden la separació i el marge
+//   file: 'etiquetes-gestostock',          // nom del PDF (sense data ni extensió)
+//   items: (chosen, quantity) => [...],    // etiquetes a imprimir: chosen = índexs marcats de picks
+//   draw: (item, pen) => {…}               // escriu una etiqueta amb pen.text / pen.fit / pen.short
+// });
+// pen.text(text, x, y, mida, negreta) i pen.fit(…) (redueix la mida perquè hi càpiga) fan servir punts PDF des de
+// la cantonada de dalt a l'esquerra de l'etiqueta (amb 10 pt de marge). pen.short(text, lletres) retalla amb «…».
+function gestoLabels(options) {
+  const PER_SHEET = 24;
+  const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[char]);
+  const notice = (message, error = false) => {
+    const status = document.querySelector('#status');
+    if (!status) return;
+    status.classList.toggle('error', error);
+    status.textContent = message;
+  };
+  const read = () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(options.storage) || '{}');
+      return {gap:Number.isFinite(saved.gap) ? saved.gap : 2.1, offset:Number.isFinite(saved.offset) ? saved.offset : 1};
+    } catch { return {gap:2.1, offset:1}; }
+  };
+  const settings = read();
+  const picks = options.picks || [];
+  const dialog = document.createElement('dialog');
+  dialog.className = 'sheet-dialog labels-dialog';
+  dialog.setAttribute('aria-label', options.title);
+  dialog.innerHTML =
+    '<div class="sheet-head"><h2>'+escape(options.title)+'</h2><button type="button" class="sheet-close" title="Tanca" aria-label="Tanca" data-labels-close>✕</button></div>'+
+    '<div class="sheet-part">'+(options.what || '')+
+      (options.ask ? '<label for="labels-quantity">Quantes etiquetes?</label><input id="labels-quantity" type="number" inputmode="numeric" min="1" max="2400" step="1" value="1" required>' : '')+
+      (picks.length ? '<div class="label-picks">'+picks.map((pick,i) => '<label class="label-pick"><input type="checkbox" data-label-pick="'+i+'" checked><span>'+pick.html+'</span></label>').join('')+'</div>'+
+        '<div class="label-tools"><button type="button" data-labels-all>Marca-les totes</button><button type="button" data-labels-none>Desmarca-les</button></div>' : '')+
+    '</div>'+
+    '<details class="sheet-part label-settings"><summary>Ajustos del full <span class="meta" data-labels-summary></span></summary><div class="label-grid">'+
+      '<div class="label-wide"><label for="labels-start">Primera casella lliure</label><select id="labels-start">'+
+        Array.from({length:PER_SHEET},(_,i) => '<option value="'+(i+1)+'">'+(i+1)+(i === 0 ? ' (full nou)' : '')+'</option>').join('')+'</select>'+
+        '<p class="meta">En un full començat, compta d’esquerra a dreta i de dalt a baix.</p></div>'+
+      '<div><label for="labels-gap">Separació entre files (mm)</label><input id="labels-gap" type="number" inputmode="decimal" min="0" max="2.4" step="0.1" value="'+settings.gap+'"></div>'+
+      '<div><label for="labels-offset">Marge superior (mm)</label><input id="labels-offset" type="number" inputmode="decimal" min="0" max="17" step="0.5" value="'+settings.offset+'"></div>'+
+    '</div><p class="meta">La separació i el marge es recorden en aquest dispositiu.</p></details>'+
+    '<p class="meta label-count" data-labels-count aria-live="polite"></p>'+
+    '<div class="sheet-foot"><button type="button" class="primary f" data-labels-go>Imprimeix</button><button type="button" data-labels-cancel>Cancel·la</button></div>';
+  document.body.append(dialog);
+  dialog.addEventListener('close',() => dialog.remove());
+  dialog.showModal();
+  const $ = selector => dialog.querySelector(selector);
+  const checks = [...dialog.querySelectorAll('[data-label-pick]')];
+  const quantity = $('#labels-quantity');
+  const chosen = () => checks.filter(check => check.checked).map(check => Number(check.dataset.labelPick));
+  const count = () => quantity ? (quantity.validity.valid ? Number(quantity.value) : 0)
+    : picks.length ? chosen().reduce((sum,i) => sum+picks[i].count,0) : Number(options.count) || 0;
+  const number = (selector, fallback, min, max) => {
+    const value = Number($(selector).value);
+    return Number.isFinite(value) ? Math.max(min,Math.min(max,value)) : fallback;
+  };
+  const mm = value => String(value).replace('.',',')+' mm';
+  function update() {
+    const n = count();
+    const start = Number($('#labels-start').value) || 1;
+    const sheets = n ? Math.ceil((start-1+n)/PER_SHEET) : 0;
+    const go = $('[data-labels-go]');
+    go.disabled = !n;
+    go.textContent = n ? 'Imprimeix '+n+(n === 1 ? ' etiqueta' : ' etiquetes') : 'Imprimeix';
+    $('[data-labels-count]').textContent = n ? 'Ocupa '+sheets+(sheets === 1 ? ' full A4' : ' fulls A4')+(start > 1 ? ', començant a la casella '+start : '')+'.' : '';
+    $('[data-labels-summary]').textContent = '· '+(start > 1 ? 'casella '+start : 'full nou')+' · '+mm(number('#labels-gap',2.1,0,2.4))+' · '+mm(number('#labels-offset',1,0,17));
+  }
+  dialog.addEventListener('input',update);
+  dialog.addEventListener('change',update);
+  dialog.addEventListener('click',event => {
+    if (event.target.closest('[data-labels-close],[data-labels-cancel]')) dialog.close();
+    else if (event.target.closest('[data-labels-all]')) { checks.forEach(check => { check.checked = true; }); update(); }
+    else if (event.target.closest('[data-labels-none]')) { checks.forEach(check => { check.checked = false; }); update(); }
+    else if (event.target.closest('[data-labels-go]')) print();
+  });
+  function print() {
+    if (!count()) return;
+    const start = Number($('#labels-start').value) || 1;
+    const gap = number('#labels-gap',2.1,0,2.4);
+    const offset = number('#labels-offset',1,0,17);
+    if (offset+8*35+7*gap > 297) { notice('El marge i la separació superen l’alçada del full A4', true); return; }
+    try { localStorage.setItem(options.storage, JSON.stringify({gap,offset})); } catch {}
+    const items = options.items(chosen(), quantity ? Number(quantity.value) : count());
+    dialog.close();
+    gestoLabelsPdf(items, options.draw, {start, gap, offset, file:options.file});
+  }
+  update();
+  if (quantity) { quantity.focus(); quantity.select(); }
+}
+
+// Fa el PDF (sense finestres emergents, perquè funcioni a Safari i a l'app de la pantalla d'inici) i el descarrega.
+function gestoLabelsPdf(items, draw, {start = 1, gap = 2.1, offset = 1, file = 'etiquetes'} = {}) {
+  const PER_SHEET = 24;
+  const W = 595.276, H = 841.89, cw = W/3, pt = mm => mm*72/25.4;
+  const pitch = pt(35+(Number(gap) || 0)), top = pt(Number(offset) || 0);
+  // Lletres de Windows-1252 que no són Latin-1 (les fonts estàndard del PDF fan servir aquesta codificació).
+  const winAnsi = {'€':128,'‚':130,'„':132,'…':133,'‘':145,'’':146,'“':147,'”':148,'•':149,'–':150,'—':151};
+  const clean = text => String(text ?? '').replace(/\u00a0/g,' ').replace(/[\u{10000}-\u{10FFFF}]/gu,'?');
+  const pdfText = text => clean(text).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
+  let measure;
+  const pages = [];
+  let commands = [];
+  let origin = {x:0, y:0};
+  const pen = {
+    text(text, x, y, size, bold) {
+      commands.push('0.10 0.16 0.31 rg BT /'+(bold ? 'F2' : 'F1')+' '+size+' Tf 1 0 0 1 '+(origin.x+x).toFixed(2)+' '+(H-origin.y-y).toFixed(2)+' Tm ('+pdfText(text)+') Tj ET');
+    },
+    fit(text, x, y, size, bold) {
+      measure ||= document.createElement('canvas').getContext('2d');
+      measure.font = (bold ? 'bold ' : '')+size+'px Helvetica, Arial, sans-serif';
+      const width = measure.measureText(clean(text)).width;
+      pen.text(text, x, y, Math.min(size, size*(cw-22-x)/Math.max(width,1)).toFixed(2), bold);
+    },
+    short(text, max) {
+      text = clean(text);
+      return text.length > max ? text.slice(0,max-1)+'…' : text;
+    }
+  };
+  const first = Math.max(1,Math.min(PER_SHEET,Number(start) || 1))-1;
+  items.forEach((item,i) => {
+    const position = i+first;
+    if (position%PER_SHEET === 0 || i === 0) commands = [];
+    origin = {x:(position%3)*cw+10, y:top+Math.floor((position%PER_SHEET)/3)*pitch};
+    draw(item, pen);
+    if (position%PER_SHEET === PER_SHEET-1 || i === items.length-1) pages.push(commands.join('\n'));
+  });
+  const objects = [null];
+  const add = object => { objects.push(object); return objects.length-1; };
+  const catalog = add(''), root = add('');
+  const font1 = add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+  const font2 = add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
+  const kids = pages.map(content => {
+    const stream = add('<< /Length '+content.length+' >>\nstream\n'+content+'\nendstream');
+    return add('<< /Type /Page /Parent '+root+' 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources << /Font << /F1 '+font1+' 0 R /F2 '+font2+' 0 R >> >> /Contents '+stream+' 0 R >>')+' 0 R';
+  });
+  objects[catalog] = '<< /Type /Catalog /Pages '+root+' 0 R >>';
+  objects[root] = '<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+kids.length+' >>';
+  // Un caràcter = un byte (Windows-1252), així les mides i les posicions del PDF quadren.
+  let out = '%PDF-1.4\n%âãÏÓ\n';
+  const offsets = [0];
+  for (let j = 1; j < objects.length; j++) { offsets.push(out.length); out += j+' 0 obj\n'+objects[j]+'\nendobj\n'; }
+  const xref = out.length;
+  out += 'xref\n0 '+objects.length+'\n0000000000 65535 f \n'+offsets.slice(1).map(o => String(o).padStart(10,'0')+' 00000 n \n').join('');
+  out += 'trailer\n<< /Size '+objects.length+' /Root '+catalog+' 0 R >>\nstartxref\n'+xref+'\n%%EOF';
+  const bytes = Uint8Array.from(out, char => winAnsi[char] ?? (char.charCodeAt(0) <= 255 ? char.charCodeAt(0) : 63));
+  const today = new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Madrid'});
+  const url = URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = file+'-'+today+'.pdf';
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url),60000);
+  const status = document.querySelector('#status');
+  if (status) { status.classList.remove('error'); status.textContent = 'PDF generat. Si no s’obre, comprova les descàrregues.'; }
+}
+
 var state={fish:[],sales:[],noms:[],imports:{}},ref=null,confirmId=null,sellId=null,editId=null,openId=null,nmsg="",KEY="peixos-v1";
 function $(i){return document.getElementById(i)}
 function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
@@ -598,8 +1021,9 @@ function fillNames(sel){var s=$("ns"),h="",q=catKey($("nsSearch")&&$("nsSearch")
 function curNom(){var v=$("ns").value;return (v||"").trim()}
 var lastUndo=null,tt=null;
 function sellOne(id){var ix=-1;state.fish.forEach(function(x,i){if(x.id===id)ix=i});if(ix<0)return;var f=state.fish[ix],have=Number(f.unitats)||0,sid=uid();if(have<=0)return;state.sales.push({id:sid,nom:f.nom,tipus:f.tipus,unitatRecompte:f.unitatRecompte||null,minva:f.minva,pes:f.pes,unitats:1,dataCompra:f.dataCompra,preuCompra:f.preuCompra,preuVenda:carta(f)/fin(f),costNetKg:f.costNetKg,costTall:f.costTall??null,pesNetIndividual:f.pesNetIndividual,lotId:f.lotId,dataVenda:today()});var copy=JSON.parse(JSON.stringify(f));if(have<=1){state.fish.splice(ix,1)}else{f.unitats=have-1}lastUndo={sid:sid,fish:copy,ix:ix,removed:have<=1};sellId=null;confirmId=null;save();render();showToast((f.unitatRecompte==="racions"||f.tipus!=="talls"?"Venuda 1 "+unitLabel(f,1):"Venut 1 tall")+" · "+f.nom+(have<=1?" (s’ha acabat)":" · en queden "+(have-1)))}
-function undoSale(){if(!lastUndo)return;var u=lastUndo;state.sales=state.sales.filter(function(s){return s.id!==u.sid});if(u.removed){state.fish.splice(Math.min(u.ix,state.fish.length),0,u.fish)}else{state.fish.forEach(function(x){if(x.id===u.fish.id)x.unitats=u.fish.unitats})}lastUndo=null;$("status").textContent="";save();render()}
-function showToast(m){undoFn=null;var t=$("status");t.classList.remove("error");t.innerHTML='<span>'+esc(m)+'</span><button type="button" data-undo="1">Desfés</button>'}
+function undoSale(){if(!lastUndo)return;var u=lastUndo;state.sales=state.sales.filter(function(s){return s.id!==u.sid});if(u.removed){state.fish.splice(Math.min(u.ix,state.fish.length),0,u.fish)}else{state.fish.forEach(function(x){if(x.id===u.fish.id)x.unitats=u.fish.unitats})}lastUndo=null;save();render()}
+// Avís de venda amb «Desfés» (showUndo de shared/swipe.js).
+function showToast(m){showUndo(m,undoSale)}
 function flash(m,ok){var t=$("status");t.classList.toggle("error",!ok);t.textContent=m}
 function stockGross(f){
  var l=(state.lots||[]).find(function(x){return x.id===f.lotId});
@@ -662,7 +1086,7 @@ function renderStock(){
 
 // ---- Paperera i lliscar (ESTIL.md: «Lliscar per eliminar o arxivar» i «Paperera») ----
 // Eliminar no esborra del tot: l'element va a state.trash i es pot recuperar durant 30 dies.
-var TRASH_DAYS=30,DAY_MS=864e5,undoFn=null;
+var TRASH_DAYS=30,DAY_MS=864e5;
 function canDelete(){return !document.body.classList.contains("no-buy")}
 function trashItems(){var limit=Date.now()-TRASH_DAYS*DAY_MS;return (state.trash||[]).filter(function(e){return Date.parse(e.deletedAt)>=limit})}
 function purgeTrash(){if(!state.trash)return false;var before=state.trash.length;state.trash=trashItems();return state.trash.length!==before}
@@ -670,8 +1094,6 @@ function putTrash(e){(state.trash=state.trash||[]).push(e);return e}
 function dropTrash(id){state.trash=(state.trash||[]).filter(function(e){return e.id!==id})}
 function trashDaysLeft(e){return Math.max(0,Math.ceil((Date.parse(e.deletedAt)+TRASH_DAYS*DAY_MS-Date.now())/DAY_MS))}
 function newTrash(kind,name,meta,data){return {id:uid(),kind:kind,name:name,meta:meta,deletedAt:new Date().toISOString(),data:data}}
-// Avís amb «Desfés» (dura els 6 segons dels avisos d'èxit).
-function showUndo(m,fn){lastUndo=null;undoFn=fn;var t=$("status");t.classList.remove("error");t.innerHTML='<span>'+esc(m)+'</span><button type="button" data-undo="1">Desfés</button>'}
 
 // Treu de l'inventari les dades d'una entrada de la paperera / les hi torna a posar.
 function trashTake(e){
@@ -744,11 +1166,9 @@ function renderTrash(){
  el.innerHTML=list.map(function(e){
   var left=trashDaysLeft(e),when=left<=0?"s’esborrarà avui":left===1?"s’esborrarà demà":"s’esborrarà d’aquí a "+left+" dies";
   var meta=e.meta+' · eliminat el '+dt(e.deletedAt.slice(0,10))+' · '+when;
-  return swipeOpen('trash:'+e.id,true,true)+'<div class="list-row swipe-row"><div class="row-text" title="'+rowTitle(e.name,meta)+'">'+rowLabel(e.name,meta)+'</div></div></div>';
+  return swipeOpen('trash:'+e.id,true,true,'restore')+'<div class="list-row swipe-row"><div class="row-text" title="'+rowTitle(e.name,meta)+'">'+rowLabel(e.name,meta)+'</div></div></div>';
  }).join("")||'<div class="empty">La paperera és buida.</div>';
 }
-// Fila lliscable: swipeOpen(clau, es pot eliminar, es pot arxivar/recuperar) + '<div class="… swipe-row">…</div>' + '</div>'.
-function swipeOpen(key,left,right){return '<div class="swipe" data-swipe="'+attr(key)+'"'+(left?' data-left="1"':'')+(right?' data-right="1"':'')+'><div class="swipe-bg" aria-hidden="true"></div>'}
 function swipeAction(key,dir){
  var i=key.indexOf(":"),kind=key.slice(0,i),id=key.slice(i+1);
  if(kind!=="trash"&&kind!=="line"&&!canDelete()){flash("No tens permís per eliminar.");return false}
@@ -758,119 +1178,45 @@ function swipeAction(key,dir){
  if(kind==="trash")return dir==="right"?restoreTrash(id):purgeOne(id);
  return false;
 }
-(function setupSwipe(){
- var touch=null,wheel=null,quietUntil=0,blockClick=0;
- function bgOf(el){while(el&&el!==document.documentElement){var c=getComputedStyle(el).backgroundColor;if(c&&c!=="transparent"&&c!=="rgba(0, 0, 0, 0)")return c;el=el.parentElement}return getComputedStyle(document.body).backgroundColor}
- function begin(w){var row=w.querySelector(".swipe-row");row.style.background=bgOf(w.parentElement);row.style.transition="none";return {w:w,row:row,dx:0,width:w.offsetWidth||1}}
- function move(s,dx){
-  if(dx<0&&!s.w.dataset.left)dx=0;
-  if(dx>0&&!s.w.dataset.right)dx=0;
-  s.dx=dx;s.row.style.transform=dx?"translateX("+dx+"px)":"";
-  s.w.classList.toggle("left",dx<0);s.w.classList.toggle("right",dx>0);
-  var icon=dx<0?ICONS.del:dx>0?(s.w.dataset.swipe.indexOf("trash:")===0?ICONS.restore:ICONS.archive):"";
-  var bg=s.w.firstElementChild;if(bg.dataset.icon!==icon){bg.dataset.icon=icon;bg.innerHTML=icon}
- }
- function reset(s){s.row.style.transition="transform .2s";s.row.style.transform="";setTimeout(function(){s.w.classList.remove("left","right");s.row.style.background="";s.row.style.transition=""},200)}
- function end(s){
-  quietUntil=Date.now()+400;
-  var dir=s.dx<=-s.width/2?"left":s.dx>=s.width/2?"right":"";
-  if(!dir){reset(s);return}
-  s.row.style.transition="transform .18s";s.row.style.transform="translateX("+(dir==="left"?-s.width:s.width)+"px)";
-  setTimeout(function(){if(!swipeAction(s.w.dataset.swipe,dir))reset(s)},180);
- }
- // Dit o ratolí: arrossegar la fila.
- document.addEventListener("pointerdown",function(e){
-  if(e.button>0)return;var w=e.target.closest(".swipe");
-  if(!w||e.target.closest("input,select,textarea"))return;
-  touch={w:w,x:e.clientX,y:e.clientY,id:e.pointerId,s:null};
- });
- document.addEventListener("pointermove",function(e){
-  if(!touch||e.pointerId!==touch.id)return;
-  var dx=e.clientX-touch.x,dy=e.clientY-touch.y;
-  if(!touch.s){
-   if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
-   if(Math.abs(dy)>=Math.abs(dx)){touch=null;return}
-   touch.s=begin(touch.w);try{touch.w.setPointerCapture(e.pointerId)}catch(err){}
-  }
-  e.preventDefault();move(touch.s,dx);
- },{passive:false});
- function release(e){if(!touch||e.pointerId!==touch.id)return;var s=touch.s;touch=null;if(!s)return;blockClick=Date.now();if(e.type==="pointercancel")reset(s);else end(s)}
- document.addEventListener("pointerup",release);
- document.addEventListener("pointercancel",release);
- // Després d'arrossegar, no s'obre la fila.
- document.addEventListener("click",function(e){if(Date.now()-blockClick<400&&e.target.closest(".swipe")){e.preventDefault();e.stopPropagation()}},true);
- // Trackpad: lliscar amb dos dits.
- document.addEventListener("wheel",function(e){
-  var w=e.target.closest(".swipe");
-  if(!wheel){
-   if(!w||Date.now()<quietUntil||Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;
-   wheel={w:w,s:begin(w),dx:0};
-  }else if(wheel.w!==w&&!wheel.w.contains(e.target))return;
-  e.preventDefault();
-  wheel.dx-=e.deltaX;move(wheel.s,wheel.dx);
-  clearTimeout(wheel.t);wheel.t=setTimeout(function(){var s=wheel.s;wheel=null;end(s)},120);
- },{passive:false});
-})();
+// Lliscar (shared/swipe.js): swipeAction fa l'acció i diu si s'ha pogut fer.
+setupSwipe(swipeAction);
 
-// Etiquetes A4 APLI 01272: 3 columnes × 8 files (70 × 35 mm).
-// Criteri únic (ESTIL.md, «Imprimir»): icona d'impressora a la fila per a un element i botó «Etiquetes» a la capçalera per a diversos.
-// Sempre el mateix diàleg: què s'imprimeix i quantes, «Ajustos del full» plegat (recordat al dispositiu) i, a baix, «Imprimeix N etiquetes».
+// Etiquetes (ESTIL.md, «Imprimir»): el diàleg i el PDF són comuns (shared/labels.js); aquí només hi ha què s'imprimeix i què hi va escrit.
 // opts: {lot} → resum d'una partida (quantes còpies es vulgui); {groupKey} → peces d'un grup de l'inventari; {} → tria de grups de l'inventari.
-var LABELS_KEY="gestostock-etiquetes";
-function labelSettings(){try{var s=JSON.parse(localStorage.getItem(LABELS_KEY)||"{}");return {gap:Number.isFinite(s.gap)?s.gap:2.1,offset:Number.isFinite(s.offset)?s.offset:1}}catch(e){return {gap:2.1,offset:1}}}
-function saveLabelSettings(s){try{localStorage.setItem(LABELS_KEY,JSON.stringify(s))}catch(e){}}
 function printStockLabels(opts){
  opts=opts||{};
  var lot=opts.lot||null,all=lot?[]:stockGroups().filter(function(g){return g.items[0].tipus!=="granel"});
  var groups=opts.groupKey?all.filter(function(g){return g.key===opts.groupKey}):all,single=!lot&&groups.length===1&&!!opts.groupKey;
  if(!lot&&!groups.length){flash('No hi ha peces a l’inventari (els articles a granel no porten etiqueta)');return}
- var set=labelSettings();
- var dialog=document.createElement('dialog');dialog.id='labelsDialog';dialog.className='sheet-dialog labels-dialog';
- var title=lot?'Etiquetes de la partida':single?'Etiquetes de '+groups[0].items[0].nom:'Etiquetes de l’inventari';
- dialog.setAttribute('aria-label',title);
- function groupInfo(g){var f=g.items[0],l=state.lots.find(function(x){return x.id===g.lotId});return '<b>'+esc(f.nom)+' · '+esc(tag(f))+'</b><span class="mu">'+dt(f.dataCompra)+' · '+esc(lotReference(l))+' · '+stockCount(g.items)+' '+(stockCount(g.items)===1?'etiqueta':'etiquetes')+'</span>'}
- var h=sheetHead(title,'data-labelsclose="1"')+'<div class="sheet-part">';
- if(lot)h+='<p class="label-what"><b>'+esc(lot.nom)+' · '+esc(tag(lot))+'</b><span class="mu">'+dt(lot.dataCompra)+' · '+esc(lotReference(lot))+' · Resum de costos de la partida</span></p><label for="labelsQuantity">Quantes etiquetes?</label><input id="labelsQuantity" type="number" inputmode="numeric" min="1" max="2400" step="1" value="1" required>';
- else if(single)h+='<p class="label-what">'+groupInfo(groups[0])+'</p><p class="mu">Una etiqueta per cada peça disponible, amb el seu pes.</p>';
- else{
-  h+='<p class="mu">Una etiqueta per cada peça disponible de les partides marcades, amb el seu pes.</p><div class="label-picks">';
-  groups.forEach(function(g,i){h+='<label class="label-pick"><input type="checkbox" data-label-group="'+i+'" checked><span>'+groupInfo(g)+'</span></label>'});
-  h+='</div><div class="label-tools"><button type="button" class="s" id="labelsAll">Marca-les totes</button><button type="button" class="s" id="labelsNone">Desmarca-les</button></div>';
+ var common={storage:"gestostock-etiquetes",file:"etiquetes-gestostock",draw:drawStockLabel};
+ function info(g){var f=g.items[0],n=stockCount(g.items),l=state.lots.find(function(x){return x.id===g.lotId});return '<b>'+esc(f.nom)+' · '+esc(tag(f))+'</b><span class="meta">'+dt(f.dataCompra)+' · '+esc(lotReference(l))+' · '+n+(n===1?' etiqueta':' etiquetes')+'</span>'}
+ function pieces(list){var out=[];list.forEach(function(g){g.items.forEach(function(f){for(var k=0;k<Number(f.unitats||0);k++)out.push({f:f,gross:stockGross(f).kg})})});return out}
+ if(lot){gestoLabels(Object.assign({title:'Etiquetes de la partida',ask:true,
+  what:'<p class="label-what"><b>'+esc(lot.nom)+' · '+esc(tag(lot))+'</b><span class="meta">'+dt(lot.dataCompra)+' · '+esc(lotReference(lot))+' · Resum de costos de la partida</span></p>',
+  items:function(chosen,n){return Array.from({length:n},function(){return {lot:lot}})}},common));return}
+ if(single){gestoLabels(Object.assign({title:'Etiquetes de '+groups[0].items[0].nom,count:stockCount(groups[0].items),
+  what:'<p class="label-what">'+info(groups[0])+'</p><p class="meta">Una etiqueta per cada peça disponible, amb el seu pes.</p>',
+  items:function(){return pieces(groups)}},common));return}
+ gestoLabels(Object.assign({title:'Etiquetes de l’inventari',
+  what:'<p class="meta">Una etiqueta per cada peça disponible de les partides marcades, amb el seu pes.</p>',
+  picks:groups.map(function(g){return {html:info(g),count:stockCount(g.items)}}),
+  items:function(chosen){return pieces(chosen.map(function(i){return groups[i]}))}},common));
+}
+// Què hi va escrit: el resum de costos d'una partida o les dades d'una peça.
+function drawStockLabel(item,pen){
+ if(item.lot){
+  var l=item.lot;
+  pen.fit(lotReference(l)+' · '+l.nom+' · '+tag(l)+' - '+dt(l.dataCompra),0,15,10,true);
+  lotLabelLines(l).forEach(function(t,j){pen.fit(t,0,29+j*11,8.5,j===5)});
+  return;
  }
- h+='</div><details class="sheet-part label-settings"><summary>Ajustos del full <span class="mu" id="labelsSummary"></span></summary><div class="g2">'+
-  '<div class="full"><label for="labelsStart">Primera casella lliure</label><select id="labelsStart">'+Array.from({length:24},function(_,i){return '<option value="'+(i+1)+'">'+(i+1)+(i===0?' (full nou)':'')+'</option>'}).join('')+'</select><p class="mu">En un full començat, compta d’esquerra a dreta i de dalt a baix.</p></div>'+
-  '<div><label for="labelsGap">Separació entre files (mm)</label><input id="labelsGap" type="number" inputmode="decimal" min="0" max="2.4" step="0.1" value="'+set.gap+'"></div>'+
-  '<div><label for="labelsOffset">Marge superior (mm)</label><input id="labelsOffset" type="number" inputmode="decimal" min="0" max="17" step="0.5" value="'+set.offset+'"></div>'+
-  '</div><p class="mu">La separació i el marge es recorden en aquest dispositiu.</p></details>';
- h+='<p class="mu label-count" id="labelsCount" aria-live="polite"></p><div class="sheet-foot"><button type="button" class="f" id="labelsGo">Imprimeix</button><button type="button" id="labelsCancel">Cancel·la</button></div>';
- dialog.innerHTML=h;document.body.appendChild(dialog);dialog.addEventListener('close',function(){dialog.remove()});dialog.showModal();
- var checks=Array.from(dialog.querySelectorAll('[data-label-group]')),quantity=dialog.querySelector('#labelsQuantity');
- function chosen(){return checks.length?checks.filter(function(c){return c.checked}).map(function(c){return groups[Number(c.dataset.labelGroup)]}):groups}
- function labelCount(){return quantity?(quantity.validity.valid?Number(quantity.value):0):chosen().reduce(function(n,g){return n+stockCount(g.items)},0)}
- function num(id,def,min,max){var v=Number(dialog.querySelector(id).value);return Number.isFinite(v)?Math.max(min,Math.min(max,v)):def}
- function update(){
-  var n=labelCount(),start=Number(dialog.querySelector('#labelsStart').value)||1,pages=n?Math.ceil((start-1+n)/24):0,button=dialog.querySelector('#labelsGo');
-  button.disabled=!n;button.textContent=n?'Imprimeix '+n+(n===1?' etiqueta':' etiquetes'):'Imprimeix';
-  dialog.querySelector('#labelsCount').textContent=n?'Ocupa '+pages+(pages===1?' full A4':' fulls A4')+(start>1?', començant a la casella '+start:'')+'.':'';
-  dialog.querySelector('#labelsSummary').textContent='· '+(start>1?'casella '+start:'full nou')+' · '+String(num('#labelsGap',2.1,0,2.4)).replace('.',',')+' mm · '+String(num('#labelsOffset',1,0,17)).replace('.',',')+' mm';
- }
- dialog.oninput=dialog.onchange=update;
- if(checks.length){
-  dialog.querySelector('#labelsAll').onclick=function(){checks.forEach(function(c){c.checked=true});update()};
-  dialog.querySelector('#labelsNone').onclick=function(){checks.forEach(function(c){c.checked=false});update()};
- }
- dialog.querySelector('#labelsCancel').onclick=dialog.querySelector('[data-labelsclose]').onclick=function(){dialog.close()};
- dialog.querySelector('#labelsGo').onclick=function(){
-  var n=labelCount();if(!n)return;
-  var start=Number(dialog.querySelector('#labelsStart').value)||1,offset=num('#labelsOffset',1,0,17),gap=num('#labelsGap',2.1,0,2.4);
-  if(offset+8*35+7*gap>297){flash('El marge i la separació superen l’alçada del full A4');return}
-  saveLabelSettings({gap:gap,offset:offset});
-  var labels=lot?Array.from({length:n},function(){return {lot:lot}}):[];
-  if(!lot)chosen().forEach(function(g){g.items.forEach(function(f){for(var k=0;k<Number(f.unitats||0);k++)labels.push({f:f,gross:stockGross(f).kg})})});
-  dialog.close();openLabelsPrint(labels,start,offset,gap);
- };
- update();
- if(quantity){quantity.focus();quantity.select()}
+ var f=item.f;
+ pen.text(pen.short(f.nom,29),0,13,10,true);
+ pen.text(pen.short(tag(f),34),0,25,8,false);
+ pen.text('Pes brut: '+kg(item.gross),0,40,10,true);
+ pen.text((f.tipus==='talls'?'':'Persones: '+pax(item.gross)+'  |  ')+'Net: '+kg(fin(f)),0,53,8,false);
+ pen.text((f.tipus==='talls'?'Cost per '+unitLabel(f,1)+': ':'Cost real: ')+eur(unitCost(f)),0,68,10,true);
+ pen.text(dt(f.dataCompra)+'  |  '+lotReference(state.lots.find(function(l){return l.id===f.lotId})),0,81,7,false);
 }
 function lotLabelLines(l){
  var isCut=l.tipus==='talls',net=Number(l.pesNet),gross=Number(l.pesBrut),total=gross*Number(l.preuCompra);
@@ -885,50 +1231,6 @@ function lotLabelLines(l){
   loss+': '+(net>0&&gross>0?n2((1-net/gross)*100)+'%':'pendent')+' · Cost net: '+(net>0?eur(total/net)+'/kg':'pendent'),
   count+(hasQty?' · Cost per '+(isCut?unitLabel(l,1):'unitat')+': '+eur(total/qty):'')
  ];
-}
-function openLabelsPrint(labels,startAt,offsetMm,gapMm){
- // Genera un PDF real, sense finestres emergents (compatibilitat Safari i PWA).
- var W=595.276,H=841.89,cw=W/3,ch=35*72/25.4,pitch=(35+(Number(gapMm)||0))*72/25.4,top=(Number(offsetMm)||0)*72/25.4;
- var pages=[],cmd=[],measure;
- function clean(t){return String(t==null?'':t).replace(/[\u2018\u2019]/g,"'").replace(/[\u2013\u2014]/g,'-').replace(/\u00a0/g,' ')}
- function pdfText(t){return clean(t).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)')}
- function txt(t,x,y,size,bold){cmd.push('0.10 0.16 0.31 rg BT /'+(bold?'F2':'F1')+' '+size+' Tf 1 0 0 1 '+x.toFixed(2)+' '+(H-y).toFixed(2)+' Tm ('+pdfText(t)+') Tj ET')}
- function line(t,max){t=clean(t);return t.length>max?t.slice(0,max-1)+'…':t}
- function fit(t,x,y,size,bold){
-  if(!measure)measure=document.createElement('canvas').getContext('2d');
-  measure.font=(bold?'bold ':'')+size+'px Helvetica, Arial, sans-serif';
-  var width=measure.measureText(clean(t)).width;
-  txt(t,x,y,Math.min(size,size*(cw-22)/Math.max(width,1)).toFixed(2),bold);
- }
- labels.forEach(function(item,i){
-  var position=i+(Math.max(1,Math.min(24,Number(startAt)||1))-1);
-  if(position%24===0||i===0)cmd=[];
-  var col=position%3,row=Math.floor((position%24)/3),x=col*cw+10,y=top+row*pitch,f=item.f;
-  if(item.lot){
-   var l=item.lot;
-   fit(lotReference(l)+' · '+l.nom+' · '+tag(l)+' - '+dt(l.dataCompra),x,y+15,10,true);
-   lotLabelLines(l).forEach(function(t,j){fit(t,x,y+29+j*11,8.5,j===5)});
-  }else{
-   txt(line(f.nom,29),x,y+13,10,true);
-   txt(line(tag(f),34),x,y+25,8,false);
-   txt('Pes brut: '+kg(item.gross),x,y+40,10,true);
-   txt((f.tipus==='talls'?'':'Persones: '+pax(item.gross)+'  |  ')+'Net: '+kg(fin(f)),x,y+53,8,false);
-   txt((f.tipus==='talls'?'Cost per '+unitLabel(f,1)+': ':'Cost real: ')+eur(unitCost(f)),x,y+68,10,true);
-   txt(dt(f.dataCompra)+'  |  '+lotReference(state.lots.find(function(l){return l.id===f.lotId})),x,y+81,7,false);
-  }
-  if(position%24===23||i===labels.length-1)pages.push(cmd.join('\n'));
- });
- var objects=[null],add=function(o){objects.push(o);return objects.length-1};
- var catalog=add(''),root=add(''),font1=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'),font2=add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
- var kids=[];
- pages.forEach(function(content){var stream=add('<< /Length '+byteLen(content)+' >>\nstream\n'+content+'\nendstream');var page=add('<< /Type /Page /Parent '+root+' 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources << /Font << /F1 '+font1+' 0 R /F2 '+font2+' 0 R >> >> /Contents '+stream+' 0 R >>');kids.push(page+' 0 R')});
- objects[catalog]='<< /Type /Catalog /Pages '+root+' 0 R >>';objects[root]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+kids.length+' >>';
- var out='%PDF-1.4\n%âãÏÓ\n',offsets=[0];
- for(var j=1;j<objects.length;j++){offsets.push(byteLen(out));out+=j+' 0 obj\n'+objects[j]+'\nendobj\n'}
- var xref=byteLen(out);out+='xref\n0 '+objects.length+'\n0000000000 65535 f \n';
- for(var j=1;j<objects.length;j++)out+=String(offsets[j]).padStart(10,'0')+' 00000 n \n';
- out+='trailer\n<< /Size '+objects.length+' /Root '+catalog+' 0 R >>\nstartxref\n'+xref+'\n%%EOF';
- downloadPdf(new Blob([toBytes(out)],{type:'application/pdf'}),'etiquetes-gestostock-'+today()+'.pdf');
 }
 function n2(v){return Number(v).toLocaleString("ca-ES",{minimumFractionDigits:2,maximumFractionDigits:2})}
 // Generador PDF integrat: no necessita internet ni serveis de Claude.
@@ -1197,7 +1499,7 @@ function costConfigHtml(c){
  if(free.length)h+='<div class="g2" style="align-items:end"><div><label for="ptNew">Afegeix una taula per a</label><select id="ptNew"><option value="">Tria la categoria</option>'+free.map(function(x){return '<option value="'+attr(x.c.id)+'">'+(x.depth?'\u00a0\u00a0— ':'')+esc(x.c.name)+'</option>'}).join('')+'</select></div><div><button type="button" class="s" id="ptAdd">Afegeix</button></div></div>';
  return h;
 }
-function tab(n){$("menu").hidden=true;$("mb").setAttribute("aria-expanded","false");["v1","v3","v2","np","lots","config","suppliers","trash","plats"].forEach(function(id,i){$(id).hidden=i!==n});["t0","t1","t2","en","tl","tc","ts","tb","tpl"].forEach(function(id,i){$(id).className=i===n?"on":""});if(n===3)renderNames();if(n===8)renderPlats();if(n===7)renderTrash();if(n===4)renderLots();if(n===5)renderConfig();window.scrollTo(0,0)}
+function tab(n){gestoHeader().setMenu(false);["v1","v3","v2","np","lots","config","suppliers","trash","plats"].forEach(function(id,i){$(id).hidden=i!==n});["t0","t1","t2","en","tl","tc","ts","tb","tpl"].forEach(function(id,i){$(id).className=i===n?"on":"";if(i===n)$(id).setAttribute("aria-current","page");else $(id).removeAttribute("aria-current")});if(n===3)renderNames();if(n===8)renderPlats();if(n===7)renderTrash();if(n===4)renderLots();if(n===5)renderConfig();window.scrollTo(0,0)}
 ["t0","t1","t2","en","tl","tc","ts","tb","tpl"].forEach(function(id,i){$(id).onclick=function(){tab(i)}});
 var editingSupplier="";
 function setSupplierEditor(name){
@@ -1249,8 +1551,7 @@ function prev(){
  showNetSuggestion();var brut=Number($("pes").value),net=$("net").value===""?null:Number($("net").value),pc=Number($("pc").value),extra=Number($("elabCost").value),effective=brut>0?pc+extra/brut:0,c=net>0?(brut*pc+extra)/net:0;$("effectiveCost").textContent=brut>0&&pc>=0&&extra>=0?"Cost efectiu: "+effective.toFixed(4).replace(".",",")+" €/kg brut (compra + elaboració)":"";$("pf").textContent=net>0&&brut>0?($('netMode').value==="estimated"?"Minva estimada (provisional): ":"Minva real de la partida: ")+((1-net/brut)*100).toFixed(1)+"%":"Introdueix el pes net real o accepta una estimació històrica";var pieceCost=costPerPiece(brut*pc+extra,Number($(isCut?"cuts":"qty").value));
  $("cp").textContent=gr?"":c>0?"Cost real net: "+eur(c)+"/kg · "+(isCut?"Cost per "+cutUnit(unit,1)+": ":"Cost real per peix: ")+(pieceCost!=null?eur(pieceCost):"pendent del nombre de "+(isCut?cutUnit(unit):"peixos")):""}
 $("countUnit").onchange=$("tp").onchange=prev;$("ns").onchange=prev;$("netMode").onchange=prev;["pes","net","pc","elabCost","qty","cuts","calibre","peces"].forEach(function(id){$(id).oninput=prev});$("consum").onchange=prev;$("v2").parentNode.appendChild($("np"));$("pdf").onclick=function(){makePdf("download")};$("sharePdf").onclick=function(){makePdf("share")};$("printLabels").onclick=function(){printStockLabels()};
-$("status").addEventListener("click",function(e){if(!e.target.dataset.undo)return;if(undoFn){var f=undoFn;undoFn=null;f()}else undoSale()});
-$("mb").onclick=function(e){e.stopPropagation();$("menu").hidden=!$("menu").hidden;$("mb").setAttribute("aria-expanded",String(!$("menu").hidden))};document.addEventListener("click",function(e){if(!$("menu").hidden&&!$("menu").contains(e.target)&&!$("mb").contains(e.target)){$("menu").hidden=true;$("mb").setAttribute("aria-expanded","false")}});
+
 $("suppliers").addEventListener("click",function(e){var d=e.target.dataset;if(d.slink===undefined&&d.screate===undefined)return;
  var i=Number(d.slink!==undefined?d.slink:d.screate),old=pendingSuppliers()[i];if(!old)return;
  if(d.screate!==undefined){e.target.disabled=true;createShared("createSupplier",old).then(function(){flash("«"+old+"» creat i vinculat",1)}).catch(function(err){flash("No s’ha pogut crear: "+err.message);e.target.disabled=false});return}
@@ -1865,7 +2166,7 @@ function summarySheetClick(e){var b=e.target.closest("button");if(b&&b.dataset.s
 $("costSummary").onclick=function(){window.costSummaryOpen=true;costMonth=today().slice(0,7);syncSheet()};
 norm();compactarLotsIguals();fillNames();render();
 window.applyCloudState=function(d){if(!d.proveidors&&!d.lots)setSupplierEditor("");state={fish:d.fish||[],sales:d.sales||[],noms:[],lots:d.lots||[],config:d.config||defaults(),imports:d.imports||{},ultimNumeroPartida:d.ultimNumeroPartida,proveidors:[],trash:d.trash};norm();compactarLotsIguals();linkChanged=linkCatalog()||linkChanged;fillNames($("ns").value);render()};
-window.setSyncStatus=function(t){$("syncStatus").textContent=t};
+window.setSyncStatus=function(t){$("sync-state").textContent=t?" · "+t:""};
 
 // ---- Compres de GestoCatalog pendents de crear la partida ----
 var pendingLines=[];
@@ -1908,10 +2209,8 @@ $("pendingLines").addEventListener("click",function(e){
 $("nsSearch").oninput=function(){var s=$("ns"),q=catKey(this.value),first=state.noms.find(function(n){return catKey(n).indexOf(q)>=0});fillNames(q&&first?first:s.value);if(typeof prev==="function")prev()};
 // Després de carregar: si s’han lligat partides antigues amb articles comuns, es desa (si es té permís).
 window.stockLoaded=function(p){var purged=p&&(p.admin||p.buy)&&purgeTrash();if((linkChanged||purged)&&p&&(p.admin||p.buy||p.sell)){linkChanged=false;save()}};
-// Mode fosc: mateixa preferència que GestoCatalog i GestoTips (clau "theme").
-function setTheme(dark){document.documentElement.dataset.theme=dark?"dark":"light";$("theme").textContent=dark?"Mode clar":"Mode fosc";$("theme").setAttribute("aria-pressed",String(dark))}
-(function(){var saved=null;try{saved=localStorage.getItem("theme")}catch(e){}setTheme(saved?saved==="dark":matchMedia("(prefers-color-scheme: dark)").matches)})();
-$("theme").onclick=function(){var dark=document.documentElement.dataset.theme!=="dark";try{localStorage.setItem("theme",dark?"dark":"light")}catch(e){}setTheme(dark)};
+// Menú ☰ i mode fosc: shared/header.js, comú a totes les apps Gesto.
+gestoHeader();
 
 // Permisos de GestoAdmin: amaga les seccions i els botons que l'usuari no pot fer servir.
 window.applyPermissions=function(p){
@@ -1927,39 +2226,6 @@ window.showLogin=function(show){$("login").style.display=show?"flex":"none"};
 $("loginForm").onsubmit=function(e){e.preventDefault();flash("Connectant…",1);window.peixosSync.login($("email").value,$("password").value).catch(function(err){flash("No s'ha pogut iniciar sessió: "+err.message)})};
 $("logout").onclick=function(){window.peixosSync.logout()};
 if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(console.error);
-</script>
-<script>
-// Avisos flotants comuns de les apps Gesto (ESTIL.md → Avisos i errors; copiat de shared/notices.js de GestoApps).
-// Els d'èxit marxen sols als 6 segons; els d'error (classe .error) es queden fins que es premen.
-// Si hi ha un <dialog> obert, l'avís s'hi mou perquè no quedi tapat. Els camps obligatoris buits avisen aquí, sense la bombolla del navegador.
-(function setupNotices(){
- var status=document.getElementById("status");
- if(!status||status.dataset.notices)return;
- status.dataset.notices="1";
- var timer=0,home=document.body;
- function place(){var parent=document.querySelector("dialog[open]")||home;if(status.parentElement!==parent)parent.append(status)}
- new MutationObserver(function(){
-  clearTimeout(timer);
-  if(!status.textContent.trim())return;
-  place();
-  if(!status.classList.contains("error"))timer=setTimeout(function(){status.textContent="";lastUndo=null;undoFn=null},6000);
- }).observe(status,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:["class"]});
- status.addEventListener("click",function(){status.textContent=""});
- document.addEventListener("close",function(){if(status.parentElement!==home)home.append(status)},true);
- var invalidShown=false;
- document.addEventListener("invalid",function(event){
-  event.preventDefault();
-  if(invalidShown)return;
-  invalidShown=true;setTimeout(function(){invalidShown=false},0);
-  var field=event.target,prev=field.previousElementSibling,lab=field.closest("label")||(field.id&&document.querySelector('label[for="'+field.id+'"]'))||(prev&&prev.tagName==="LABEL"?prev:null);
-  var label=(lab?lab.textContent:field.getAttribute("aria-label")||field.placeholder||"").trim();
-  field.focus();
-  status.classList.add("error");
-  status.textContent=field.validity.valueMissing
-   ?(field.tagName==="SELECT"?"Tria una opció a «"+label+"».":"Omple el camp «"+label+"».")
-   :(label?"Revisa el camp «"+label+"». ":"")+field.validationMessage;
- },true);
-})();
 </script>
 <script type="module">
 // Comptes de les apps Gesto (Firebase) i inventari al servidor gesto-apps (D1).
