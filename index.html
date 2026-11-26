@@ -14,144 +14,163 @@
 :root{--main-bg:#eaf0ff;--main-border:#afbfeb}
 :root[data-theme=dark]{--main-bg:#202e55;--main-border:#516798}
 
+/* Estil de base de les apps Gesto (ESTIL.md): tipografia, targetes, camps, botons, llistes, fitxes, inici de sessió.
+   El fan servir GestoCatalog, GestoTips i GestoAdmin. Va després de colors.css i abans de l'estil propi de cada app. */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:auto;padding:20px 16px 36px}
+header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:18px}
+h1{font-size:28px;letter-spacing:-.035em;margin:0}
+h2{font-size:21px;margin:0 0 14px}
+h3{font-size:17px;margin:0 0 8px}
+p{margin:8px 0}
+nav,.actions{display:flex;gap:8px;flex-wrap:wrap}
+nav{margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 3px 14px rgba(40,55,126,.055);padding:20px;margin-bottom:16px}
+label{display:grid;gap:4px;font-size:14px;color:var(--mu)}
+input,select,textarea{width:100%;min-height:46px;padding:8px 12px;border:1px solid var(--field);border-radius:10px;background:var(--surface);color:var(--tx);font:inherit;font-size:16px}
+textarea{display:block;resize:vertical;margin:10px 0}
+button,.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 15px;border:1px solid var(--ln);border-radius:10px;background:var(--surface);color:var(--tx);font:600 15px/1.3 inherit;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none}
+button:hover,.button:hover{background:var(--soft)}
+.primary,[aria-current=page]{background:var(--ln);color:var(--on)}
+.primary:hover,[aria-current=page]:hover{background:var(--ln);filter:brightness(1.13)}
+:focus-visible{outline:3px solid #788cf0;outline-offset:2px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:12px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.item{border-top:1px solid var(--border);padding:8px 0}
+.item:last-child{padding-bottom:0}
+.meta{color:var(--mu);font-size:14px}
+.error,.remove{color:var(--red)}
+@media(max-width:430px){main{padding:14px 12px 28px}.card{padding:15px}h1{font-size:24px}nav button{padding:8px 11px}}
+[hidden]{display:none !important}
+main{width:100%;padding-inline:max(12px,env(safe-area-inset-left)) max(12px,env(safe-area-inset-right))}
+.card,.grid,.grid>* ,label,.row>*{min-width:0}
+input,select,textarea,button,.button{max-width:100%;min-width:0}
+input[type=file]{width:100%}
+img,video,canvas{max-width:100%;height:auto}
+.card{overflow-wrap:anywhere}
+.grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+#login-panel{max-width:500px;margin-inline:auto}
+#login-form .grid{grid-template-columns:minmax(0,1fr)}
+.login-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#password-reset{display:inline-block;margin:12px 0;color:var(--tx);text-underline-offset:.18em}
+#login-status:empty{display:none}
+@media(max-width:480px){
+  html{-webkit-text-size-adjust:100%}
+  button,.button{touch-action:manipulation}
+}
+/* Requadre principal de cada pantalla */
+.main-card{background:var(--main-bg);border-color:var(--main-border)}
+.main-card .card{background:var(--surface);box-shadow:none;border-radius:14px;padding:16px;margin:12px 0 0}
+.main-card .card h3:first-child{margin-top:0}
+.main-card .card h2{font-size:17px;margin:0 0 10px}
+.main-card>.card:first-of-type{margin-top:14px}
+/* Fitxes (diàlegs): <dialog class="sheet-dialog"> amb .sheet-head (títol i ✕), .sheet-part i .sheet-foot */
+dialog.sheet-dialog{width:min(560px,calc(100% - 24px));max-height:calc(100% - 24px);padding:18px;color:var(--tx);background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:auto}
+dialog.sheet-dialog::backdrop{background:#11183180}
+.sheet-close{min-width:0;width:40px;min-height:40px;padding:0;font-size:18px;flex:none}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sheet-head h2{margin:0}
+.sheet-part{border-top:1px solid var(--border);margin-top:14px;padding-top:12px}
+.sheet-part h3{margin:0 0 8px}
+.sheet-foot{border-top:1px solid var(--border);margin-top:14px;padding-top:12px}
+/* Botons d'icona (llapis, impressora…) */
+.icon-button{min-width:0;width:36px;min-height:36px;padding:0}
+.icon-button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icon-button.remove{border-color:var(--red)}
+.icon-button:disabled{opacity:.35}
+
+/* ===== GestoStock: només el que és propi. Colors, tipografia, botons, camps, targetes, fitxes i botons d'icona
+   són de shared/colors.css i shared/base.css (comuns amb GestoCatalog, GestoTips i GestoAdmin). ===== */
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.35 "Palatino Linotype",Palatino,"Book Antiqua","Iowan Old Style",Georgia,serif}
-main{max-width:640px;margin:0 auto;padding:16px}
-h1{font-size:30px;font-weight:400;margin:6px 0 14px;font-variant:small-caps;letter-spacing:.02em}
-.sc,label,button,.mu,.nm,select,.tag{font-variant:small-caps}
-.tabs{display:flex;gap:10px;margin-bottom:14px}
-.tabs button{flex:1}
-.card{border:2px solid var(--ln);border-radius:16px;background:linear-gradient(135deg,var(--g1),var(--g2) 50%,var(--g1));padding:16px 20px;margin-bottom:14px}
-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-form .full{grid-column:1/-1}
-.purchase-fields{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.purchase-fields>div{min-width:0}.purchase-fields label{font-size:clamp(11px,2.4vw,15px);min-height:2.5em;line-height:1.15}.purchase-fields input{min-width:0;padding:10px 7px}@media(max-width:390px){.purchase-fields{gap:6px}.purchase-fields input{font-size:15px;padding:8px 5px}}
-label{font-size:15px;color:var(--mu);display:block;margin-bottom:3px}
-input,select{width:100%;padding:10px 12px;border:2px solid var(--ln);border-radius:14px;background:var(--in);color:var(--tx);font:inherit;font-size:17px;min-height:46px}
-select{font-variant:small-caps}
-button{font:inherit;font-variant:small-caps;font-size:18px;color:var(--tx);background:transparent;border:2px solid var(--ln);border-radius:12px;padding:10px 18px;min-height:46px}
-button.f,.tabs button.on{background:var(--ln);color:var(--on)}
-button.d{color:var(--rd);border-color:var(--rd)}
-button.s{padding:6px 14px;min-height:40px;font-size:16px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.g2 .full{grid-column:1/-1}
-.ov{position:fixed;inset:0;z-index:50;background:rgba(10,14,40,.5);display:flex;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}.ov[hidden]{display:none}
+/* Noms antics de colors de GestoStock, que apunten als comuns */
+:root{--g1:var(--surface);--g2:var(--soft);--in:var(--surface);--rd:var(--red);--gr:var(--green)}
 main{position:relative}
+/* Botons amb els noms antics: .f = principal (com .primary), .d = perill, .s = petit */
+button.f{background:var(--ln);color:var(--on)}
+button.f:not(:disabled):hover{background:var(--ln);filter:brightness(1.13)}
+button.d{color:var(--red);border-color:var(--red)}
+button.d:not(:disabled):hover{background:var(--red);border-color:var(--red);color:var(--on)}
+/* Camps: l'etiqueta va a sobre del camp (<label for> + camp) */
+label[for]{margin-bottom:4px}
 input,select{height:46px}
-.g2>div,form>div{min-width:0}
 input[type=date]{-webkit-appearance:none;appearance:none;display:block;min-width:0;text-align:left}
-.x{min-height:40px;min-width:40px;padding:0;font-size:20px;line-height:1}
-.sheet{width:100%;max-width:560px;max-height:100%;overflow:auto;background:var(--bg);margin:0}
-.row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.nm{font-size:24px}
-.mu{color:var(--mu);font-size:16px}
-.big{font-size:34px;line-height:1.1}
-.act{display:flex;gap:8px;margin-top:12px;align-items:center;flex-wrap:wrap}
-.act input{width:100px;padding:6px 10px;min-height:40px}
-.sum{display:flex;gap:8px;margin-bottom:14px}
-.sum div{flex:1;border:2px solid var(--ln);border-radius:12px;padding:10px;text-align:center}
-.sum b{display:block;font-weight:400;font-size:22px}
-.pos{color:var(--gr)}.neg{color:var(--rd)}
-.empty{text-align:center;color:var(--mu);padding:24px}
-
-/* GestoStock 4.1 · refinament visual sense alterar la lògica */
-body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.5}
-main{max-width:760px;padding:20px 16px 36px}
-h1,.brand h1{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-variant:normal;font-weight:700;letter-spacing:-.035em}
-h1{font-size:28px}
-.sc,label,button,.mu,.nm,select,.tag{font-variant:normal}
-.card{border:1px solid var(--border);border-radius:18px;background:var(--g1);padding:20px;margin-bottom:16px;box-shadow:0 3px 14px rgba(40,55,126,.055)}
-button{border:1px solid var(--ln);border-radius:10px;font-family:inherit;font-size:15px;font-weight:600;padding:10px 15px;transition:background-color .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease;cursor:pointer}
-button:not(:disabled):hover{background:var(--ln);color:var(--on);box-shadow:0 3px 12px rgba(48,63,145,.15)}
-button.f:not(:disabled):hover,.tabs button.on:not(:disabled):hover{filter:brightness(1.13)}
-button.d:not(:disabled):hover{background:var(--rd);border-color:var(--rd);color:#fff}
-button:disabled{cursor:not-allowed;opacity:.55}
-button:focus-visible,input:focus-visible,select:focus-visible,[role="button"]:focus-visible{outline:3px solid #788cf0;outline-offset:2px}
-input,select{border:1px solid var(--field);border-radius:10px;font-family:inherit;font-size:16px}
-input:focus,select:focus{border-color:var(--ln)}
+input[type=file]{padding:6px;height:auto}
+input[type=file]::file-selector-button{margin-right:10px;padding:8px 14px;border:1px solid var(--ln);border-radius:10px;background:var(--surface);color:var(--tx);font:600 15px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer}
+input[type=file]::file-selector-button:hover{background:var(--soft)}
 select,[role="button"],a[href],summary,[data-open],label[for]{cursor:pointer}
-.nm{font-size:21px;font-weight:650}.mu{font-size:14px}.big{font-weight:700}
-.sum div{border:1px solid var(--border);border-radius:12px;background:var(--g1)}
-@media(max-width:430px){main{padding:14px 12px 28px}.card{padding:15px}}
-@media(prefers-reduced-motion:reduce){button{transition:none}}
-/* Importació d'albarans: jerarquia i espaiat coherents */
-#albaraResult .alb-line{margin:18px 0 0;padding:20px;border:1px solid var(--border);border-radius:14px;background:var(--g1);box-shadow:0 2px 9px rgba(40,55,126,.04)}
-#albaraResult .alb-line .alb-name{margin-bottom:14px}
-#albaraResult .alb-line label{margin:0 0 3px;font-size:13px;font-weight:600;line-height:1.25}
-#albaraResult .alb-line .alb-warning{margin:10px 0 14px}
-#albaraResult .alb-numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-items:end}
-#albaraResult .alb-numbers input{width:100%;min-width:0;margin:0;padding:8px 5px}
-@media(max-width:440px){
- #albaraResult .alb-line{padding:12px}
- #albaraResult .alb-line label{font-size:11px}
- #albaraResult .alb-numbers{gap:5px}
-}
-
-/* Formulari de compra: alineació d’etiquetes i camps */
-#f .g2,#f .g3{row-gap:22px;align-items:start}
-#f .g2>div,#f .g3>div{display:flex;flex-direction:column;min-width:0}
-#f label{display:block;line-height:1.35;margin-bottom:8px;min-height:0}
-#f .g3 label{min-height:36px}
-#f input,#f select{margin-top:auto;min-height:46px}
-#f button[type=submit]{margin-top:22px}
-#albaraResult .alb-line .act{margin-top:22px;gap:10px}
-#albaraResult .alb-line .act button{margin-top:0}
-@media(max-width:520px){#f .g3 label{min-height:0}}
-
-/* GestoStock 5.0: files independents per a pesos i imports */
-#f .purchase-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+/* Formularis en dues columnes */
+form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+form .full,.g2 .full{grid-column:1/-1}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g2>div,form>div{min-width:0}
+/* Textos i xifres */
+.mu{color:var(--mu);font-size:14px}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:nowrap}
+.nm{font-size:21px;font-weight:650}
+.big{font-size:34px;line-height:1.1;font-weight:700}
+.pos{color:var(--green)}.neg{color:var(--red)}
+.empty{text-align:center;color:var(--mu);padding:24px}
+.act{display:flex;gap:8px;margin-top:12px;align-items:center;flex-wrap:wrap}
+.act input{width:100px;padding:6px 10px;min-height:40px;height:40px}
+.sum{display:flex;gap:8px;margin-bottom:14px}
+.sum div{flex:1;border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:10px;text-align:center}
+.sum b{display:block;font-weight:400;font-size:22px}
+/* Requadre principal i blocs */
+.card h2{font-size:21px;margin:0 0 6px}
+.main-card .intro{margin:0 0 4px}
+.main-card .sum{margin:12px 0 0}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:14px}
+.panel h3{font-size:17px;margin:0 0 6px}
+.panel .manual-head{margin:0}
+/* Formulari de compra */
+#f .g2{row-gap:22px;align-items:start}
+#f .g2>div{display:flex;flex-direction:column;min-width:0}
+#f input,#f select{margin-top:auto}
+#f .purchase-fields{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
 #f .purchase-fields>div{display:flex;flex-direction:column;min-width:0}
-#f .purchase-fields label{font-size:14px;line-height:1.35;min-height:38px;margin:0 0 7px}
-#f .purchase-fields input{margin:0;width:100%;height:46px}
-#f #effectiveCost{margin-top:-5px;margin-bottom:2px}
-#f button[type=submit]{margin-top:18px}
-@media(max-width:400px){#f .purchase-fields{gap:9px}#f .purchase-fields label{font-size:12px}}
-/* GestoStock 5.2: camps compactes i formulari només quan cal */
-#f .purchase-fields{gap:12px;align-items:start}
-#f .purchase-fields label{min-height:0;margin:0 0 5px;line-height:1.25;font-size:14px}
-#f .purchase-fields input{margin:0;height:46px}
+#f .purchase-fields label{font-size:14px;line-height:1.25;margin:0 0 5px}
+#f .purchase-fields input{margin:0;width:100%;min-width:0}
 #f .purchase-money label{white-space:normal}
-#f .purchase-fields + .purchase-fields{margin-top:0}
 #f #effectiveCost{margin:0}
+#f button[type=submit]{margin-top:18px}
 .purchase-title{font-size:22px;margin:2px 0 14px;font-weight:700}
 .manual-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 10px}
 .manual-head h3{font-size:17px;margin:0}
 #purchaseCard[hidden]{display:none}
-#purchaseCard{margin-top:0}
-@media(max-width:440px){.manual-head{align-items:flex-start;flex-direction:column}#f .purchase-fields label{font-size:12px}}
+#purchaseCard{margin-top:14px}
+@media(max-width:440px){.manual-head{align-items:flex-start;flex-direction:column}#f .purchase-fields{gap:9px}#f .purchase-fields label{font-size:12px}}
+/* Proveïdors */
 .supplier-title{margin:0 0 16px;font-size:clamp(24px,5vw,30px);letter-spacing:-.025em}
 .supplier-card h3{margin:0 0 14px}
 #supplierForm{grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px}
-#supplierForm label{display:block;margin-bottom:6px}
 .supplier-actions{display:flex;gap:8px;flex-wrap:wrap}
 #supplierRegistry{list-style:none;padding:0;margin:0}
 .supplier-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--border)}
 .supplier-row span{font-weight:600;overflow-wrap:anywhere}
 #noSuppliers{margin:0}
 @media(max-width:460px){#supplierForm{grid-template-columns:1fr}.supplier-actions{justify-content:flex-end}}
+/* Permisos: el que no es pot fer no es mostra */
 body.no-buy [data-edit],body.no-buy [data-lotedit]{display:none!important}
 body.no-sell [data-sell]{display:none!important}
 body.no-config #newPlat,body.no-config #bulkPlats,body.no-config [data-platedit]{display:none}body.no-sell [data-platsell]{display:none}body.no-buy #mixLots,body.no-buy [data-unmix],body.no-buy [data-lotclose],body.no-buy [data-lotcloseedit],body.no-buy [data-lotreopen]{display:none}
 body.no-labels #printLabels,body.no-labels [data-lotlabels],body.no-labels [data-grouplabels]{display:none!important}
-/* Aspecte comú de les apps Gesto (model: GestoCatalog) */
-.card h2{font-size:21px;margin:0 0 6px}
-.main-card{background:var(--main-bg);border-color:var(--main-border)}
-.main-card .intro{margin:0 0 4px}
-.panel{background:var(--g1);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:14px}
-.panel h3{font-size:17px;margin:0 0 6px}
-.panel .manual-head{margin:0}
-#purchaseCard{margin-top:14px}
-input[type=file]{padding:6px;height:auto}
-input[type=file]::file-selector-button{margin-right:10px;padding:8px 14px;border:1px solid var(--ln);border-radius:10px;background:var(--g1);color:var(--tx);font:600 15px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer}
-input[type=file]::file-selector-button:hover{background:var(--g2)}
-.main-card .card{background:var(--g1);box-shadow:none;border:1px solid var(--border);border-radius:14px;padding:16px;margin:12px 0 0}
-.main-card .sum{margin:12px 0 0}
-.view-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.view-head h2{margin:0}.view-head .act{margin:0}.view-head{margin-bottom:10px}
+/* Capçalera d'una vista: títol i botons de tota la vista (ESTIL.md, «Botons de la capçalera d'una vista») */
+.view-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.view-head h2{margin:0}.view-head .act{margin:0}
+.view-head .act button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:6px 13px;font-size:15px;white-space:nowrap}
+.view-head .act svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:480px){
+ .view-head{display:block}
+ .view-head .act{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;margin-top:8px}
+ .view-head .act button{min-height:40px;padding:4px 3px;gap:4px;font-size:14px;line-height:1.15;min-width:0;white-space:normal;overflow-wrap:normal;text-align:center}
+}
+/* Compres pendents i catàleg d'articles (només consulta), amb l'aspecte de GestoCatalog */
 .pending-row,.cat-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--border)}
 .cat-row .mu{font-size:13px}
 .pending-row .act{flex:1 1 320px;justify-content:flex-end}.pending-row .act input{flex:1}
-/* Catàleg d'articles (només consulta), amb l'aspecte de GestoCatalog */
 .cat-heading{display:flex;align-items:start;justify-content:space-between;gap:10px;flex-wrap:wrap}.cat-heading h2{margin:0}
 .cat-filters{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;gap:8px;min-width:0;flex:1 1 100%}.cat-filters label{display:grid;gap:4px;width:100%}
 .cat-search{display:grid;gap:4px;margin-top:14px}.cat-search input{width:100%}
@@ -163,21 +182,9 @@ details.cat-group[open]>summary::before{transform:rotate(90deg)}details.cat-grou
 details.cat-group>summary .group-name{flex:1 1 auto}details.cat-group>summary .meta{font-weight:400;font-size:13px}
 .cat-item{display:grid;gap:1px;padding:6px 12px;border-top:1px solid var(--border);line-height:1.2}.cat-item strong{overflow-wrap:anywhere}.cat-item .meta{overflow-wrap:anywhere}
 @media(max-width:600px){.cat-heading{display:grid;gap:6px}.cat-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 8px}.cat-filters label{font-size:12px;gap:2px}details.cat-group{margin-top:8px}}
-/* ===== Guia d'estil comuna de les apps Gesto (ESTIL.md de GestoApps) ===== */
-/* Colors: mateixos valors que GestoCatalog. Els noms antics (--g1, --rd…) apunten als nous. */
-/* Colors: shared/colors.css (comuns a totes les apps). Noms antics de GestoStock que s’hi refereixen: */
-:root{--g1:var(--surface);--g2:var(--soft);--in:var(--surface);--rd:var(--red);--gr:var(--green)}
-body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px}
-h1{font-size:28px}h2,.card h2{font-size:21px}h3{font-size:17px}
-.mu,.meta{font-size:14px;color:var(--mu)}
-/* Targetes, botons i camps */
-.card{border-radius:18px;padding:20px}
-button{min-height:44px;border-radius:10px;font-weight:600}
-button.s{min-height:44px}
-input,select{min-height:46px;border-radius:10px;font-size:16px;background:var(--surface)}
-button.d,.remove{color:var(--red);border-color:var(--red)}
 /* Llistats compactes: una línia per element */
 .list-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;border-top:1px solid var(--border);padding:2px 0}
+.list-row:has(>.row-price+.row-icons){grid-template-columns:minmax(0,1fr) auto auto}
 .row-open{display:block;width:100%;min-width:0;min-height:36px;border:0;border-radius:6px;background:transparent;color:var(--tx);padding:6px 4px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:400;font-size:16px;box-shadow:none}
 .row-open:not(:disabled):hover{background:var(--soft);color:var(--tx);box-shadow:none}
 .row-open b{font-weight:650}
@@ -187,6 +194,7 @@ button.d,.remove{color:var(--red);border-color:var(--red)}
 .row-detail{padding:4px 4px 12px}
 .row-detail .act{margin-top:8px}
 .list-group{margin-top:4px}
+.list-group>summary{cursor:pointer;font-weight:650;padding:8px 4px;border-top:1px solid var(--border)}
 .link-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(140px,1.4fr) auto;align-items:center;gap:6px;border-top:1px solid var(--border);padding:4px 0}
 .row-price{font-weight:650;white-space:nowrap;padding-left:4px}
 .stock-item{border-top:1px solid var(--border);padding:2px 0 6px}
@@ -194,46 +202,22 @@ button.d,.remove{color:var(--red);border-color:var(--red)}
 .stock-item>.meta{padding:0 4px}
 .confirm{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 @media(max-width:560px){.link-row{grid-template-columns:minmax(0,1fr) auto}.link-row input{grid-column:1/-1;grid-row:2}}
-.list-group>summary{cursor:pointer;font-weight:650;padding:8px 4px;border-top:1px solid var(--border)}
-/* Icones (36×36, traç de 1,8) */
-.icon-button{display:inline-flex;align-items:center;justify-content:center;min-width:0;width:36px;min-height:36px;height:36px;padding:0;flex:none}
-.icon-button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* Botons d'icona: el que GestoStock hi afegeix */
+.icon-button{display:inline-flex;align-items:center;justify-content:center;height:36px;flex:none}
 .icon-button svg,.row-open *{pointer-events:none}
-.icon-button.remove{border-color:var(--red);color:var(--red)}
-.icon-button.remove:not(:disabled):hover{background:var(--red);color:#fff}
-/* Fitxes en finestra (dialog) */
-dialog.sheet-dialog{width:min(560px,calc(100% - 24px));max-height:calc(100% - 24px);padding:18px;color:var(--tx);background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:auto}
-dialog.sheet-dialog::backdrop{background:#11183180}
-.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.sheet-head h2{margin:0;font-size:21px;min-width:0;overflow-wrap:anywhere}
-.sheet-close{min-width:0;width:40px;min-height:40px;padding:0;font-size:18px;flex:none}
-.sheet-part{border-top:1px solid var(--border);margin-top:14px;padding-top:12px}
-.sheet-part h3{margin:0 0 8px}
-.sheet-foot{border-top:1px solid var(--border);margin-top:14px;padding-top:12px;display:flex;gap:8px;flex-wrap:wrap}
-.error{color:var(--red)}
+.icon-button.remove{color:var(--red)}
+.icon-button.remove:not(:disabled):hover{background:var(--red);color:var(--on)}
+/* Fitxes: el que GestoStock hi afegeix */
+.sheet-head h2{font-size:21px;min-width:0;overflow-wrap:anywhere}
+.sheet-foot{display:flex;gap:8px;flex-wrap:wrap}
 .error:empty{display:none}
 /* Formularis de «nou» plegats */
 details.new-form>summary{cursor:pointer;font-weight:700;font-size:17px;padding:4px 0}
 details.new-form[open]>summary{margin-bottom:10px}
-/* Mòbil (≤ 560px) */
+/* Mòbil */
 @media(max-width:560px){
- .card{padding:11px}
- .main-card .card,.panel{padding:11px}
- label,#f label,#f .purchase-fields label,#f .g3 label{font-size:12px;margin-bottom:2px;min-height:0}
- form,.g2,#f .g2,#f .purchase-fields{gap:8px 10px;row-gap:8px}
- select,button,button.s{min-height:40px}
- select{height:40px}
- .icon-button{min-height:36px;height:36px}
+ form,.g2,#f .g2{gap:8px 10px;row-gap:10px}
  #f button[type=submit]{margin-top:8px}
-}
-/* Botons de la capçalera d'una vista (ESTIL.md, «Botons de la capçalera d'una vista») */
-.view-head .act button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:6px 13px;font-size:15px;white-space:nowrap}
-.view-head .act svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.list-row:has(>.row-price+.row-icons){grid-template-columns:minmax(0,1fr) auto auto}
-@media(max-width:480px){
- .view-head{display:block}
- .view-head .act{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;margin-top:8px}
- .view-head .act button{min-height:40px;padding:4px 6px;gap:5px;font-size:14px;line-height:1.15;min-width:0;white-space:normal;text-align:center}
 }
 /* Capçalera comuna de les apps Gesto: nom, versió, ☰ Menú i ↪︎ Sortir (ESTIL.md, «Capçalera de l'app» i «Menú»).
    Font única: si canvies alguna cosa aquí, canvia a totes les apps. Va després del CSS de cada app. */
@@ -268,6 +252,7 @@ details.new-form[open]>summary{margin-bottom:10px}
   .menu-anchor{position:static}
   #menu-panel{top:100%;right:0}
 }
+.topbar .entorn-proves{color:var(--red);letter-spacing:.04em}
 
 /* Avisos flotants comuns de les apps Gesto (vegeu ESTIL.md → Avisos i errors). */
 #status:empty{display:none}
@@ -311,9 +296,9 @@ details.new-form[open]>summary{margin-bottom:10px}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.19.1</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
+<div id="login" style="position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:100%;max-width:420px"><h1>GestoStock</h1><p class="mu">Versió 1.20.0</p><p>Introdueix les teves dades per accedir a GestoStock.</p><form id="loginForm" style="display:block"><label>Correu electrònic</label><input id="email" type="email" autocomplete="username" required><label style="margin-top:12px">Contrasenya</label><input id="password" type="password" autocomplete="current-password" required><button class="f" style="width:100%;margin-top:16px">Entrar</button></form></div></div>
 <main><header class="topbar">
-  <div class="brand"><h1>GestoStock</h1><div class="meta version">Versió 1.19.1<span id="sync-state" role="status"></span></div></div>
+  <div class="brand"><h1>GestoStock</h1><div class="meta version">Versió 1.20.0<span id="sync-state" role="status"></span></div></div>
   <div class="top-actions">
     <div class="menu-anchor">
       <button id="menu-toggle" type="button" aria-label="Menú" aria-expanded="false" aria-controls="menu-panel"><span aria-hidden="true">☰</span><span class="top-action-label" aria-hidden="true">Menú</span></button>
